@@ -1,8 +1,16 @@
+import { Button } from '@chakra-ui/react'
 import React from 'react'
-import { AiFillNotification } from 'react-icons/ai'
 
 export default function Homepage() {
   return (
-    <div style={{fontSize: '5rem'}}><AiFillNotification /> Notification</div>
+    <>
+      <Button>
+        Login
+      </Button>
+
+      <Button>
+        Register
+      </Button>
+    </>
   )
 }
