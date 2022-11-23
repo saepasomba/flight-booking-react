@@ -3,6 +3,6 @@ import { AiFillNotification } from 'react-icons/ai'
 
 export default function Homepage() {
   return (
-    <div style={{fontSize: '5rem'}}><AiFillNotification /> Notification</div>
+    <h1>ini homepage</h1>
   )
 }
