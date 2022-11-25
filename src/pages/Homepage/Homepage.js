@@ -1,16 +1,15 @@
 import { Button } from '@chakra-ui/react'
+import "./home.css"
+import { Navbar } from '../../components/navbar/Navbar'
+import  Header  from '../../components/header/Header'
 import React from 'react'
 
-export default function Homepage() {
-  return (
-    <>
-      <Button>
-        Login
-      </Button>
-
-      <Button>
-        Register
-      </Button>
-    </>
+const Homepage = () => {
+  return(
+    <div>
+    <Navbar/>
+    <Header/>
+    </div>
   )
-}
+  }
+export default Homepage;

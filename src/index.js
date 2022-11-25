@@ -8,6 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import Homepage from './pages/Homepage/Homepage';
 
 import './index.css';
+import { Navbar } from './components/navbar/Navbar';
+import  Header  from './components/header/Header';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +17,8 @@ root.render(
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Homepage />} />
+          {/* <Route path='/' element={<Navbar />} /> */}
+          <Route path='/' element={<Header />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
