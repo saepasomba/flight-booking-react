@@ -1,7 +1,5 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import React from "react";
-import LoginModal from "./LoginModal";
-import RegisterModal from "./RegisterModal";
 import Navbar from "../../components/navbar/Navbar.jsx";
 
 export default function Homepage() {
@@ -24,9 +22,6 @@ export default function Homepage() {
       <Button onClick={loginOnOpen}>Login</Button>
 
       <Button onClick={registerOnOpen}>Register</Button>
-
-      <LoginModal isOpen={loginIsOpen} onClose={loginOnClose} />
-      <RegisterModal isOpen={registerIsOpen} onClose={registerOnClose} />
     </>
   );
 }
