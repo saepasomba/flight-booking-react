@@ -32,7 +32,7 @@ export default function RegisterModal(props) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(registerSchema),

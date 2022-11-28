@@ -23,12 +23,12 @@ const loginSchema = yup.object({
 });
 
 export default function LoginModal(props) {
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onClose } = props;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     mode: "onChange",
     resolver: yupResolver(loginSchema),
