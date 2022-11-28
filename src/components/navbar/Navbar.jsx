@@ -9,6 +9,7 @@ import {
   IconButton,
   useBreakpointValue,
   useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react'
 import * as React from 'react'
 import { FiMenu,FiChevronDown, FiLogIn  } from 'react-icons/fi'
@@ -24,12 +25,27 @@ import {
   MenuList,
   MenuItem,
 } from '@chakra-ui/react'
+import LoginModal from './LoginModal'
+import RegisterModal from './RegisterModal'
 
-export const Navbars = () => {
+export default function Navbar() {
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
   })
+
+  const {
+    isOpen: loginIsOpen,
+    onOpen: loginOnOpen,
+    onClose: loginOnClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: registerIsOpen,
+    onOpen: registerOnOpen,
+    onClose: registerOnClose,
+  } = useDisclosure();
+
   return (
     <Box
       as="section"
@@ -48,7 +64,7 @@ export const Navbars = () => {
         >
           <HStack spacing="10" justify="space-between">
           <Text fontSize='1rem' fontFamily='cursive'>
-            <h1>BinarFly</h1>
+            BinarFly
           </Text>
 
             {isDesktop ? (
@@ -73,8 +89,8 @@ export const Navbars = () => {
                 </ButtonGroup>
 
                 <HStack spacing="3">
-                  <Button colorScheme='white' variant='outline'>Sign in</Button>
-                  <Button colorScheme='blue' variant='solid'>Sign up</Button>
+                  <Button colorScheme='white' variant='outline' onClick={loginOnOpen}>Login</Button>
+                  <Button colorScheme='blue' variant='solid' onClick={registerOnOpen}>Register</Button>
                 </HStack>
               </Flex>
             ) : (
@@ -111,11 +127,11 @@ export const Navbars = () => {
                     <MenuItem icon={<FcAbout color='black' />}>
                       About Us
                     </MenuItem>
-                    <MenuItem icon={<FiLogIn color='black' />}>
+                    <MenuItem icon={<FiLogIn color='black' />} onClick={loginOnOpen}>
                       Login
                     </MenuItem>
-                    <MenuItem icon={<CgLogOut color='black' />}>
-                      Logout
+                    <MenuItem icon={<CgLogOut color='black' />} onClick={registerOnOpen}>
+                      Register
                     </MenuItem>
                   </MenuList>
                 </Menu>
@@ -124,6 +140,8 @@ export const Navbars = () => {
           </HStack>
         </Container>
       </Box>
+      <LoginModal isOpen={loginIsOpen} onClose={loginOnClose} />
+      <RegisterModal isOpen={registerIsOpen} onClose={registerOnClose} />
     </Box>
   )
 }
