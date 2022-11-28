@@ -44,10 +44,14 @@ export default function ProfilePage() {
         boxShadow="lg"
       >
         <CardBody w="100%">
-          <Grid templateColumns={{ sm: "1fr", lg: "20% 80%" }} m="0 auto">
+          <Grid
+            templateColumns={{ sm: "1fr", lg: "20% 80%" }}
+            gap={{ sm: "1rem", lg: "0" }}
+            m="0 auto"
+          >
             <GridItem justifySelf="center">
               <Circle size="10rem" overflow="hidden">
-                <Image src={avatar} w="100%" objectFit="cover" />
+                <Image src={avatar} objectFit="cover" />
               </Circle>
             </GridItem>
 
