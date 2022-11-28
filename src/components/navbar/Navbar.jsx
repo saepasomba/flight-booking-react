@@ -54,13 +54,13 @@ export default function Navbar() {
         md: '24',
       }}
     >
-      <Box as="nav" bg="#063970" color='white' boxShadow={useColorModeValue('lg', 'dark-lg')}>
+      <Box as="nav" bg="#063970" color='white' boxShadow={useColorModeValue('lg', 'dark-lg')} >
         <Container
           py={{
             base: '4',
             lg: '5',
           }}
-          maxW={'var(--chakra-sizes-container-xl)'}
+          maxW={"100%"}
         >
           <HStack spacing="10" justify="space-between">
           <Text fontSize='1rem' fontFamily='cursive'>
@@ -68,14 +68,14 @@ export default function Navbar() {
           </Text>
 
             {isDesktop ? (
-              <Flex justify="space-between" flex="1">
-                <ButtonGroup ml={'27rem'} variant="link" spacing="8">
+              <Flex justify="flex-end" gap="2rem" flex="1">
+                <ButtonGroup variant="link" spacing="8">
                   {['Homepage', 'Booked List', 'Payment', 'About Us'].map((item) => (
                     <Button color='#ffffff' key={item}>{item}</Button>
                   ))}
 
                   <Menu>
-                    <MenuButton as={Button} leftIcon={<IoIosNotificationsOutline color='#ffffff' size='1.5rem' me={'0.05rem'} />} rightIcon={<FiChevronDown color='#ffffff'/>}>
+                    <MenuButton as={Button} colorScheme='white' variant='outline' leftIcon={<IoIosNotificationsOutline color='#ffffff' size='1.5rem' me={'0.05rem'} />} rightIcon={<FiChevronDown color='#ffffff'/>}>
                     </MenuButton>
                     <MenuList color='black' maxW={'var(--chakra-sizes-container-sm)'}>
                       <MenuItem minH='48px'>                  
@@ -94,11 +94,11 @@ export default function Navbar() {
                 </HStack>
               </Flex>
             ) : (
-              <Flex gap={'0.5rem'}>
+              <Flex gap={'0.5rem'} ml="2rem">
                 <Menu spacing="3">
                     <MenuButton as={Button} colorScheme='white' variant='outline' px={'var(--chakra-space-2)'} leftIcon={<IoIosNotificationsOutline color='#ffffff' size='1.5rem' me={'0rem'} />} rightIcon={<FiChevronDown color='#ffffff' ms={'0rem'} />}>
                     </MenuButton>
-                    <MenuList color='black' maxW={'var(--chakra-sizes-80)'} minW={'var(--chakra-sizes-64)'}>
+                    <MenuList color='black' maxW={'var(--chakra-sizes-60)'} minW={'var(--chakra-sizes-60)'}>
                       <MenuItem minH='48px'>                  
                         <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto natus eius laudantium accusantium unde et quia, hic quos voluptates cupiditate facilis fugiat inventore accusamus. Blanditiis cum sed repellendus labore doloribus.</span>
                       </MenuItem>
