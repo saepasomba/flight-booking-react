@@ -28,7 +28,9 @@ import {
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
 
+
 export default function Navbar() {
+
   const isDesktop = useBreakpointValue({
     base: false,
     lg: true,
@@ -45,6 +47,8 @@ export default function Navbar() {
     onOpen: registerOnOpen,
     onClose: registerOnClose,
   } = useDisclosure();
+
+
 
   return (
     <Box
