@@ -1,24 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ChakraProvider } from '@chakra-ui/react'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 
-import reportWebVitals from './reportWebVitals';
+import reportWebVitals from "./reportWebVitals";
 
-import Homepage from './pages/Homepage/Homepage';
+import Homepage from "./pages/Homepage/Homepage";
 
-import './index.css';
-import { Navbar } from './components/navbar/Navbar';
-import  Header  from './components/header/Header';
+import "./index.css";
+import { Navbar } from "./components/navbar/Navbar";
+import Header from "./components/header/Header";
+import { HistoryCard } from "./components/historyCard/HistoryCard";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ChakraProvider>
       <BrowserRouter>
         <Routes>
           {/* <Route path='/' element={<Navbar />} /> */}
-          <Route path='/' element={<Header />} />
+          <Route path="/" element={<HistoryCard />} />
+          {/* <Route path='/' element={<Header />} /> */}
         </Routes>
       </BrowserRouter>
     </ChakraProvider>
