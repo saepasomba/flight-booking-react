@@ -5,7 +5,6 @@ import {
   Box,
   Center,
 } from '@chakra-ui/react'
-import bgHome from './bgHome.png'
 import backgroundHome from './backgroundHome.jpg'
 import wave from './wave.svg'
 import wave1 from './wave1.svg'
