@@ -33,7 +33,7 @@ import {
         >
           <Text color="muted">Thanks for choose us for your activity.</Text>
           <Text fontSize='3rem' fontFamily='cursive'>
-            <h1>BinarFly</h1>
+            <h1>SaFly</h1>
           </Text>
         </Stack>
         <Stack
@@ -56,7 +56,7 @@ import {
                 Jalan Suroyo No. 161 Mayangan Kota Probolinggo 672000
               </Text>
               <Text fontSize="md" fontWeight="semibold" color="grey">
-                binarfly@gmail.com
+                safelyfly@gmail.com
               </Text>
               <Text fontSize="md" fontWeight="semibold" color="grey">
                 081-233-343-808

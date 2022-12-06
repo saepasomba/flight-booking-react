@@ -12,6 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import * as React from 'react'
+import {useState, useEffect} from 'react'
 import { FiMenu,FiChevronDown, FiLogIn  } from 'react-icons/fi'
 import {CgLogOut} from 'react-icons/cg'
 import {IoIosNotificationsOutline} from 'react-icons/io'
@@ -27,9 +28,14 @@ import {
 } from '@chakra-ui/react'
 import LoginModal from './LoginModal'
 import RegisterModal from './RegisterModal'
+// import axios from 'axios'
+
+// const API_URL = 'https://tix-service-bej5.up.railway.app/ticketing-service';
+// const accesToken = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiZGVtb0BnbWFpbC5jb20iLCJyb2xlIjoiQlVZRVIiLCJqdGkiOiI3NzdmMzYwYi0wMzk1LTRlMjEtYWM4ZS1hNDc2MDU4MjEzNDkiLCJpYXQiOjE2NzAyMjQ4MDEsImV4cCI6MTY3MDMxMTIwMX0.pg0S_OfqSVxxthnH_oL-0_nXVCg-PzU7Q5r26Mn5zyI';
 
 
 export default function Navbar() {
+  // const [notif, setNotif] = useState([])
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -48,17 +54,30 @@ export default function Navbar() {
     onClose: registerOnClose,
   } = useDisclosure();
 
+  // const getListNotification = async () => {
+  //   try {
+  //     const res = await axios.get(`${API_URL}/users/get-notif?limit=10&pageNumber=1`, {
+  //       headers: {
+  //         'Authorization': `${accesToken}`,
+  //       }
+  //     });
+  //     setNotif(res.data.data)
+  //     console.log(res.data.data)
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+  // };
 
+  // useEffect(()=>{
+  //   getListNotification();
+  // }, []);
 
   return (
     <Box
       as="section"
-      pb={{
-        base: '12',
-        md: '24',
-      }}
+      pb={'0'}
     >
-      <Box as="nav" bg="#063970" color='white' boxShadow={useColorModeValue('lg', 'dark-lg')} >
+      <Box as="nav" bg="#063970" color='white' >
         <Container
           py={{
             base: '4',
@@ -68,7 +87,7 @@ export default function Navbar() {
         >
           <HStack spacing="10" justify="space-between">
           <Text fontSize='1rem' fontFamily='cursive'>
-            BinarFly
+            SaFly
           </Text>
 
             {isDesktop ? (
@@ -81,13 +100,17 @@ export default function Navbar() {
                   <Menu>
                     <MenuButton as={Button} colorScheme='white' variant='outline' leftIcon={<IoIosNotificationsOutline color='#ffffff' size='1.5rem' me={'0.05rem'} />} rightIcon={<FiChevronDown color='#ffffff'/>}>
                     </MenuButton>
-                    <MenuList color='black' maxW={'var(--chakra-sizes-container-sm)'}>
-                      <MenuItem minH='48px'>                  
-                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto natus eius laudantium accusantium unde et quia, hic quos voluptates cupiditate facilis fugiat inventore accusamus. Blanditiis cum sed repellendus labore doloribus.</span>
+                    
+                    <MenuList color='black' maxW={'var(--chakra-sizes-container-sm)'} /*key={notif.id}*/>
+                    {/* {notif.length > 0 && notif.map(nt=>{
+                      return<MenuItem minH='48px' > 
+                      <>
+                      <h1>{nt.notifcategory.title}</h1>                 
+                      <span>{nt.content}</span>
+                      <span>{nt.cdate}</span>
+                      </>
                       </MenuItem>
-                      <MenuItem minH='40px'>
-                        <span>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit vero, unde molestiae minus eos aliquid, iste voluptate consectetur, ducimus quibusdam saepe similique consequuntur fugit reiciendis ipsa sint fuga earum dolore.</span>
-                      </MenuItem>
+                    })} */}
                     </MenuList>
                   </Menu>
                 </ButtonGroup>

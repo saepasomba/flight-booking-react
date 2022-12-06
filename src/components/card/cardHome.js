@@ -25,7 +25,7 @@ export default function CardHome() {
     return(
     <Card padding='0' width={['90%','80%', '80%', '75%']} bg='white' border='1px solid whitesmoke' alignSelf='center' borderRadius='var(--chakra-radii-xl)'>
 
-        <CardHeader bg="#063970" color='white' borderTopLeftRadius='var(--chakra-radii-xl)' borderTopRightRadius='var(--chakra-radii-xl)' pb='3'>
+        <CardHeader bgGradient='linear(170deg, black, #063970, black)' color='white' borderTopLeftRadius='var(--chakra-radii-xl)' borderTopRightRadius='var(--chakra-radii-xl)' pb='3'>
             <Heading size='md'>Where will you go ?</Heading>
         </CardHeader>
 

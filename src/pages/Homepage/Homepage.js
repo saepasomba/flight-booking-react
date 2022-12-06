@@ -1,7 +1,16 @@
 import React from "react";
 import {
-  Flex
+  Flex,
+  Image,
+  Box,
+  Center,
 } from '@chakra-ui/react'
+import bgHome from './bgHome.png'
+import backgroundHome from './backgroundHome.jpg'
+import wave from './wave.svg'
+import wave1 from './wave1.svg'
+import wave2 from './wave2.svg'
+import wave3 from './wave3.svg'
 import Navbar from "../../components/navbar/Navbar.jsx";
 import {Footers} from '../../components/footer/Footer.jsx'
 import CardHome from '../../components/card/cardHome.js'
@@ -10,12 +19,23 @@ export default function Homepage() {
     <>
       <Navbar />
 
-      <Flex flexDirection='column' padding='5'>
-        <h1>INI BAGIAN HEADER</h1>
+      <Box >
+        <Image src={wave1} widht='100%' pos='absolute'/>
+        <Image src={wave3} widht='100%'/>
+      </Box>
+
+      <Flex flexDirection='column' height={['120vh','120vh','130vh','100vh']} widht='100%'>
+        <Center>
+          <Image src={backgroundHome} height={'50vh'} widht='100%'/>
+        </Center>
         <CardHome />
-        <h1>INI BAGIAN ABOUT US</h1>
       </Flex>
 
+      <Box>
+        <Image src={wave} widht='100%' pos='absolute'/>
+        <Image src={wave2} widht='100%'/>
+      </Box>
+      
       <Footers/>
     </>
   );
