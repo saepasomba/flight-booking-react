@@ -13,11 +13,13 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import axios from "axios";
 import React from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const registerSchema = yup.object({
+  fullName: yup.string().required(),
   email: yup.string().email().required(),
   password: yup.string().min(5).required(),
   confirmPassword: yup
@@ -41,6 +43,18 @@ export default function RegisterModal(props) {
   const registerSubmit = (data) => {
     console.log("Registering...");
     console.log(data);
+
+    const { confirmPassword, ...cleanData } = data;
+    console.log(cleanData);
+    const apiRegister = async (userData) => {
+      const response = await axios.post(
+        "https://tix-service-bej5.up.railway.app/ticketing-service/ext/register",
+        userData
+      );
+      console.log(response);
+    };
+
+    apiRegister(cleanData);
   };
 
   return (
@@ -52,6 +66,14 @@ export default function RegisterModal(props) {
 
           <ModalBody>
             <Flex flexDir="column" gap="1rem">
+              <FormControl isRequired isInvalid={errors.fullName}>
+                <FormLabel>Full Name</FormLabel>
+                <Input {...register("fullName")} placeholder="Full name..." />
+                <FormErrorMessage>
+                  {errors.fullName && errors.email.fullName}
+                </FormErrorMessage>
+              </FormControl>
+
               <FormControl isRequired isInvalid={errors.email}>
                 <FormLabel>Email</FormLabel>
                 <Input {...register("email")} placeholder="Email..." />

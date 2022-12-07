@@ -12,10 +12,11 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
 
 const loginSchema = yup.object({
   email: yup.string().email().required(),
@@ -37,6 +38,10 @@ export default function LoginModal(props) {
   const loginSubmit = (data) => {
     console.log("Logging in...");
     console.log(data);
+
+    // const logginIn = async (data) => {
+    //   const response = axios.post()
+    // }
   };
 
   return (
