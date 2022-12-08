@@ -33,7 +33,7 @@ import {
         >
           <Text color="muted">Thanks for choose us for your activity.</Text>
           <Text fontSize='3rem' fontFamily='cursive'>
-            <h1>BinarFly</h1>
+            BinarFly
           </Text>
         </Stack>
         <Stack
