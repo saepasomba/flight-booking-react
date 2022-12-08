@@ -59,7 +59,7 @@ export default function RegisterModal(props) {
         );
         console.log(response);
         const data = response.data;
-        localStorage.setItem("USER_TOKEN", JSON.stringify(data.data));
+        localStorage.setItem("USER_TOKEN", data.data);
         authTrigger(data.data);
         onClose();
       } catch (error) {
