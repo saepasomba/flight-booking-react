@@ -23,7 +23,7 @@ export default function Homepage() {
         <Image src={wave3} widht='100%'/>
       </Box>
 
-      <Flex flexDirection='column' height={['120vh','120vh','130vh','100vh']} widht='100%'>
+      <Flex flexDirection='column' height={['130vh','130vh','140vh','100vh']} widht='100%'>
         <Center>
           <Image src={backgroundHome} height={'50vh'} widht='100%'/>
         </Center>
