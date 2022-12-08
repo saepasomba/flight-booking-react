@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -11,10 +12,11 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -29,7 +31,9 @@ const registerSchema = yup.object({
 });
 
 export default function RegisterModal(props) {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, authTrigger } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   const {
     register,
@@ -47,14 +51,26 @@ export default function RegisterModal(props) {
     const { confirmPassword, ...cleanData } = data;
     console.log(cleanData);
     const apiRegister = async (userData) => {
-      const response = await axios.post(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/ext/register",
-        userData
-      );
-      console.log(response);
+      setIsLoading(true);
+      try {
+        const response = await axios.post(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/ext/register",
+          userData
+        );
+        console.log(response);
+        const data = response.data;
+        localStorage.setItem("USER_TOKEN", JSON.stringify(data.data));
+        authTrigger(data.data);
+        onClose();
+      } catch (error) {
+        setError("Invalid! Please make sure your email is not used.");
+      }
+      setIsLoading(false);
+      console.log("FINISHED HITTING API");
     };
 
     apiRegister(cleanData);
+    console.log("FINISHED SUBMITTING PROTOCOL");
   };
 
   return (
@@ -105,13 +121,14 @@ export default function RegisterModal(props) {
                   {errors.confirmPassword && errors.confirmPassword.message}
                 </FormErrorMessage>
               </FormControl>
+              {error && <Text color="red">{error}</Text>}
             </Flex>
           </ModalBody>
 
           <ModalFooter>
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
-              <Button colorScheme="blue" type="submit">
+              <Button colorScheme="blue" type="submit" isLoading={isLoading}>
                 Register
               </Button>
             </Flex>

@@ -11,8 +11,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -24,7 +25,9 @@ const loginSchema = yup.object({
 });
 
 export default function LoginModal(props) {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, authTrigger } = props;
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -39,9 +42,23 @@ export default function LoginModal(props) {
     console.log("Logging in...");
     console.log(data);
 
-    // const logginIn = async (data) => {
-    //   const response = axios.post()
-    // }
+    const logginIn = async (data) => {
+      setIsLoading(true);
+      try {
+        const response = await axios.post(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/ext/login",
+          data
+        );
+        console.log(response.data?.data);
+        localStorage.setItem("USER_TOKEN", response.data.data.token);
+        authTrigger(response.data.data.token);
+        onClose();
+      } catch (error) {
+        setError("Please make sure your email and password are correct!");
+      }
+      setIsLoading(false);
+    };
+    logginIn(data);
   };
 
   return (
@@ -72,13 +89,14 @@ export default function LoginModal(props) {
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
               </FormControl>
+              {error && <Text color="red">{error}</Text>}
             </Flex>
           </ModalBody>
 
           <ModalFooter>
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
-              <Button type="submit" colorScheme="blue">
+              <Button type="submit" colorScheme="blue" isLoading={isLoading}>
                 Login
               </Button>
             </Flex>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Flex } from "@chakra-ui/react";
-import Navbar from "../../components/navbar/Navbar.jsx";
-import { Footers } from "../../components/footer/Footer.jsx";
+import Navbar from "../../components/navbar/Navbar";
+import { Footers } from "../../components/footer/Footer.js";
 import CardHome from "../../components/card/cardHome.js";
 export default function Homepage() {
   return (
