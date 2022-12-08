@@ -10,9 +10,9 @@ import wave from './wave.svg'
 import wave1 from './wave1.svg'
 import wave2 from './wave2.svg'
 import wave3 from './wave3.svg'
-import Navbar from "../../components/navbar/Navbar.jsx";
-import {Footers} from '../../components/footer/Footer.jsx'
-import CardHome from '../../components/card/cardHome.js'
+import Navbar from "../../components/navbar/Navbar.js";
+import { Footers } from "../../components/footer/Footer.js";
+import CardHome from "../../components/card/cardHome.js";
 export default function Homepage() {
   return (
     <>
