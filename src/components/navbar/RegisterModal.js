@@ -86,7 +86,7 @@ export default function RegisterModal(props) {
                 <FormLabel>Full Name</FormLabel>
                 <Input {...register("fullName")} placeholder="Full name..." />
                 <FormErrorMessage>
-                  {errors.fullName && errors.email.fullName}
+                  {errors.fullName && errors.fullName.message}
                 </FormErrorMessage>
               </FormControl>
 
