@@ -11,6 +11,8 @@ import {
   useColorModeValue,
   useDisclosure,
   Spinner,
+  Image,
+  Badge,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FiMenu, FiChevronDown, FiLogIn } from "react-icons/fi";
@@ -25,10 +27,13 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import notifLogo from './notifLogo.png'
 
 export default function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState();
+  const [notif, setNotif] = useState([])
+  const [notifCount, setNotifcount] = useState();
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -69,7 +74,49 @@ export default function Navbar() {
       setIsLoading(false);
     };
     getProfile(token);
+
+    const getListNotification = async (token) => {
+      try {
+        const response = await axios.get(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const data = response.data.data;
+        console.log(data)
+        setNotif(data);
+      } catch (e) {
+        console.log("FAILED TO GET PROFILE...", e);
+        setNotif(null);
+      }
+    };
+    getListNotification(token);
+
+    const getCountNotification = async (token) => {
+      try {
+        const response = await axios.get(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const data = response.data.data;
+        setNotifcount(data);
+        console.log(data)
+      } catch (e) {
+        console.log("FAILED TO GET PROFILE...", e);
+        setNotifcount(null);
+      }
+    };
+    getCountNotification(token);
   };
+
+  
 
   const logout = () => {
     localStorage.removeItem("USER_TOKEN");
@@ -86,10 +133,7 @@ export default function Navbar() {
   return (
     <Box
       as="section"
-      pb={{
-        base: "12",
-        md: "24",
-      }}
+      pb={'0'}
     >
       <Box
         as="nav"
@@ -105,8 +149,8 @@ export default function Navbar() {
           maxW={"100%"}
         >
           <HStack spacing="10" justify="space-between">
-            <Text fontSize="1rem" fontFamily="cursive">
-              BinarFly
+            <Text fontSize="1.5rem" fontFamily="cursive">
+              SaFly
             </Text>
 
             {isDesktop ? (
@@ -120,44 +164,63 @@ export default function Navbar() {
                     )
                   )}
 
-                  <Menu>
+                  {user ? (
+                    <Menu>
                     <MenuButton
                       as={Button}
                       colorScheme="white"
                       variant="outline"
                       leftIcon={
+                      <Flex>
                         <IoIosNotificationsOutline
                           color="#ffffff"
                           size="1.5rem"
                           me={"0.05rem"}
                         />
+                        <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
+                          {notifCount ? notifCount.jumlahNotif : ''}
+                        </Badge>
+                      </Flex>
                       }
                       rightIcon={<FiChevronDown color="#ffffff" />}
                     ></MenuButton>
-                    <MenuList
-                      color="black"
-                      maxW={"var(--chakra-sizes-container-sm)"}
-                    >
-                      <MenuItem minH="48px">
-                        <span>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Architecto natus eius laudantium accusantium
-                          unde et quia, hic quos voluptates cupiditate facilis
-                          fugiat inventore accusamus. Blanditiis cum sed
-                          repellendus labore doloribus.
-                        </span>
+                    <MenuList 
+                    color='black' 
+                    maxW={'var(--chakra-sizes-container-sm)'} 
+                    key={notif.notificationId} 
+                    maxH='var(--chakra-sizes-container-md)' 
+                    overflowY='scroll'>
+                    {notif.length > 0 && notif.map(nt=>{
+                      return<MenuItem minH='48px'>
+                      <Flex gap='3'>
+                        <Image
+                          boxSize='2rem'
+                          borderRadius='full'
+                          bg='black'
+                          src={notifLogo}
+                          alt='SaFly'
+                          mr='5px'
+                        />
+
+                        <Flex flexDirection='column'>
+                           <Text color='red' fontWeight="bold">
+                            {nt.title}
+                          </Text>               
+                          <Text fontSize='0.9rem'>
+                            {nt.content}
+                          </Text> 
+                          <Text color='grey' fontSize='0.7rem' mt='3px'>
+                            {`SaFly . ${nt.cdate}`}
+                          </Text>  
+                        </Flex>
+                      </Flex>
                       </MenuItem>
-                      <MenuItem minH="40px">
-                        <span>
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Impedit vero, unde molestiae minus eos aliquid,
-                          iste voluptate consectetur, ducimus quibusdam saepe
-                          similique consequuntur fugit reiciendis ipsa sint fuga
-                          earum dolore.
-                        </span>
-                      </MenuItem>
+                    })}
                     </MenuList>
                   </Menu>
+                  ) : (
+                    <></>
+                  )}
                 </ButtonGroup>
 
                 <HStack spacing="3">
@@ -166,7 +229,7 @@ export default function Navbar() {
                   ) : user ? (
                     <Link to="/profile">
                       <Button variant="link" color="#ffffff">
-                        <Text as="b">{user.fullName}</Text>
+                        <Text as="b">{`Hello, ${user.fullName}`}</Text>
                       </Button>
                     </Link>
                   ) : (
@@ -191,46 +254,68 @@ export default function Navbar() {
               </Flex>
             ) : (
               <Flex gap={"0.5rem"} ml="2rem">
-                <Menu spacing="3">
-                  <MenuButton
-                    as={Button}
-                    colorScheme="white"
-                    variant="outline"
-                    px={"var(--chakra-space-2)"}
-                    leftIcon={
-                      <IoIosNotificationsOutline
-                        color="#ffffff"
-                        size="1.5rem"
-                        me={"0rem"}
-                      />
+                      {user ? (
+                        <Menu spacing="3">
+                        <MenuButton
+                          as={Button}
+                          colorScheme="white"
+                          variant="outline"
+                          px={"var(--chakra-space-2)"}
+                          leftIcon={
+                            <Flex>
+                              <IoIosNotificationsOutline
+                                color="#ffffff"
+                                size="1.5rem"
+                                me={"0.05rem"}
+                              />
+                              <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
+                              {notifCount ? notifCount.jumlahNotif : ''}
+                              </Badge>
+                            </Flex>
+                            }
+                          rightIcon={<FiChevronDown color="#ffffff" ms={"0rem"} />}
+                        ></MenuButton>
+                        <MenuList
+                          color="black"
+                          maxW={"var(--chakra-sizes-60)"}
+                          minW={"var(--chakra-sizes-60)"}
+                          maxH='30rem' 
+                          overflowY='scroll'
+                          key={notif.notificationId}
+                        >
+                          {notif.length > 0 && notif.map(nt=>{
+                              return<MenuItem minH='48px'>
+                              <Flex gap='3'>
+                                <Image
+                                  boxSize='2rem'
+                                  borderRadius='full'
+                                  bg='black'
+                                  src={notifLogo}
+                                  alt='SaFly'
+                                  mr='5px'
+                                />
+        
+                                <Flex flexDirection='column'>
+                                   <Text color='red' fontWeight="bold">
+                                    {nt.title}
+                                  </Text>               
+                                  <Text fontSize='0.9rem'>
+                                    {nt.content}
+                                  </Text> 
+                                  <Text color='grey' fontSize='0.7rem' mt='3px'>
+                                    {`SaFly . ${nt.cdate}`}
+                                  </Text>  
+                                </Flex>
+                              </Flex>
+                              </MenuItem>
+                            })}
+                        </MenuList>
+                      </Menu>
+                      ) : (
+                        <></>
+                      )
                     }
-                    rightIcon={<FiChevronDown color="#ffffff" ms={"0rem"} />}
-                  ></MenuButton>
-                  <MenuList
-                    color="black"
-                    maxW={"var(--chakra-sizes-60)"}
-                    minW={"var(--chakra-sizes-60)"}
-                  >
-                    <MenuItem minH="48px">
-                      <span>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Architecto natus eius laudantium accusantium unde et
-                        quia, hic quos voluptates cupiditate facilis fugiat
-                        inventore accusamus. Blanditiis cum sed repellendus
-                        labore doloribus.
-                      </span>
-                    </MenuItem>
-                    <MenuItem minH="40px">
-                      <span>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Impedit vero, unde molestiae minus eos aliquid, iste
-                        voluptate consectetur, ducimus quibusdam saepe similique
-                        consequuntur fugit reiciendis ipsa sint fuga earum
-                        dolore.
-                      </span>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                
                 <Menu>
                   <MenuButton
                     as={IconButton}
