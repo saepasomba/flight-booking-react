@@ -12,6 +12,7 @@ import {
   useDisclosure,
   Spinner,
   Image,
+  Badge,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FiMenu, FiChevronDown, FiLogIn } from "react-icons/fi";
@@ -32,6 +33,7 @@ export default function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState();
   const [notif, setNotif] = useState([])
+  const [notifCount, setNotifcount] = useState();
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -71,6 +73,7 @@ export default function Navbar() {
       }
       setIsLoading(false);
     };
+    getProfile(token);
 
     const getListNotification = async (token) => {
       try {
@@ -82,16 +85,35 @@ export default function Navbar() {
             },
           }
         );
-        console.log(response);
         const data = response.data.data;
+        console.log(data)
         setNotif(data);
       } catch (e) {
         console.log("FAILED TO GET PROFILE...", e);
         setNotif(null);
       }
     };
-    getProfile(token);
     getListNotification(token);
+
+    const getCountNotification = async (token) => {
+      try {
+        const response = await axios.get(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const data = response.data.data;
+        setNotifcount(data);
+        console.log(data)
+      } catch (e) {
+        console.log("FAILED TO GET PROFILE...", e);
+        setNotifcount(null);
+      }
+    };
+    getCountNotification(token);
   };
 
   
@@ -142,24 +164,34 @@ export default function Navbar() {
                     )
                   )}
 
-                  {notif && user ? (
-                  <Menu>
+                  {user ? (
+                    <Menu>
                     <MenuButton
                       as={Button}
                       colorScheme="white"
                       variant="outline"
                       leftIcon={
+                      <Flex>
                         <IoIosNotificationsOutline
                           color="#ffffff"
                           size="1.5rem"
                           me={"0.05rem"}
                         />
+                        <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
+                          {notifCount ? notifCount.jumlahNotif : ''}
+                        </Badge>
+                      </Flex>
                       }
                       rightIcon={<FiChevronDown color="#ffffff" />}
                     ></MenuButton>
-                    <MenuList color='black' maxW={'var(--chakra-sizes-container-sm)'} key={notif.id} maxH='var(--chakra-sizes-container-md)' overflowY='scroll'>
+                    <MenuList 
+                    color='black' 
+                    maxW={'var(--chakra-sizes-container-sm)'} 
+                    key={notif.notificationId} 
+                    maxH='var(--chakra-sizes-container-md)' 
+                    overflowY='scroll'>
                     {notif.length > 0 && notif.map(nt=>{
-                      return<MenuItem minH='48px' >
+                      return<MenuItem minH='48px'>
                       <Flex gap='3'>
                         <Image
                           boxSize='2rem'
@@ -222,61 +254,67 @@ export default function Navbar() {
               </Flex>
             ) : (
               <Flex gap={"0.5rem"} ml="2rem">
-              {notif && user ? (
-                <Menu spacing="3">
-                <MenuButton
-                  as={Button}
-                  colorScheme="white"
-                  variant="outline"
-                  px={"var(--chakra-space-2)"}
-                  leftIcon={
-                    <IoIosNotificationsOutline
-                      color="#ffffff"
-                      size="1.5rem"
-                      me={"0rem"}
-                    />
-                  }
-                  rightIcon={<FiChevronDown color="#ffffff" ms={"0rem"} />}
-                ></MenuButton>
-                <MenuList
-                  color="black"
-                  maxW={"var(--chakra-sizes-60)"}
-                  minW={"var(--chakra-sizes-60)"}
-                  maxH='30rem' 
-                  overflowY='scroll'
-                  key={notif.id}
-                >
-                  {notif.length > 0 && notif.map(nt=>{
-                      return<MenuItem minH='48px' >
-                      <Flex gap='3'>
-                        <Image
-                          boxSize='2rem'
-                          borderRadius='full'
-                          bg='black'
-                          src={notifLogo}
-                          alt='SaFly'
-                          mr='5px'
-                        />
-
-                        <Flex flexDirection='column'>
-                           <Text color='red' fontWeight="bold">
-                            {nt.title}
-                          </Text>               
-                          <Text fontSize='0.9rem'>
-                            {nt.content}
-                          </Text> 
-                          <Text color='grey' fontSize='0.7rem' mt='3px'>
-                            {`SaFly . ${nt.cdate}`}
-                          </Text>  
-                        </Flex>
-                      </Flex>
-                      </MenuItem>
-                    })}
-                </MenuList>
-              </Menu>
-              ) : (
-                <></>
-              )}
+                      {user ? (
+                        <Menu spacing="3">
+                        <MenuButton
+                          as={Button}
+                          colorScheme="white"
+                          variant="outline"
+                          px={"var(--chakra-space-2)"}
+                          leftIcon={
+                            <Flex>
+                              <IoIosNotificationsOutline
+                                color="#ffffff"
+                                size="1.5rem"
+                                me={"0.05rem"}
+                              />
+                              <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
+                              {notifCount ? notifCount.jumlahNotif : ''}
+                              </Badge>
+                            </Flex>
+                            }
+                          rightIcon={<FiChevronDown color="#ffffff" ms={"0rem"} />}
+                        ></MenuButton>
+                        <MenuList
+                          color="black"
+                          maxW={"var(--chakra-sizes-60)"}
+                          minW={"var(--chakra-sizes-60)"}
+                          maxH='30rem' 
+                          overflowY='scroll'
+                          key={notif.notificationId}
+                        >
+                          {notif.length > 0 && notif.map(nt=>{
+                              return<MenuItem minH='48px'>
+                              <Flex gap='3'>
+                                <Image
+                                  boxSize='2rem'
+                                  borderRadius='full'
+                                  bg='black'
+                                  src={notifLogo}
+                                  alt='SaFly'
+                                  mr='5px'
+                                />
+        
+                                <Flex flexDirection='column'>
+                                   <Text color='red' fontWeight="bold">
+                                    {nt.title}
+                                  </Text>               
+                                  <Text fontSize='0.9rem'>
+                                    {nt.content}
+                                  </Text> 
+                                  <Text color='grey' fontSize='0.7rem' mt='3px'>
+                                    {`SaFly . ${nt.cdate}`}
+                                  </Text>  
+                                </Flex>
+                              </Flex>
+                              </MenuItem>
+                            })}
+                        </MenuList>
+                      </Menu>
+                      ) : (
+                        <></>
+                      )
+                    }
                 
                 <Menu>
                   <MenuButton
