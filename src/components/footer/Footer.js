@@ -95,7 +95,7 @@ import {
           <IconButton as="a" href="#" aria-label="Twitter" icon={<FaTwitter fontSize="1.25rem" />} />
         </ButtonGroup>
         <Text fontSize="sm" color="subtle">
-          &copy; {new Date().getFullYear()} BinarFLy, Inc. All rights reserved.
+          &copy; {new Date().getFullYear()} SafelyFLy, Inc. All rights reserved.
         </Text>
       </Stack>
     </Container>
