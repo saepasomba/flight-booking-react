@@ -156,13 +156,23 @@ export default function Navbar() {
             {isDesktop ? (
               <Flex justify="flex-end" gap="2rem" flex="1">
                 <ButtonGroup variant="link" spacing="8">
-                  {["Homepage", "Booked List", "Payment", "About Us"].map(
-                    (item) => (
-                      <Button color="#ffffff" key={item}>
-                        {item}
+
+                      <Button color="#ffffff">
+                        Homepage
                       </Button>
-                    )
-                  )}
+                    
+                      <Button color="#ffffff">
+                        <Link to="/history">
+                        Booked List
+                        </Link>
+                      </Button>
+                    
+                      <Button color="#ffffff">
+                        Payment
+                      </Button>
+                      <Button color="#ffffff">
+                        About Us
+                      </Button>
 
                   {user ? (
                     <Menu>
@@ -325,9 +335,11 @@ export default function Navbar() {
                   />
                   <MenuList color="black" fontSize="1.5rem">
                     <MenuItem icon={<FaHome />}>Homepage</MenuItem>
+                    <Link to="/history">
                     <MenuItem icon={<BsBookmarkCheckFill />}>
                       Booked List
                     </MenuItem>
+                    </Link>
                     <MenuItem icon={<MdOutlinePayment />}>Payment</MenuItem>
                     <MenuItem icon={<FcAbout color="black" />}>
                       About Us
