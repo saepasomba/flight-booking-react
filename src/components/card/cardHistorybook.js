@@ -20,8 +20,8 @@ export default function CardHistorybook() {
 
         <CardHeader bgGradient='linear(170deg, black, #063970, black)' color='white' borderTopLeftRadius='var(--chakra-radii-xl)' borderTopRightRadius='var(--chakra-radii-xl)' pb='3'>
             <Flex flexDirection={['column','column','row', 'row']} justifyContent={['center','center','space-between','space-between']}>
-                    <Heading textAlign={['start','start','null','null']} size='md'  mb={['1','1','0','0']}>INV-MPW-221209-13824</Heading>
-                    <Text textAlign='end'>Rp1820000</Text>
+                    <Heading textAlign={['start','start','null','null']} size={['sm','sm','md','md']}  mb={['1','1','0','0']}>INV-MPW-221209-13824</Heading>
+                    <Text textAlign='start'>Rp1820000</Text>
             </Flex>
         </CardHeader>
 
