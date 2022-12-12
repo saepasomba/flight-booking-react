@@ -9,7 +9,7 @@ import Homepage from "./pages/Homepage/Homepage";
 
 import "./index.css";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage";
+import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
