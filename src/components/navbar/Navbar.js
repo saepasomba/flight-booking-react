@@ -163,7 +163,7 @@ export default function Navbar() {
                     
                       <Button color="#ffffff">
                         <Link to="/history">
-                        Booked List
+                        Booked History
                         </Link>
                       </Button>
                     
@@ -337,7 +337,7 @@ export default function Navbar() {
                     <MenuItem icon={<FaHome />}>Homepage</MenuItem>
                     <Link to="/history">
                     <MenuItem icon={<BsBookmarkCheckFill />}>
-                      Booked List
+                      Booked History
                     </MenuItem>
                     </Link>
                     <MenuItem icon={<MdOutlinePayment />}>Payment</MenuItem>
