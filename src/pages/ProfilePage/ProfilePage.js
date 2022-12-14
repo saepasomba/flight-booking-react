@@ -1,9 +1,13 @@
 import {
+  Avatar,
   Box,
+  Button,
   Card,
   CardBody,
+  CardHeader,
   Center,
   Circle,
+  Divider,
   Flex,
   Grid,
   GridItem,
@@ -14,60 +18,49 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import avatar from "./avatar.jpg";
+import { FiEdit2 } from "react-icons/fi";
 
 const profileItem = (label, value) => {
   return (
-    <Grid
-      templateColumns="30% 70%"
-      gap="1rem"
-      w="100%"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <GridItem textAlign="right">
-        <Text as="b">{label}</Text>
-      </GridItem>
-      <GridItem>
-        <Text>{value}</Text>
-      </GridItem>
-    </Grid>
+    <Box textAlign="center">
+      <Text fontSize="sm" color="gray">
+        {label}
+      </Text>
+      <Text fontSize="lg">{value}</Text>
+    </Box>
   );
 };
 
 export default function ProfilePage() {
   return (
-    <Center>
+    <Center h="100vh">
       <Card
-        w={{ base: "80%", lg: "50rem" }}
-        align="center"
-        marginY="2rem"
-        boxShadow="lg"
+        shadow="xl"
+        overflow="hidden"
+        w={{ lg: "35%", md: "50%", sm: "70%" }}
+        borderRadius="xl"
       >
-        <CardBody w="100%">
-          <Grid
-            templateColumns={{ sm: "1fr", lg: "20% 80%" }}
-            gap={{ sm: "1rem", lg: "0" }}
-            m="0 auto"
-          >
-            <GridItem justifySelf="center">
-              <Circle size="10rem" overflow="hidden">
-                <Image src={avatar} objectFit="cover" />
-              </Circle>
-            </GridItem>
-
-            <GridItem>
-              <VStack>
-                {profileItem("Nama", "Lorem Ipsum")}
-                {profileItem("Tanggal lahir", "24 Februari 2002")}
-                {profileItem("Umur", "25 tahun")}
-                {profileItem("Jenis Kelamin", "Laki-laki")}
-                {profileItem(
-                  "Alamat",
-                  "Mandor Goweng No. 08 RT RT Sekian Kecamatan Mantap"
-                )}
-              </VStack>
-            </GridItem>
-          </Grid>
+        <CardHeader
+          bg="#063970"
+          borderRadius="0 0 50px 50px"
+          textAlign="center"
+          shadow="lg"
+        >
+          <Heading color="white">Profile</Heading>
+        </CardHeader>
+        <CardBody>
+          <Flex flexDir="column" alignItems="center" gap="2rem">
+            <Avatar size="xl" name="Dadang Suparjo" />
+            <Button leftIcon={<FiEdit2 />}>Edit profile</Button>
+            <Divider />
+            <Flex flexDir="column" gap="1rem">
+              <Center>{profileItem("Fullname", "Dadang Suparjo")}</Center>
+              <Center>{profileItem("Email", "dadang@gmail.com")}</Center>
+              <Center>{profileItem("Birth Date", "Not available")}</Center>
+              <Center>{profileItem("Phone Number", "Not available")}</Center>
+              <Center>{profileItem("Address", "Not available")}</Center>
+            </Flex>
+          </Flex>
         </CardBody>
       </Card>
     </Center>
