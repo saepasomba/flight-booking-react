@@ -7,9 +7,10 @@ import {
   Image,
 } from '@chakra-ui/react'
 import CardHistorybook from "../../components/card/cardHistorybook";
-import CardSearchs from "../../components/card/cardSearch";
 import wave1 from '../../pages/Homepage/wave1.svg'
 import wave3 from '../../pages/Homepage/wave3.svg'
+import wave from '../../pages/Homepage/wave.svg'
+import wave2 from '../../pages/Homepage/wave2.svg'
 import {TiArrowBack} from 'react-icons/ti'
 import { Link } from "react-router-dom";
 
@@ -30,15 +31,21 @@ export default function HistoryBookPage() {
         </Link>
         </Box>
 
-        <Box alignSelf='center' justifyContent='center' bgGradient='linear(170deg, black, #063970, black)' borderRadius='var(--chakra-radii-lg)'
+        <Box alignSelf='center' justifyContent='center' bg='#063970' borderRadius='var(--chakra-radii-lg)'
         width={['45%','45%','30%','30%']} color='white' height={['2rem', '2rem', '4rem', '4rem']} padding={['1','1','2','2']}>
             <Text fontSize={['1rem', '1rem', '2rem', '2rem']} textAlign='center'>Booking History</Text>
         </Box>
     </Flex>
-      <Flex flexDirection='column' height='100vh' widht='100%' padding='8'>
+      <Flex flexDirection='column' height='100%' widht='100%' padding='8'>
         <CardHistorybook />
-        <CardSearchs />
+        <CardHistorybook />
+        <CardHistorybook />
       </Flex>
+
+      <Box >
+        <Image src={wave} widht='100%' pos='absolute'/>
+        <Image src={wave2} widht='100%'/>
+    </Box>
     </Box>
   );
 }

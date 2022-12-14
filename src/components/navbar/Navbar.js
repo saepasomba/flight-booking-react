@@ -140,6 +140,14 @@ export default function Navbar() {
         bg="#063970"
         color="white"
         boxShadow={useColorModeValue("lg", "dark-lg")}
+        ps={{
+          base: "1",
+          lg: "12",
+        }}
+        pe={{
+          base: "0",
+          lg: "9",
+        }}
       >
         <Container
           py={{
@@ -149,9 +157,11 @@ export default function Navbar() {
           maxW={"100%"}
         >
           <HStack spacing="10" justify="space-between">
+            <Link to="/">
             <Text fontSize="1.5rem" fontFamily="cursive">
               SaFly
             </Text>
+            </Link>
 
             {isDesktop ? (
               <Flex justify="flex-end" gap="2rem" flex="1">
@@ -180,19 +190,21 @@ export default function Navbar() {
                       as={Button}
                       colorScheme="white"
                       variant="outline"
+                      ps='var(--chakra-space-3)'
+                      pe='var(--chakra-space-3)'
                       leftIcon={
                       <Flex>
                         <IoIosNotificationsOutline
                           color="#ffffff"
                           size="1.5rem"
-                          me={"0.05rem"}
+                          mx={"0.5rem"}
                         />
                         <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
                           {notifCount ? notifCount.jumlahNotif : ''}
                         </Badge>
                       </Flex>
                       }
-                      rightIcon={<FiChevronDown color="#ffffff" />}
+                      rightIcon={<FiChevronDown ms='0' mx='0.5rem' color="#ffffff" />}
                     ></MenuButton>
                     <MenuList 
                     color='black' 
@@ -270,7 +282,8 @@ export default function Navbar() {
                           as={Button}
                           colorScheme="white"
                           variant="outline"
-                          px={"var(--chakra-space-2)"}
+                          ps={"var(--chakra-space-1)"}
+                          pe={"var(--chakra-space-1)"}
                           leftIcon={
                             <Flex>
                               <IoIosNotificationsOutline
@@ -283,7 +296,7 @@ export default function Navbar() {
                               </Badge>
                             </Flex>
                             }
-                          rightIcon={<FiChevronDown color="#ffffff" ms={"0rem"} />}
+                          rightIcon={<FiChevronDown color="#ffffff" me='0.5rem' ms={"0rem"} />}
                         ></MenuButton>
                         <MenuList
                           color="black"
