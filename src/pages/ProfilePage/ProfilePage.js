@@ -13,6 +13,7 @@ import {
   GridItem,
   Heading,
   Image,
+  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -34,6 +35,7 @@ const profileItem = (label, value) => {
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const getProfile = async () => {
       const response = await axios.get(
@@ -41,10 +43,12 @@ export default function ProfilePage() {
         { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
       );
       setProfile(response.data.data);
-      console.log(response);
+      setIsLoading(false);
     };
     getProfile();
   }, []);
+
+  console.log("profile", profile);
   return (
     <Center h="100vh">
       <Card
@@ -53,43 +57,63 @@ export default function ProfilePage() {
         w={{ lg: "35%", md: "50%", sm: "70%" }}
         borderRadius="xl"
         transition="500ms ease"
+        variant="outline"
         _hover={{
           shadow: "2xl",
         }}
       >
         <CardHeader
           bg="#063970"
-          borderRadius="0 0 50px 50px"
+          borderRadius="0 0 999px 999px"
           textAlign="center"
           shadow="lg"
         >
           <Heading color="white">Profile</Heading>
         </CardHeader>
         <CardBody>
-          <Flex flexDir="column" alignItems="center" gap="1rem">
-            <Avatar size="xl" name={profile.fullName} shadow="lg" />
-            <Button leftIcon={<FiEdit2 />}>Edit profile</Button>
-            <Divider />
-            <Flex flexDir="column" gap="1rem">
-              <Center>{profileItem("Fullname", profile.fullName)}</Center>
-              <Center>{profileItem("Email", profile.email)}</Center>
-              <Center>
-                {profileItem(
-                  "Birth Date",
-                  profile.birthData || "Not available"
-                )}
-              </Center>
-              <Center>
-                {profileItem(
-                  "Phone Number",
-                  profile.phoneNo || "Not available"
-                )}
-              </Center>
-              <Center>
-                {profileItem("Address", profile.address || "Not available")}
-              </Center>
+          {isLoading ? (
+            <Center>
+              <Spinner />
+            </Center>
+          ) : (
+            <Flex flexDir="column" alignItems="center" gap="1rem">
+              <Avatar
+                size="lg"
+                name={profile?.fullName || "Not available"}
+                transition="500ms ease"
+                cursor="default"
+                _hover={{ transform: "scale(1.2)" }}
+              />
+              <Button leftIcon={<FiEdit2 />}>Edit profile</Button>
+              <Divider />
+              <Flex flexDir="column" gap="1rem">
+                <Center>
+                  {profileItem(
+                    "Fullname",
+                    profile?.fullName || "Not available"
+                  )}
+                </Center>
+                <Center>
+                  {profileItem("Email", profile?.email || "Not available")}
+                </Center>
+                <Center>
+                  {profileItem(
+                    "Birth Date",
+                    profile?.birthData || "Not available"
+                  )}
+                </Center>
+                <Center>
+                  {profileItem(
+                    "Phone Number",
+                    profile?.phoneNo || "Not available"
+                  )}
+                </Center>
+                <Center>
+                  {profileItem("Address", profile?.address || "Not available")}
+                </Center>
+              </Flex>
             </Flex>
-          </Flex>
+          )}
         </CardBody>
       </Card>
     </Center>
