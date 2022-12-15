@@ -1,64 +1,87 @@
 import {
     Flex,
     Text,
-    Heading,
+    Center,
     Divider,
-    HStack,
+    Button,
     Image,
     Box,
   } from '@chakra-ui/react'
   import * as React from 'react'
 import { Card, CardHeader, CardBody} from '@chakra-ui/react'
-import {GiAchievement} from 'react-icons/gi'
-import {FaCalendarAlt} from 'react-icons/fa'
+import {GiAchievement, GiDiscGolfBag} from 'react-icons/gi'
+import {TiArrowBack} from 'react-icons/ti'
 import {MdAirplanemodeActive} from 'react-icons/md'
-import backgroundHome from '../../pages/Homepage/backgroundHome.jpg'
+import bgpesawat from '../../asset/bgpesawat.jpg'
 
 
 export default function CardSearchs() {
 
     return(
-    <Card padding='0' width={['95%','80%', '80%', '75%']} bg='white' border='1px solid whitesmoke' alignSelf='center' borderRadius='var(--chakra-radii-xl)' mb='1rem' size='sm' >
+    <Card padding='0' width={['95%','80%', '80%', '75%']} bg='white' border='1px solid whitesmoke' alignSelf='center' borderRadius='var(--chakra-radii-lg)' mb='1rem' height='75%' >
     
     <Flex flexDirection={['column','column','row', 'row']}>
-        <Box bgGradient='linear(170deg, black, #063970, black)' color='white' borderTopLeftRadius='var(--chakra-radii-xl)' borderTopRightRadius='var(--chakra-radii-xl)' pb='3'>
-            <Flex flexDirection={['column','column','row', 'row']} justifyContent={['center','center','space-between','space-between']}>
-                    <Heading textAlign={['start','start','null','null']} size={['sm','sm','md','md']}  mb={['1','1','0','0']}>INV-MPW-221209-13824</Heading>
-                    <Text textAlign='start'>Rp1820000</Text>
+        <Flex color='black' borderTopLeftRadius='var(--chakra-radii-lg)' borderBottomLeftRadius='var(--chakra-radii-lg)' width={['100vw','100vw','25vw','25vw']} justifyContent={'center'} alignItems='center'>
+            <Flex flexDirection={'column'} justifyContent={'center'} alignItems='center' gap='1'>
+                    <Image
+                          boxSize={['3rem','3rem','4.5rem','4.5rem']}
+                          borderRadius='full'
+                          src={bgpesawat}
+                          alt='SaFly'
+                        />
+                    <Text textAlign='center' fontSize={['sm','sm','md','md']} fontWeight='bold' fontFamily='heading'>Airbus A330-300</Text>
             </Flex>
-        </Box>
+        </Flex>
 
-        <Box padding='4' color='white' bg='#3579e6'>
-            <Flex flexDirection={['column','column','row', 'row']} justifyContent={['center','center','space-between','space-between']} mb='1rem'>
-                <Text>Booked By:    Tn. Riko</Text>
-                <Text>Total Person: 2 Person</Text>
+        <Center>
+        <Divider borderColor='#063970' border='2px solid #063970' orientation={['horizontal','horizontal','vertical','vertical']}/>
+        </Center>
+
+        <Box padding='4' color='black'  width={['100vw','100vw','50vw','50vw']}>
+            <Flex justifyContent='space-between' mb='0.5rem' >
+                <Text fontFamily='heading' fontWeight='semibold'>domestik</Text>
+                <Text fontFamily='heading' fontWeight='semibold'>177941</Text>
             </Flex>
-            <Flex gap='3' mb='0.5rem' >
-                <MdAirplanemodeActive size='1.5rem' color='black'/>
-                <Text>Destination: Surabaya - Jakarta</Text>
+
+            <Flex flexDirection={'row'} justifyContent={'space-between'} alignItems='center' gap={['0.2rem','0.2rem', '0.5rem', '0.5rem']} fontFamily='sans-serif'>
+                <Text fontSize={['sm','sm','md','md']}>16:45</Text> 
+                <Divider borderColor='#063970' border='2px solid #063970'/>
+                    <MdAirplanemodeActive size={['1rem','1rem','4rem','4rem']} color='black' border='1px solid #3579e6' borderRadius='100%'/>
+                <Divider borderColor='#063970' border='2px solid #063970'/>
+                <Text fontSize={['sm','sm','md','md']}>18:15</Text>
             </Flex>
-            <Flex gap='3' mb='0.5rem'>
-                <FaCalendarAlt size='1.5rem' color='black'/>
-                <Text>2022-12-09 13:08:24</Text>
+            <Flex flexDirection={'row'} justifyContent={'space-between'} mb='1rem' fontFamily='sans-serif'>
+                <Text fontSize={['sm','sm','md','md']}>Surabaya</Text>
+                <Text fontSize={['sm','sm','md','md']}>Direct</Text>
+                <Text fontSize={['sm','sm','md','md']}>Jakarta</Text>
             </Flex>
-            <Flex gap='3' mb='0.5rem'>
+
+            <Flex gap='3' mb='0.5rem' fontFamily='sans-serif'>
                 <GiAchievement size='1.5rem' color='black'/>
-                <Text >Business Class</Text>
+                <Text >Economi Class</Text>
+            </Flex>
+
+            <Flex gap='3' mb='0.5rem' fontFamily='sans-serif'>
+                <GiDiscGolfBag size='1.5rem' color='black'/>
+                <Text >20KG</Text>
             </Flex>
             
         </Box>
         
-        <Flex bg='whitesmoke' flexDirection={['column','column','row', 'row']}>
-            <Divider borderColor='#063970' border='3px solid #063970' orientation='vertical'/>
-                <Image src={backgroundHome} height={'3vh'} widht='30%'/>
-            <Divider borderColor='#063970' border='3px solid #063970' orientation='vertical'/>
-        </Flex>
-        
+        <Center>
+        <Divider borderColor='#063970' border='2px solid #063970' orientation={['horizontal','horizontal','vertical','vertical']}/>
+        </Center>
 
-            <Flex flexDirection={['column','column','column', 'column']} justifyContent={['center','center','space-between','space-between']} padding='1rem' color='white'  alignItems={['flex-end','flex-end','center','center']} bgGradient='linear(170deg, black, #063970, black)' borderBottomLeftRadius='var(--chakra-radii-xl)' borderBottomRightRadius='var(--chakra-radii-xl)'>
-                <Text>Payment</Text>
-                <Text>Transfer Bank BCA</Text>
+        <Flex color='black' borderTopRightRadius='var(--chakra-radii-lg)' borderBottomRightRadius='var(--chakra-radii-lg)' width={['100vw','100vw','25vw','25vw']} fontFamily='sans-serif' justifyContent='center' alignItems='center'>
+            <Flex flexDirection='column' justifyContent='center' alignItems='center' gap='2'>
+                    <Text fontWeight='extrabold' textAlign='center' fontSize={['sm','sm','md','md']}>Rp945000</Text>
+                    <Button  size={['sm', 'sm', 'md', 'md']} leftIcon={<TiArrowBack />} color='#063970' bg='#063970' variant='outline' >
+                        View Details
+                    </Button>
             </Flex>
+        </Flex>
+            
+
         </Flex>
     </Card>
     )
