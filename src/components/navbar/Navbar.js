@@ -34,6 +34,7 @@ export default function Navbar() {
   const [user, setUser] = useState();
   const [notif, setNotif] = useState([]);
   const [notifCount, setNotifcount] = useState();
+  const [isLoadingNotif, setIsLoadingNotif] = useState(false);
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -116,6 +117,24 @@ export default function Navbar() {
     getCountNotification(token);
   };
 
+  const getListNotification = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = response.data.data;
+      console.log(data);
+      setNotif(data);
+    } catch (e) {
+      setNotif(null);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("USER_TOKEN");
     setUser();
@@ -161,9 +180,14 @@ export default function Navbar() {
             {isDesktop ? (
               <Flex justify="flex-end" gap="2rem" flex="1">
                 <ButtonGroup variant="link" spacing="8">
+                  <Button color="#ffffff">Homepage</Button>
+
                   <Button color="#ffffff">
-                    <Link to="/history">Booking History</Link>
+                    <Link to="/history">Booked List</Link>
                   </Button>
+
+                  <Button color="#ffffff">Payment</Button>
+                  <Button color="#ffffff">About Us</Button>
 
                   {user ? (
                     <Menu>
@@ -197,6 +221,11 @@ export default function Navbar() {
                         rightIcon={
                           <FiChevronDown ms="0" mx="0.5rem" color="#ffffff" />
                         }
+                        onClick={() =>
+                          getListNotification(
+                            localStorage.getItem("USER_TOKEN")
+                          )
+                        }
                       ></MenuButton>
                       <MenuList
                         color="black"
@@ -205,7 +234,7 @@ export default function Navbar() {
                         maxH="var(--chakra-sizes-container-md)"
                         overflowY="scroll"
                       >
-                        {notif.length > 0 &&
+                        {notif.length > 0 ? (
                           notif.map((nt) => {
                             return (
                               <MenuItem minH="48px">
@@ -235,7 +264,12 @@ export default function Navbar() {
                                 </Flex>
                               </MenuItem>
                             );
-                          })}
+                          })
+                        ) : (
+                          <MenuItem minH="48px">
+                            <Spinner />
+                          </MenuItem>
+                        )}
                       </MenuList>
                     </Menu>
                   ) : (
