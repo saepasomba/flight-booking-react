@@ -35,7 +35,7 @@ export default function CardHome() {
       borderRadius="var(--chakra-radii-xl)"
     >
       <CardHeader
-        bg="black"
+        bg="#063970"
         color="white"
         borderTopLeftRadius="var(--chakra-radii-xl)"
         borderTopRightRadius="var(--chakra-radii-xl)"
