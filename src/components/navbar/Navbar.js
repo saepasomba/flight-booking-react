@@ -27,13 +27,14 @@ import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import notifLogo from './notifLogo.png'
+import notifLogo from "./notifLogo.png";
 
 export default function Navbar() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState();
-  const [notif, setNotif] = useState([])
+  const [notif, setNotif] = useState([]);
   const [notifCount, setNotifcount] = useState();
+  const [isLoadingNotif, setIsLoadingNotif] = useState(false);
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -75,26 +76,6 @@ export default function Navbar() {
     };
     getProfile(token);
 
-    const getListNotification = async (token) => {
-      try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        const data = response.data.data;
-        console.log(data)
-        setNotif(data);
-      } catch (e) {
-        console.log("FAILED TO GET PROFILE...", e);
-        setNotif(null);
-      }
-    };
-    getListNotification(token);
-
     const getCountNotification = async (token) => {
       try {
         const response = await axios.get(
@@ -107,7 +88,7 @@ export default function Navbar() {
         );
         const data = response.data.data;
         setNotifcount(data);
-        console.log(data)
+        console.log(data);
       } catch (e) {
         console.log("FAILED TO GET PROFILE...", e);
         setNotifcount(null);
@@ -116,7 +97,23 @@ export default function Navbar() {
     getCountNotification(token);
   };
 
-  
+  const getListNotification = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = response.data.data;
+      console.log(data);
+      setNotif(data);
+    } catch (e) {
+      setNotif(null);
+    }
+  };
 
   const logout = () => {
     localStorage.removeItem("USER_TOKEN");
@@ -131,10 +128,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <Box
-      as="section"
-      pb={'0'}
-    >
+    <Box as="section" pb={"0"}>
       <Box
         as="nav"
         bg="#063970"
@@ -158,88 +152,106 @@ export default function Navbar() {
         >
           <HStack spacing="10" justify="space-between">
             <Link to="/">
-            <Text fontSize="1.5rem" fontFamily="cursive">
-              SaFly
-            </Text>
+              <Text fontSize="1.5rem" fontFamily="cursive">
+                SaFly
+              </Text>
             </Link>
 
             {isDesktop ? (
               <Flex justify="flex-end" gap="2rem" flex="1">
                 <ButtonGroup variant="link" spacing="8">
+                  <Button color="#ffffff">Homepage</Button>
 
-                      <Button color="#ffffff">
-                        Homepage
-                      </Button>
-                    
-                      <Button color="#ffffff">
-                        <Link to="/history">
-                        Booked List
-                        </Link>
-                      </Button>
-                    
-                      <Button color="#ffffff">
-                        Payment
-                      </Button>
-                      <Button color="#ffffff">
-                        About Us
-                      </Button>
+                  <Button color="#ffffff">
+                    <Link to="/history">Booked List</Link>
+                  </Button>
+
+                  <Button color="#ffffff">Payment</Button>
+                  <Button color="#ffffff">About Us</Button>
 
                   {user ? (
                     <Menu>
-                    <MenuButton
-                      as={Button}
-                      colorScheme="white"
-                      variant="outline"
-                      ps='var(--chakra-space-3)'
-                      pe='var(--chakra-space-3)'
-                      leftIcon={
-                      <Flex>
-                        <IoIosNotificationsOutline
-                          color="#ffffff"
-                          size="1.5rem"
-                          mx={"0.5rem"}
-                        />
-                        <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
-                          {notifCount ? notifCount.jumlahNotif : ''}
-                        </Badge>
-                      </Flex>
-                      }
-                      rightIcon={<FiChevronDown ms='0' mx='0.5rem' color="#ffffff" />}
-                    ></MenuButton>
-                    <MenuList 
-                    color='black' 
-                    maxW={'var(--chakra-sizes-container-sm)'} 
-                    key={notif.notificationId} 
-                    maxH='var(--chakra-sizes-container-md)' 
-                    overflowY='scroll'>
-                    {notif.length > 0 && notif.map(nt=>{
-                      return<MenuItem minH='48px'>
-                      <Flex gap='3'>
-                        <Image
-                          boxSize='2rem'
-                          borderRadius='full'
-                          bg='black'
-                          src={notifLogo}
-                          alt='SaFly'
-                          mr='5px'
-                        />
+                      <MenuButton
+                        as={Button}
+                        colorScheme="white"
+                        variant="outline"
+                        ps="var(--chakra-space-3)"
+                        pe="var(--chakra-space-3)"
+                        leftIcon={
+                          <Flex>
+                            <IoIosNotificationsOutline
+                              color="#ffffff"
+                              size="1.5rem"
+                              mx={"0.5rem"}
+                            />
+                            <Badge
+                              borderRadius="full"
+                              textAlign="center"
+                              ml="-2"
+                              boxSize="1.05rem"
+                              fontSize="0.8rem"
+                              variant="solid"
+                              colorScheme="red"
+                              color="#ffffff"
+                            >
+                              {notifCount ? notifCount.jumlahNotif : ""}
+                            </Badge>
+                          </Flex>
+                        }
+                        rightIcon={
+                          <FiChevronDown ms="0" mx="0.5rem" color="#ffffff" />
+                        }
+                        onClick={() =>
+                          getListNotification(
+                            localStorage.getItem("USER_TOKEN")
+                          )
+                        }
+                      ></MenuButton>
+                      <MenuList
+                        color="black"
+                        maxW={"var(--chakra-sizes-container-sm)"}
+                        key={notif.notificationId}
+                        maxH="var(--chakra-sizes-container-md)"
+                        overflowY="scroll"
+                      >
+                        {notif.length > 0 ? (
+                          notif.map((nt) => {
+                            return (
+                              <MenuItem minH="48px">
+                                <Flex gap="3">
+                                  <Image
+                                    boxSize="2rem"
+                                    borderRadius="full"
+                                    bg="black"
+                                    src={notifLogo}
+                                    alt="SaFly"
+                                    mr="5px"
+                                  />
 
-                        <Flex flexDirection='column'>
-                           <Text color='red' fontWeight="bold">
-                            {nt.title}
-                          </Text>               
-                          <Text fontSize='0.9rem'>
-                            {nt.content}
-                          </Text> 
-                          <Text color='grey' fontSize='0.7rem' mt='3px'>
-                            {`SaFly . ${nt.cdate}`}
-                          </Text>  
-                        </Flex>
-                      </Flex>
-                      </MenuItem>
-                    })}
-                    </MenuList>
-                  </Menu>
+                                  <Flex flexDirection="column">
+                                    <Text color="red" fontWeight="bold">
+                                      {nt.title}
+                                    </Text>
+                                    <Text fontSize="0.9rem">{nt.content}</Text>
+                                    <Text
+                                      color="grey"
+                                      fontSize="0.7rem"
+                                      mt="3px"
+                                    >
+                                      {`SaFly . ${nt.cdate}`}
+                                    </Text>
+                                  </Flex>
+                                </Flex>
+                              </MenuItem>
+                            );
+                          })
+                        ) : (
+                          <MenuItem minH="48px">
+                            <Spinner />
+                          </MenuItem>
+                        )}
+                      </MenuList>
+                    </Menu>
                   ) : (
                     <></>
                   )}
@@ -276,69 +288,84 @@ export default function Navbar() {
               </Flex>
             ) : (
               <Flex gap={"0.5rem"} ml="2rem">
-                      {user ? (
-                        <Menu spacing="3">
-                        <MenuButton
-                          as={Button}
-                          colorScheme="white"
-                          variant="outline"
-                          ps={"var(--chakra-space-1)"}
-                          pe={"var(--chakra-space-1)"}
-                          leftIcon={
-                            <Flex>
-                              <IoIosNotificationsOutline
-                                color="#ffffff"
-                                size="1.5rem"
-                                me={"0.05rem"}
-                              />
-                              <Badge borderRadius='full' textAlign='center' ml='-2' boxSize='1.05rem' fontSize='0.8rem' variant='solid' colorScheme="red" color="#ffffff">
-                              {notifCount ? notifCount.jumlahNotif : ''}
-                              </Badge>
-                            </Flex>
-                            }
-                          rightIcon={<FiChevronDown color="#ffffff" me='0.5rem' ms={"0rem"} />}
-                        ></MenuButton>
-                        <MenuList
-                          color="black"
-                          maxW={"var(--chakra-sizes-60)"}
-                          minW={"var(--chakra-sizes-60)"}
-                          maxH='30rem' 
-                          overflowY='scroll'
-                          key={notif.notificationId}
-                        >
-                          {notif.length > 0 && notif.map(nt=>{
-                              return<MenuItem minH='48px'>
-                              <Flex gap='3'>
+                {user ? (
+                  <Menu spacing="3">
+                    <MenuButton
+                      as={Button}
+                      colorScheme="white"
+                      variant="outline"
+                      ps={"var(--chakra-space-1)"}
+                      pe={"var(--chakra-space-1)"}
+                      leftIcon={
+                        <Flex>
+                          <IoIosNotificationsOutline
+                            color="#ffffff"
+                            size="1.5rem"
+                            me={"0.05rem"}
+                          />
+                          <Badge
+                            borderRadius="full"
+                            textAlign="center"
+                            ml="-2"
+                            boxSize="1.05rem"
+                            fontSize="0.8rem"
+                            variant="solid"
+                            colorScheme="red"
+                            color="#ffffff"
+                          >
+                            {notifCount ? notifCount.jumlahNotif : ""}
+                          </Badge>
+                        </Flex>
+                      }
+                      rightIcon={
+                        <FiChevronDown
+                          color="#ffffff"
+                          me="0.5rem"
+                          ms={"0rem"}
+                        />
+                      }
+                    ></MenuButton>
+                    <MenuList
+                      color="black"
+                      maxW={"var(--chakra-sizes-60)"}
+                      minW={"var(--chakra-sizes-60)"}
+                      maxH="30rem"
+                      overflowY="scroll"
+                      key={notif.notificationId}
+                    >
+                      {notif.length > 0 &&
+                        notif.map((nt) => {
+                          return (
+                            <MenuItem minH="48px">
+                              <Flex gap="3">
                                 <Image
-                                  boxSize='2rem'
-                                  borderRadius='full'
-                                  bg='black'
+                                  boxSize="2rem"
+                                  borderRadius="full"
+                                  bg="black"
                                   src={notifLogo}
-                                  alt='SaFly'
-                                  mr='5px'
+                                  alt="SaFly"
+                                  mr="5px"
                                 />
-        
-                                <Flex flexDirection='column'>
-                                   <Text color='red' fontWeight="bold">
+
+                                <Flex flexDirection="column">
+                                  <Text color="red" fontWeight="bold">
                                     {nt.title}
-                                  </Text>               
-                                  <Text fontSize='0.9rem'>
-                                    {nt.content}
-                                  </Text> 
-                                  <Text color='grey' fontSize='0.7rem' mt='3px'>
+                                  </Text>
+                                  <Text fontSize="0.9rem">{nt.content}</Text>
+                                  <Text color="grey" fontSize="0.7rem" mt="3px">
                                     {`SaFly . ${nt.cdate}`}
-                                  </Text>  
+                                  </Text>
                                 </Flex>
                               </Flex>
-                              </MenuItem>
-                            })}
-                        </MenuList>
-                      </Menu>
-                      ) : (
-                        <></>
-                      )
-                    }
-                
+                            </MenuItem>
+                          );
+                        })}
+                    </MenuList>
+                  </Menu>
+                ) : (
+                  <></>
+                )}
+
                 <Menu>
                   <MenuButton
                     as={IconButton}
@@ -349,9 +376,9 @@ export default function Navbar() {
                   <MenuList color="black" fontSize="1.5rem">
                     <MenuItem icon={<FaHome />}>Homepage</MenuItem>
                     <Link to="/history">
-                    <MenuItem icon={<BsBookmarkCheckFill />}>
-                      Booked List
-                    </MenuItem>
+                      <MenuItem icon={<BsBookmarkCheckFill />}>
+                        Booked List
+                      </MenuItem>
                     </Link>
                     <MenuItem icon={<MdOutlinePayment />}>Payment</MenuItem>
                     <MenuItem icon={<FcAbout color="black" />}>
