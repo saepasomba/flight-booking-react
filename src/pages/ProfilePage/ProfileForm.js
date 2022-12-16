@@ -32,8 +32,9 @@ export default function ProfileForm(props) {
 
   const { userId, ...defaultValueProfile } = {
     ...profile,
-    email: "dodo@gmail.com",
   };
+
+  console.log(defaultValueProfile);
 
   const {
     register,
@@ -50,6 +51,7 @@ export default function ProfileForm(props) {
   const editProfileSubmit = (data) => {
     console.log("UPDATING...");
     setIsLoading(true);
+
     const updateProfile = async (data) => {
       console.log("Data sent", data);
       const response = await axios.put(
@@ -66,7 +68,8 @@ export default function ProfileForm(props) {
       refetchProfile();
     };
 
-    updateProfile(data);
+    const { email, ...dataToSend } = data;
+    updateProfile(dataToSend);
   };
 
   useEffect(() => {
