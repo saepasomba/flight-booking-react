@@ -4,6 +4,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Center,
   Circle,
@@ -13,15 +14,24 @@ import {
   GridItem,
   Heading,
   Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
   Text,
   useDisclosure,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
+import { BiLogOut } from "react-icons/bi";
 import axios from "axios";
 import ProfileForm from "./ProfileForm";
+import { useNavigate } from "react-router-dom";
 
 const profileItem = (label, value) => {
   return (
@@ -34,6 +44,36 @@ const profileItem = (label, value) => {
   );
 };
 
+const LogoutConfirmModal = (props) => {
+  const {
+    isOpen: logoutModalIsOpen,
+    onClose: logoutModalOnClose,
+    onSubmit,
+  } = props;
+
+  return (
+    <Modal isOpen={logoutModalIsOpen} onClose={logoutModalOnClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Leave already? 😭</ModalHeader>
+        <ModalBody>
+          <Text>
+            Are you sure to log out? You will need to log in again later.
+          </Text>
+        </ModalBody>
+        <ModalFooter>
+          <Flex gap="1rem">
+            <Button onClick={logoutModalOnClose}>Cancel</Button>
+            <Button colorScheme="red" onClick={onSubmit}>
+              Register
+            </Button>
+          </Flex>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +82,13 @@ export default function ProfilePage() {
     onOpen: editModalOnOpen,
     onClose: editModalOnClose,
   } = useDisclosure();
+  const {
+    isOpen: logoutModalIsOpen,
+    onOpen: logoutModalOnOpen,
+    onClose: logoutModalOnClose,
+  } = useDisclosure();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const getProfile = async () => {
     setIsLoading(true);
@@ -52,6 +99,18 @@ export default function ProfilePage() {
     setProfile(response.data.data);
     console.log(response);
     setIsLoading(false);
+  };
+
+  const logoutSubmit = () => {
+    localStorage.removeItem("USER_TOKEN");
+    toast({
+      title: "Logged out!",
+      position: "top",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
+    });
+    navigate("/");
   };
 
   useEffect(() => {
@@ -139,6 +198,17 @@ export default function ProfilePage() {
               </Flex>
             )}
           </CardBody>
+          <Divider />
+          <CardFooter justify="center">
+            <Button
+              colorScheme="red"
+              variant="ghost"
+              leftIcon={<BiLogOut />}
+              onClick={logoutModalOnOpen}
+            >
+              Logout
+            </Button>
+          </CardFooter>
         </Card>
       </Center>
       <ProfileForm
@@ -146,6 +216,11 @@ export default function ProfilePage() {
         onClose={editModalOnClose}
         profile={profile}
         refetchProfile={getProfile}
+      />
+      <LogoutConfirmModal
+        isOpen={logoutModalIsOpen}
+        onClose={logoutModalOnClose}
+        onSubmit={logoutSubmit}
       />
     </>
   );

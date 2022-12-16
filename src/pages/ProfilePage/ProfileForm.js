@@ -51,6 +51,7 @@ export default function ProfileForm(props) {
     console.log("UPDATING...");
     setIsLoading(true);
     const updateProfile = async (data) => {
+      console.log("Data sent", data);
       const response = await axios.put(
         "https://tix-service-bej5.up.railway.app/ticketing-service/users/update-profile",
         data,
