@@ -109,7 +109,6 @@ export default function ProfileForm(props) {
                 <FormLabel>Birth Date</FormLabel>
                 <Input
                   type="date"
-                  // value={profileField?.birthDate || ""}
                   {...register("birthDate")}
                   placeholder={"Birth date..."}
                 />

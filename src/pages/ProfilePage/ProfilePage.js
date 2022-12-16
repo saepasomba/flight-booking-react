@@ -7,13 +7,9 @@ import {
   CardFooter,
   CardHeader,
   Center,
-  Circle,
   Divider,
   Flex,
-  Grid,
-  GridItem,
   Heading,
-  Image,
   Modal,
   ModalBody,
   ModalContent,
@@ -24,7 +20,6 @@ import {
   Text,
   useDisclosure,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FiEdit2 } from "react-icons/fi";
@@ -55,7 +50,7 @@ const LogoutConfirmModal = (props) => {
     <Modal isOpen={logoutModalIsOpen} onClose={logoutModalOnClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Leave already? 😭</ModalHeader>
+        <ModalHeader>Are you leaving? 😭</ModalHeader>
         <ModalBody>
           <Text>
             Are you sure to log out? You will need to log in again later.
