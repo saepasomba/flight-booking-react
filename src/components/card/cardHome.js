@@ -18,6 +18,7 @@ import { Card, CardHeader, CardBody} from '@chakra-ui/react'
 import { Grid, GridItem } from '@chakra-ui/react'
 import { Select } from '@chakra-ui/react'
 import { Input } from '@chakra-ui/react'
+import { Link } from "react-router-dom";
 
 
 export default function CardHome() {
@@ -124,9 +125,11 @@ export default function CardHome() {
 
                 <GridItem w='100%' colSpan={2}>
                     <br/>
+                    <Link to="/search">
                     <Button leftIcon={<FaSearchLocation />} width={['100%','100%','100%','100%']} size='lg' color='white' bg='#063970' variant='solid'>
                         Cari Penerbangan
                     </Button>
+                    </Link>
                 </GridItem>
         </Grid>
         </CardBody>

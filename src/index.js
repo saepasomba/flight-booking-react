@@ -9,6 +9,8 @@ import Homepage from "./pages/Homepage/Homepage";
 
 import "./index.css";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
+import SearchPages from "./pages/Searchpage/SearchPage.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -17,6 +19,8 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/history" element={<HistoryBookPage />} />
+          <Route path="/search" element={<SearchPages />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
