@@ -65,7 +65,7 @@ const LogoutConfirmModal = (props) => {
           <Flex gap="1rem">
             <Button onClick={logoutModalOnClose}>Cancel</Button>
             <Button colorScheme="red" onClick={onSubmit}>
-              Register
+              Logout
             </Button>
           </Flex>
         </ModalFooter>
@@ -123,7 +123,7 @@ export default function ProfilePage() {
         <Card
           shadow="lg"
           overflow="hidden"
-          w={{ lg: "35%", md: "50%", sm: "70%" }}
+          w={{ base: "95%", sm: "95%", md: "50%", lg: "40%" }}
           borderRadius="xl"
           transition="500ms ease"
           variant="outline"
