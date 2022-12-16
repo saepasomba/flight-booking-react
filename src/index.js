@@ -11,18 +11,22 @@ import "./index.css";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
 import SearchPages from "./pages/Searchpage/SearchPage.js";
+import Navbar from "./components/navbar/Navbar";
+import { Footer } from "./components/footer/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <ChakraProvider>
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/history" element={<HistoryBookPage />} />
           <Route path="/search" element={<SearchPages />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>
