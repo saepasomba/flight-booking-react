@@ -106,6 +106,7 @@ export default function ProfilePage() {
       isClosable: true,
     });
     navigate("/");
+    window.location.reload();
   };
 
   useEffect(() => {
