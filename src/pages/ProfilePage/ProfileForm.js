@@ -148,7 +148,7 @@ export default function ProfileForm(props) {
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button colorScheme="blue" type="submit" isLoading={isLoading}>
-                Register
+                Edit
               </Button>
             </Flex>
           </ModalFooter>
