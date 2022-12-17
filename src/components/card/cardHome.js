@@ -28,20 +28,21 @@ export default function CardHome() {
   return (
     <Card
       padding="0"
-      width={["90%", "80%", "80%", "75%"]}
+      width={{ base: "90%", lg: "80%" }}
       bg="white"
-      border="1px solid whitesmoke"
+      // border="1px solid whitesmoke"
       alignSelf="center"
       borderRadius="var(--chakra-radii-xl)"
+      shadow="xl"
     >
       <CardHeader
-        bg="#063970"
+        bg="bluePrimary"
         color="white"
         borderTopLeftRadius="var(--chakra-radii-xl)"
         borderTopRightRadius="var(--chakra-radii-xl)"
         pb="3"
       >
-        <Heading size="md">Where will you go ?</Heading>
+        <Heading size="md">Where will you go?</Heading>
       </CardHeader>
 
       <CardBody padding="4">
@@ -60,7 +61,7 @@ export default function CardHome() {
             colSpan={["null", "2", "2", "2"]}
           >
             <Text
-              color="#063970"
+              color="bluePrimary"
               size="sm"
               fontWeight="var(--chakra-fontWeights-bold)"
             >
@@ -73,7 +74,7 @@ export default function CardHome() {
               size={["md", "md", "lg", "lg"]}
               icon={<FaPlaneDeparture />}
               variant="outline"
-              color="#063970"
+              color="bluePrimary"
               placeholder="location"
             >
               <option value="option1">Option 1</option>
@@ -88,7 +89,7 @@ export default function CardHome() {
             colSpan={["null", "2", "2", "2"]}
           >
             <Text
-              color="#063970"
+              color="bluePrimary"
               size="sm"
               fontWeight="var(--chakra-fontWeights-bold)"
             >
@@ -101,7 +102,7 @@ export default function CardHome() {
               size={["md", "md", "lg", "lg"]}
               icon={<FaPlaneArrival />}
               variant="outline"
-              color="#063970"
+              color="bluePrimary"
               placeholder="location"
             >
               <option value="option1">Option 1</option>
@@ -112,7 +113,7 @@ export default function CardHome() {
 
           <GridItem w="100%" colSpan={["2", "null", "null", "null"]}>
             <Text
-              color="#063970"
+              color="bluePrimary"
               size="sm"
               fontWeight="var(--chakra-fontWeights-bold)"
             >
@@ -122,7 +123,7 @@ export default function CardHome() {
               placeholder="Pergi"
               width={["100%", "90%", "90%", "100%"]}
               variant="outline"
-              color="#063970"
+              color="bluePrimary"
               border="2px solid #063970"
               borderRadius="var(--chakra-radii-lg)"
               size={["md", "md", "lg", "lg"]}
@@ -132,7 +133,7 @@ export default function CardHome() {
 
           <GridItem w="100%" colSpan={["2", "null", "null", "null"]}>
             <Text
-              color="#063970"
+              color="bluePrimary"
               size="sm"
               fontWeight="var(--chakra-fontWeights-bold)"
             >
@@ -142,7 +143,7 @@ export default function CardHome() {
               placeholder="Pergi"
               variant="outline"
               width={["100%", "90%", "90%", "100%"]}
-              color="#063970"
+              color="bluePrimary"
               border="2px solid #063970"
               borderRadius="var(--chakra-radii-lg)"
               size={["md", "md", "lg", "lg"]}
@@ -152,7 +153,7 @@ export default function CardHome() {
 
           <GridItem w="100%" colSpan={2}>
             <Text
-              color="#063970"
+              color="bluePrimary"
               size="sm"
               fontWeight="var(--chakra-fontWeights-bold)"
             >
@@ -166,7 +167,7 @@ export default function CardHome() {
               fontSize={["null", "null", "null", "sm", "null"]}
               icon={<GiAchievement />}
               variant="outline"
-              color="#063970"
+              color="bluePrimary"
               placeholder="choose class"
             >
               <option value="option1">Option 1</option>
@@ -178,7 +179,7 @@ export default function CardHome() {
           <GridItem w="100%" colSpan={2}>
             <Flex gap="4">
               <FormControl>
-                <FormLabel color="#063970" mb="0">
+                <FormLabel color="bluePrimary" mb="0">
                   Adult
                 </FormLabel>
                 <NumberInput
@@ -198,7 +199,7 @@ export default function CardHome() {
                 </NumberInput>
               </FormControl>
               <FormControl>
-                <FormLabel color="#063970" mb="0">
+                <FormLabel color="bluePrimary" mb="0">
                   Child
                 </FormLabel>
                 <NumberInput
@@ -228,7 +229,7 @@ export default function CardHome() {
                 width={["100%", "100%", "100%", "100%"]}
                 size="lg"
                 color="white"
-                bg="#063970"
+                bg="bluePrimary"
                 variant="solid"
               >
                 Cari Penerbangan
