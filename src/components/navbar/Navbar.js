@@ -76,6 +76,26 @@ export default function Navbar() {
     };
     getProfile(token);
 
+    const getListNotification = async (token) => {
+      try {
+        const response = await axios.get(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        const data = response.data.data;
+        console.log(data);
+        setNotif(data);
+      } catch (e) {
+        console.log("FAILED TO GET PROFILE...", e);
+        setNotif(null);
+      }
+    };
+    getListNotification(token);
+
     const getCountNotification = async (token) => {
       try {
         const response = await axios.get(
@@ -377,13 +397,10 @@ export default function Navbar() {
                     <MenuItem icon={<FaHome />}>Homepage</MenuItem>
                     <Link to="/history">
                       <MenuItem icon={<BsBookmarkCheckFill />}>
-                        Booked List
+                        Booking History
                       </MenuItem>
                     </Link>
                     <MenuItem icon={<MdOutlinePayment />}>Payment</MenuItem>
-                    <MenuItem icon={<FcAbout color="black" />}>
-                      About Us
-                    </MenuItem>
                     {isLoading ? (
                       <MenuItem as="b">
                         <Spinner />
