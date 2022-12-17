@@ -30,7 +30,7 @@ export default function Homepage() {
           <Box
             width={{ base: "90%", lg: "80%" }}
             position="absolute"
-            top="50%"
+            top={{ base: "35%", lg: "50%" }}
             transform="auto"
             translateY="-50%"
           >
@@ -77,7 +77,6 @@ export default function Homepage() {
         <Center transform="auto" translateY="-50%">
           <CardHome />
         </Center>
-        <Center width={{ base: "90%", lg: "80%" }}></Center>
       </Flex>
     </>
   );
