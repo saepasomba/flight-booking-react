@@ -65,9 +65,7 @@ export default function Navbar() {
       );
       const data = response.data.data;
       setNotifcount(data);
-      console.log(data);
     } catch (e) {
-      console.log("FAILED TO GET PROFILE...", e);
       setNotifcount(null);
     }
   };
@@ -83,7 +81,7 @@ export default function Navbar() {
         }
       );
       const data = response.data.data;
-      console.log(data);
+
       setNotif(data);
     } catch (e) {
       setNotif(null);
@@ -102,11 +100,10 @@ export default function Navbar() {
             },
           }
         );
-        console.log(response);
+
         const data = response.data.data;
         setUser(data);
       } catch (e) {
-        console.log("FAILED TO GET PROFILE...", e);
         setUser(null);
       }
       setIsLoading(false);
@@ -153,7 +150,20 @@ export default function Navbar() {
           <Box width="100%">
             <Flex justifyContent="space-between" alignItems="center">
               <Link to="/">
-                <Image src={appLogo} maxH="5rem" objectFit="contain" />
+                <Box
+                  bg="bluePrimary"
+                  borderRadius="0 0 1rem 1rem"
+                  filter="auto"
+                >
+                  <Image
+                    src={appLogo}
+                    maxH="5rem"
+                    objectFit="contain"
+                    filter="auto"
+                    transition="125ms ease"
+                    _hover={{ brightness: "80%" }}
+                  />
+                </Box>
               </Link>
               <Box m="0 0 0 auto" w="35%">
                 {isLoading ? (
@@ -191,6 +201,8 @@ export default function Navbar() {
                             getListNotification(token);
                             getCountNotification(token);
                           }}
+                          transform="auto"
+                          _hover={{ rotate: "10" }}
                         />
                         {notifCount?.jumlahNotif ? (
                           <Text
@@ -212,9 +224,8 @@ export default function Navbar() {
                         <MenuList>
                           {notif.length > 0 ? (
                             notif.map((nt) => {
-                              console.log(nt);
                               return (
-                                <MenuItem maxW="20rem">
+                                <MenuItem maxW="23rem" key={nt.notificationId}>
                                   <Box>
                                     <HStack>
                                       <Text as="b" noOfLines="2" w="80%">
@@ -241,8 +252,10 @@ export default function Navbar() {
                               );
                             })
                           ) : (
-                            <MenuItem minH="48px">
-                              <Spinner />
+                            <MenuItem w="23rem">
+                              <Center w="100%">
+                                <Spinner />
+                              </Center>
                             </MenuItem>
                           )}
                         </MenuList>

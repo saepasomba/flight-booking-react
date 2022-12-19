@@ -28,7 +28,7 @@ export default function CardHome() {
   return (
     <Card
       padding="0"
-      width={{ base: "90%", lg: "80%" }}
+      width="100%"
       bg="white"
       // border="1px solid whitesmoke"
       alignSelf="center"

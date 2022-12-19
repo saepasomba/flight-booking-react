@@ -13,7 +13,7 @@ import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import Wave from "react-wavify";
 
 export const Footer = () => (
-  <>
+  <Box>
     <Box position="relative" bg="" w="100vw" h="10rem">
       <Box
         position="absolute"
@@ -186,5 +186,5 @@ export const Footer = () => (
         </Text>
       </Stack>
     </Container>
-  </>
+  </Box>
 );
