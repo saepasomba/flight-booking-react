@@ -133,7 +133,7 @@ export default function Homepage() {
           gap="2rem"
         >
           <GridItem
-            justifySelf={{ base: "center", lg: "end" }}
+            justifySelf={{ base: "center", lg: "start" }}
             order={{ base: "-1", lg: "-1" }}
           >
             <Image
