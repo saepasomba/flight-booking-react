@@ -72,7 +72,7 @@ export const Footer = () => (
       role="contentinfo"
       bg="bluePrimary"
       maxW={"100%"}
-      color="white"
+      color="whitePrimary"
     >
       <Stack
         spacing="8"

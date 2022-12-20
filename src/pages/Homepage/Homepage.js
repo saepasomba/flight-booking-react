@@ -97,7 +97,10 @@ export default function Homepage() {
         >
           <GridItem>
             <Heading textAlign={{ base: "center", lg: "right" }} mb="1rem">
-              🏝 Bali? Say Less!
+              <Text as="span" color="bluePrimary">
+                Bali
+              </Text>
+              ? Say Less!
             </Heading>
             <Text textAlign="justify">
               Bali is a tropical paradise located in Indonesia, known for its
@@ -147,7 +150,11 @@ export default function Homepage() {
           </GridItem>
           <GridItem>
             <Heading textAlign={{ base: "center", lg: "left" }} mb="1rem">
-              🌊 Explore Nusa Penida!
+              Explore{" "}
+              <Text as="span" color="bluePrimary">
+                Nusa Penida
+              </Text>
+              !
             </Heading>
             <Text textAlign="justify">
               Nusa Penida is a small island located southeast of Bali,
