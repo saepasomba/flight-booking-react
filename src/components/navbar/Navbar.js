@@ -186,7 +186,9 @@ export default function Navbar() {
                     <Link to="/history">Booked List</Link>
                   </Button>
 
-                  <Button color="#ffffff">Payment</Button>
+                  <Button color="#ffffff">
+                    <Link to="/admin-page">Admin page</Link>
+                  </Button>
                   <Button color="#ffffff">About Us</Button>
 
                   {user ? (
