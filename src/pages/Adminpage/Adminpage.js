@@ -37,7 +37,6 @@ import {FiEdit} from 'react-icons/fi'
 import {RiDeleteBin5Fill} from 'react-icons/ri'
 import {MdPayment} from 'react-icons/md'
 import axios from "axios";
-import AdminForm from "./AdminForm";
 
 
 
@@ -104,8 +103,9 @@ export default function Adminpage() {
       }
     }
 
-    const updateSubmit = async (id) =>{
-      console.log(id)
+    const updateSubmit = async (e) =>{
+      e.preventDefault();
+      console.log(e)
       try {
           const response = await axios.put(
             `https://tix-service-bej5.up.railway.app/ticketing-service/admin/update-payment/${id}`,
