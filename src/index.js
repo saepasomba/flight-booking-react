@@ -1,18 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Homepage from './pages/Homepage/Homepage';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import reportWebVitals from "./reportWebVitals";
+
+import Homepage from "./pages/Homepage/Homepage";
+
+import "./index.css";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
+import SearchPages from "./pages/Searchpage/SearchPage.js";
+import Navbar from "./components/navbar/Navbar";
+import { Footer } from "./components/footer/Footer";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<Homepage />} />
-      </Routes>
-    </BrowserRouter>
+    <ChakraProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/history" element={<HistoryBookPage />} />
+          <Route path="/search" element={<SearchPages />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </ChakraProvider>
   </React.StrictMode>
 );
 
