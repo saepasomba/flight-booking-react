@@ -13,6 +13,7 @@ import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
 import SearchPages from "./pages/Searchpage/SearchPage.js";
 import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
+import Adminpage from './pages/Adminpage/Adminpage.js'
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,6 +26,7 @@ root.render(
           <Route path="/history" element={<HistoryBookPage />} />
           <Route path="/search" element={<SearchPages />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/admin-page" element={<Adminpage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
