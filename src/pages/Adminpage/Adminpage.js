@@ -19,6 +19,13 @@ import {
     Button,
     Input,
     Link,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    ModalCloseButton,
     Spinner,
     useDisclosure,
     Skeleton, 
@@ -38,6 +45,7 @@ import AdminForm from "./AdminForm";
 export default function Adminpage() {
     const [payment, setPayment] = useState([]);
     const [newPayment, setNewPayment] = useState("");
+    const [update, setUpdate] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
     const {
@@ -58,7 +66,6 @@ export default function Adminpage() {
                   },
                 }
               );
-              console.log(response);
               const data = response.data.data;
               setPayment(data);
             } catch (e) {
@@ -96,6 +103,22 @@ export default function Adminpage() {
         console.log("FAILED TO DELETE PAYMENT...", e);
       }
     }
+
+    const updateSubmit = async (id) =>{
+      console.log(id)
+      try {
+          const response = await axios.put(
+            `https://tix-service-bej5.up.railway.app/ticketing-service/admin/update-payment/${id}`,
+            {
+              paymentMethod: update, 
+            }
+          );
+          editModalOnClose();
+          adminTrigger();
+        } catch (e) {
+          console.log("FAILED TO UPDATE PAYMENT...", e);
+        }
+  } 
 
 
 useEffect(() => {
@@ -152,6 +175,32 @@ useEffect(() => {
                 ( payment.length > 0 ?  (payment.map((pay)=>{
                         return(
                             <Tr key={pay.paymentId}>
+                                {/* <AdminForm
+                                      isOpen={editModalIsOpen}
+                                      onClose={editModalOnClose}
+                                      payments={pay.paymentMethod}
+                                      payid={pay.paymentId}
+                                      adminTrigger={adminTrigger}
+                                    /> */}
+                                <Modal isOpen={editModalIsOpen} onClose={editModalOnClose}>
+                                  <form onSubmit={()=>updateSubmit(pay.paymentId)}>
+                                      <ModalOverlay />
+                                      <ModalContent>
+                                      <ModalHeader>Update Method Payment</ModalHeader>
+                                      <ModalCloseButton />
+                                      <ModalBody>
+                                      <Input placeholder='Payment' value={update}  type='text' onChange={(e) => setUpdate(e.target.value)}/>
+                                      </ModalBody>
+
+                                      <ModalFooter>
+                                          <Button colorScheme='blue' mr={3} onClick={editModalOnClose} > 
+                                          Close
+                                          </Button>
+                                          <Button variant='green' type='submit'>Update</Button>
+                                      </ModalFooter>
+                                      </ModalContent>
+                                  </form>
+                                  </Modal>
                                 <Td>{pay.paymentId}</Td>
                                 <Td>{pay.paymentMethod}</Td>
                                 <Td isNumeric>
@@ -160,7 +209,9 @@ useEffect(() => {
                                     colorScheme='yellow'
                                     aria-label='Edit Payment'
                                     icon={<FiEdit />}
-                                    onClick={editModalOnOpen}
+                                    onClick={()=>{
+                                      setUpdate(pay.paymentMethod)
+                                      editModalOnOpen()}}
                                     />
                                     <IconButton
                                     variant='outline'
@@ -168,14 +219,6 @@ useEffect(() => {
                                     aria-label='Delete payment'
                                     icon={<RiDeleteBin5Fill />}
                                     onClick={()=>Delete(pay.paymentId)}
-                                    />
-
-                                    <AdminForm
-                                      isOpen={editModalIsOpen}
-                                      onClose={editModalOnClose}
-                                      paymentId={pay.paymentId}
-                                      paymentMethod={pay.paymentMethod}
-                                      adminTrigger={adminTrigger}
                                     />
                                 </Td>
                             </Tr>
