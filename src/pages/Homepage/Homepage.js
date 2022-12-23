@@ -184,7 +184,7 @@ export default function Homepage() {
             { image: misc6, label: "Sahara Desert" },
           ].map((item, index) => {
             return (
-              <Center position="relative" role="group">
+              <Center position="relative" role="group" key={index}>
                 <Image
                   index={index}
                   src={item.image}

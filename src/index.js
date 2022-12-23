@@ -19,6 +19,8 @@ import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
 import theme from "./theme/Theme";
 import NotFound from "./pages/NotFound/NotFound";
+import ScrollToTop from "./utils/Utils";
+import BookingOrderPage from "./pages/BookingOrder/BookingOrderPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -27,11 +29,13 @@ root.render(
       <BrowserRouter>
         <Navbar />
         <Box pt="5rem">
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/history" element={<HistoryBookPage />} />
             <Route path="/search" element={<SearchPages />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/booking-order" element={<BookingOrderPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

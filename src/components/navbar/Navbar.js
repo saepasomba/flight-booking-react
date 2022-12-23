@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Center,
+  Circle,
   Divider,
   Flex,
   Heading,
@@ -193,16 +194,24 @@ export default function Navbar() {
                       <Menu>
                         <MenuButton
                           as={IconButton}
-                          icon={<FiBell />}
+                          icon={
+                            <Circle
+                              size="2rem"
+                              bg="bluePrimary"
+                              transform="auto"
+                              _hover={{ rotate: "10" }}
+                            >
+                              <FiBell />
+                            </Circle>
+                          }
                           colorScheme="whiteHue"
+                          h="10rem"
                           variant="link"
                           onClick={() => {
                             const token = localStorage.getItem("USER_TOKEN");
                             getListNotification(token);
                             getCountNotification(token);
                           }}
-                          transform="auto"
-                          _hover={{ rotate: "10" }}
                         />
                         {notifCount?.jumlahNotif ? (
                           <Text

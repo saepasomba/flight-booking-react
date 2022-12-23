@@ -1,15 +1,71 @@
-import React from "react";
-import { Flex, Button, Box, Text, Image } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import {
+  Flex,
+  Button,
+  Box,
+  Text,
+  Image,
+  Center,
+  Spinner,
+} from "@chakra-ui/react";
 import CardSearchs from "../../components/card/cardSearch";
 import bgpesawat from "../../asset/bgpesawat.jpg";
 import Navbar from "../../components/navbar/Navbar.js";
+import { useSearchParams } from "react-router-dom";
+import qs from "qs";
+import { apiGetFlights } from "../../api";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+const orderSchema = yup.object().shape({
+  departureCity: yup.number().required(),
+  destinationsCity: yup.number().required(),
+  departureDate: yup.string().required(),
+  returnDate: yup.string().nullable(),
+  classSeats: yup.number().required(),
+  passenger: yup.array().of(
+    yup.object().shape({
+      passengerType: yup.number(),
+      qtyPerson: yup.number(),
+    })
+  ),
+});
 
 export default function SearchPages() {
+  const [flights, setFlights] = useState([]);
+
+  const params = window.location.search.slice(1);
+  const data = qs.parse(params);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm({
+    defaultValues: data,
+    mode: "all",
+    resolver: yupResolver(orderSchema),
+  });
+
+  console.log("getValues", getValues());
+
+  useEffect(() => {
+    const fetchData = async (data) => {
+      const response = await apiGetFlights(data);
+      console.log(response);
+      setFlights(response.data.data.schedule);
+    };
+
+    console.log(data);
+    fetchData(data);
+  }, []);
+
   return (
     <>
-      <Navbar />
       <Flex flexDirection="column">
-        <Image src={bgpesawat} height={"60vh"} widht="100%" />
         <Box alignSelf="center">
           <Text
             fontSize={["2rem", "2rem", "3.5rem", "3.5rem"]}
@@ -29,10 +85,15 @@ export default function SearchPages() {
           widht="100%"
           pb="2rem"
         >
-          <CardSearchs />
-          <CardSearchs />
-          <CardSearchs />
-          <CardSearchs />
+          {flights.length > 0 ? (
+            flights.map((flight) => {
+              return <CardSearchs flight={flight} searchParams={data} />;
+            })
+          ) : (
+            <Center>
+              <Spinner />
+            </Center>
+          )}
         </Flex>
       </Flex>
     </>
