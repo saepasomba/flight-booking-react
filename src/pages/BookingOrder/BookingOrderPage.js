@@ -41,18 +41,18 @@ const orderSchema = yup.object().shape({
   ),
 });
 
-function PassengerDetailCard() {
+function PassengerDetailCard({ key, index, register }) {
   return (
     <Card bg="white">
       <CardHeader>
-        <Heading>Passenger Details</Heading>
+        <Heading>Passenger Details #{index + 1}</Heading>
       </CardHeader>
       <Divider />
       <CardBody>
         <Flex gap="1rem" flexDir="column">
           <FormControl>
             <FormLabel>Title</FormLabel>
-            <Select placeholder="Booker Title">
+            <Select placeholder="Title">
               <option value="Tuan">Tuan</option>
               <option value="Nyonya">Nyonya</option>
               <option value="Anak-Anak">Anak-Anak</option>
@@ -122,7 +122,7 @@ export default function BookingOrderPage() {
           <Flex gap="1rem" flexDir="column">
             <FormControl>
               <FormLabel>Title</FormLabel>
-              <Select placeholder="Booker Title">
+              <Select placeholder="Booker Title" {...register("title")}>
                 <option value="Tuan">Tuan</option>
                 <option value="Nyonya">Nyonya</option>
                 <option value="Anak-Anak">Anak-Anak</option>
@@ -131,22 +131,29 @@ export default function BookingOrderPage() {
             </FormControl>
             <FormControl>
               <FormLabel>Name</FormLabel>
-              <Input placeholder="Name" />
+              <Input placeholder="Name" {...register("bookingBy")} />
             </FormControl>
             <FormControl>
               <FormLabel>Email</FormLabel>
-              <Input placeholder="Email" />
+              <Input placeholder="Email" {...register("email")} />
             </FormControl>
             <FormControl>
               <FormLabel>Phone Number</FormLabel>
-              <Input placeholder="Phone Number" />
+              <Input placeholder="Phone Number" {...register("phoneNo")} />
             </FormControl>
           </Flex>
         </CardBody>
       </Card>
       {[...Array(totalPassenger).keys()].map((index) => {
-        return <PassengerDetailCard key={index} />;
+        return (
+          <PassengerDetailCard key={index} index={index} register={register} />
+        );
       })}
+      <Card>
+        <CardHeader>
+          <Heading>Payment Method</Heading>
+        </CardHeader>
+      </Card>
     </Flex>
   );
 }
