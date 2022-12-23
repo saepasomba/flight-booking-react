@@ -164,7 +164,7 @@ export default function Adminpage() {
           </form>
         </Box>
 
-        <TableContainer alignSelf="center" width={["30%", "35%", "75%", "75%"]}>
+        <TableContainer alignSelf="center" width={["100%", "100%", "75%", "75%"]}>
           <Table
             variant="simple"
             fontSize={["0.6rem", "0.6rem", "1rem", "1rem"]}
