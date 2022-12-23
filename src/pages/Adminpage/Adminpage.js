@@ -19,13 +19,13 @@ import {
   Button,
   Input,
   Link,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  ModalCloseButton,
+  // Modal,
+  // ModalBody,
+  // ModalContent,
+  // ModalFooter,
+  // ModalHeader,
+  // ModalOverlay,
+  // ModalCloseButton,
   Spinner,
   useDisclosure,
   Skeleton,
@@ -37,14 +37,14 @@ import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdPayment } from "react-icons/md";
 import axios from "axios";
-// import AdminForm from "./AdminForm";
+import AdminForm from "./AdminForm";
 
 export default function Adminpage() {
   const [payment, setPayment] = useState([]);
   const [newPayment, setNewPayment] = useState("");
-  const [update, setUpdate] = useState("");
+  const [update, setUpdate] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentOnUpdate, setPaymentOnUpdate] = useState(null);
+  const [paymentOnUpdate, setPaymentOnUpdate] = useState('');
   const navigate = useNavigate();
   const {
     isOpen: editModalIsOpen,
@@ -102,21 +102,21 @@ export default function Adminpage() {
     }
   };
 
-  const updateSubmit = async (id) => {
-    console.log(id);
-    try {
-      const response = await axios.put(
-        `https://tix-service-bej5.up.railway.app/ticketing-service/admin/update-payment/${id}`,
-        {
-          paymentMethod: update,
-        }
-      );
-      editModalOnClose();
-      adminTrigger();
-    } catch (e) {
-      console.log("FAILED TO UPDATE PAYMENT...", e);
-    }
-  };
+  // const updateSubmit = async (id) => {
+  //   console.log(id);
+  //   try {
+  //     const response = await axios.put(
+  //       `https://tix-service-bej5.up.railway.app/ticketing-service/admin/update-payment/${id}`,
+  //       {
+  //         paymentMethod: update,
+  //       }
+  //     );
+  //     editModalOnClose();
+  //     adminTrigger();
+  //   } catch (e) {
+  //     console.log("FAILED TO UPDATE PAYMENT...", e);
+  //   }
+  // };
 
   useEffect(() => {
     const token =
@@ -214,7 +214,7 @@ export default function Adminpage() {
                           icon={<FiEdit />}
                           onClick={() => {
                             setUpdate(pay.paymentMethod);
-                            setPaymentOnUpdate(pay);
+                            setPaymentOnUpdate(pay.paymentId);
                             editModalOnOpen();
                           }}
                         />
@@ -253,7 +253,14 @@ export default function Adminpage() {
           </Table>
         </TableContainer>
       </Flex>
-      <Modal isOpen={editModalIsOpen} onClose={editModalOnClose}>
+      <AdminForm
+          isOpen={editModalIsOpen}
+          onClose={editModalOnClose}
+          paymentMethods={update}
+          paymentId={paymentOnUpdate}
+          adminTrigger={adminTrigger}
+          />
+      {/* <Modal isOpen={editModalIsOpen} onClose={editModalOnClose}>
         <form onSubmit={() => updateSubmit(paymentOnUpdate?.paymentId)}>
           <ModalOverlay />
           <ModalContent>
@@ -281,7 +288,7 @@ export default function Adminpage() {
             </ModalFooter>
           </ModalContent>
         </form>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
