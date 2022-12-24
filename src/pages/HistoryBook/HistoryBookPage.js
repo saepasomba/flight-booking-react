@@ -32,8 +32,8 @@ export default function HistoryBookPage() {
         </Box>
 
         <Box alignSelf='center' justifyContent='center' bg='#063970' borderRadius='var(--chakra-radii-lg)'
-        width={['45%','45%','30%','30%']} color='white' height={['2rem', '2rem', '4rem', '4rem']} padding={['1','1','2','2']}>
-            <Text fontSize={['1rem', '1rem', '2rem', '2rem']} textAlign='center'>Booking History</Text>
+        width={['45%','45%','30%','30%']} color='white' height={['2rem', '2rem', '3rem', '4rem']} padding={['1','1','2','2']}>
+            <Text fontSize={['1rem', '1rem', '1.2rem', '2rem']} textAlign='center'>Booking History</Text>
         </Box>
     </Flex>
       <Flex flexDirection='column' height='100%' widht='100%' padding='8'>
