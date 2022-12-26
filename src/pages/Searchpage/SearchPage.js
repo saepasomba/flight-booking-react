@@ -8,6 +8,7 @@ import {
   Center,
   Spinner,
   useDisclosure,
+  Heading,
 } from "@chakra-ui/react";
 import CardSearchs from "../../components/card/cardSearch";
 import bgpesawat from "../../asset/bgpesawat.jpg";
@@ -36,19 +37,8 @@ const orderSchema = yup.object().shape({
 });
 
 export default function SearchPages() {
+  const [isLoading, setIsLoading] = useState(true);
   const [flights, setFlights] = useState([]);
-
-  const {
-    isOpen: loginIsOpen,
-    onOpen: loginOnOpen,
-    onClose: loginOnClose,
-  } = useDisclosure();
-
-  const {
-    isOpen: registerIsOpen,
-    onOpen: registerOnOpen,
-    onClose: registerOnClose,
-  } = useDisclosure();
 
   const params = window.location.search.slice(1);
   const data = qs.parse(params);
@@ -67,9 +57,17 @@ export default function SearchPages() {
 
   useEffect(() => {
     const fetchData = async (data) => {
-      const response = await apiGetFlights(data);
-      console.log(response);
-      setFlights(response.data.data.schedule);
+      try {
+        setIsLoading(true);
+        const response = await apiGetFlights(data);
+        console.log(response);
+        if (response.data.responseCode === 200) {
+          setFlights(response.data.data.schedule);
+        }
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     console.log(data);
@@ -80,14 +78,13 @@ export default function SearchPages() {
     <>
       <Flex flexDirection="column">
         <Box alignSelf="center">
-          <Text
+          <Heading
             fontSize={["2rem", "2rem", "3.5rem", "3.5rem"]}
-            color="grey"
-            fontFamily="sans-serif"
+            // color="grey"
             fontWeight="semibold"
           >
             SEARCH RESULT
-          </Text>
+          </Heading>
         </Box>
 
         <Flex
@@ -98,14 +95,22 @@ export default function SearchPages() {
           widht="100%"
           pb="2rem"
         >
-          {flights.length > 0 ? (
-            flights.map((flight) => {
-              return <CardSearchs flight={flight} searchParams={data} />;
-            })
-          ) : (
+          {isLoading ? (
             <Center>
               <Spinner />
             </Center>
+          ) : (
+            <>
+              {flights?.length === 0 ? (
+                <Center h="5rem">
+                  <Heading color="gray">No Flight Schedule Found 😔</Heading>
+                </Center>
+              ) : (
+                flights.map((flight) => {
+                  return <CardSearchs flight={flight} searchParams={data} />;
+                })
+              )}
+            </>
           )}
         </Flex>
       </Flex>
