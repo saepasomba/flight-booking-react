@@ -13,7 +13,7 @@ import { FaGithub, FaLinkedin, FaTwitter } from "react-icons/fa";
 import Wave from "react-wavify";
 
 export const Footer = () => (
-  <>
+  <Box>
     <Box position="relative" bg="" w="100vw" h="10rem">
       <Box
         position="absolute"
@@ -23,7 +23,7 @@ export const Footer = () => (
         w="100%"
       >
         <Wave
-          fill="#002555"
+          fill="#222e5e"
           options={{
             height: 20,
             amplitude: 20,
@@ -40,7 +40,7 @@ export const Footer = () => (
         w="100%"
       >
         <Wave
-          fill="#0F2F5F"
+          fill="#304083"
           options={{
             height: 50,
             amplitude: 25,
@@ -57,7 +57,7 @@ export const Footer = () => (
         w="100%"
       >
         <Wave
-          fill="#063970"
+          fill="#1C3879"
           options={{
             height: 70,
             amplitude: 30,
@@ -70,9 +70,9 @@ export const Footer = () => (
     <Container
       as="footer"
       role="contentinfo"
-      bg="#063970"
+      bg="bluePrimary"
       maxW={"100%"}
-      color="white"
+      color="whitePrimary"
     >
       <Stack
         spacing="8"
@@ -85,6 +85,8 @@ export const Footer = () => (
           base: "12",
           md: "16",
         }}
+        width={{ base: "90%", lg: "80%" }}
+        m="0 auto"
       >
         <Stack
           spacing={{
@@ -93,9 +95,8 @@ export const Footer = () => (
           }}
           align="start"
         >
-          <Text color="muted">Thanks for choose us for your activity.</Text>
-          <Text fontSize="3rem" fontFamily="cursive">
-            <h1>SaFly</h1>
+          <Text color="muted">
+            Life is a journey, take a vacation to make it a memorable one.
           </Text>
         </Stack>
         <Stack
@@ -185,5 +186,5 @@ export const Footer = () => (
         </Text>
       </Stack>
     </Container>
-  </>
+  </Box>
 );

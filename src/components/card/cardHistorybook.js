@@ -15,7 +15,7 @@ import { Card, CardHeader, CardBody} from '@chakra-ui/react'
 import {GiAchievement} from 'react-icons/gi'
 import {FaCalendarAlt} from 'react-icons/fa'
 import {MdAirplanemodeActive} from 'react-icons/md'
-import backgroundHome from '../../pages/Homepage/backgroundHome.jpg'
+import backgroundHome from "../../asset/backgroundHome.jpg";
 import axios from "axios";
 
 
