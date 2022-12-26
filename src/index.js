@@ -21,6 +21,7 @@ import theme from "./theme/Theme";
 import NotFound from "./pages/NotFound/NotFound";
 import ScrollToTop from "./utils/Utils";
 import BookingOrderPage from "./pages/BookingOrder/BookingOrderPage";
+import QRValidationPage from "./pages/QRValidation/QRValidationPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -36,6 +37,10 @@ root.render(
             <Route path="/search" element={<SearchPages />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/booking-order" element={<BookingOrderPage />} />
+            <Route
+              path="/qr-validation/:bookingToken"
+              element={<QRValidationPage />}
+            />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

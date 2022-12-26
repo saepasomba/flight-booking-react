@@ -48,3 +48,9 @@ export const apiGetPaymentType = () => {
 export const apiCreateOrder = (data) => {
   return axiosClient.post(`/ticketing-service/booking/create-order`, data);
 };
+
+export const apiGetQRValidation = (token) => {
+  return axiosClientWithNoToken.get(
+    `/ticketing-service/validate-token/${token}`
+  );
+};
