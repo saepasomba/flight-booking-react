@@ -13,6 +13,7 @@ import {
   Image,
   Menu,
   MenuButton,
+  MenuGroup,
   MenuItem,
   MenuList,
   Spinner,
@@ -270,10 +271,12 @@ export default function Navbar() {
                         </MenuList>
                       </Menu>
                     </Center>
-                    <Link to="/profile">
-                      <Button
+                    {/* <Link to="/profile"> */}
+                    <Menu>
+                      <MenuButton
                         borderRadius="full"
                         colorScheme="blueHue"
+                        as={Button}
                         leftIcon={
                           <Avatar name={user?.fullName} size="sm" src="" />
                         }
@@ -285,8 +288,19 @@ export default function Navbar() {
                         >
                           Hi, {user?.fullName.split(" ")[0]}
                         </Text>
-                      </Button>
-                    </Link>
+                      </MenuButton>
+                      <MenuList>
+                        <MenuGroup title={user?.fullName.split(" ")[0]}>
+                          <Link to="/profile">
+                            <MenuItem>Profile</MenuItem>
+                          </Link>
+                          <Link to="/history">
+                            <MenuItem>Booking History</MenuItem>
+                          </Link>
+                        </MenuGroup>
+                      </MenuList>
+                    </Menu>
+                    {/* </Link> */}
                   </Flex>
                 )}
               </Box>
