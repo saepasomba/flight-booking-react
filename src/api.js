@@ -15,20 +15,20 @@ export const axiosClient = axios.create({
 });
 
 export const apiGetDestinationCity = () => {
-  return axiosClient.get(`/ticketing-service/booking/destination-city`);
+  return axiosClientWithNoToken.get(`/ticketing-service/destination-city`);
 };
 
 export const apiGetPassengerType = () => {
-  return axiosClient.get(`/ticketing-service/booking/passenger_type`);
+  return axiosClientWithNoToken.get(`/ticketing-service/passenger_type`);
 };
 
 export const apiGetSeatClass = () => {
-  return axiosClient.get(`/ticketing-service/booking/class-seats`);
+  return axiosClientWithNoToken.get(`/ticketing-service/class-seats`);
 };
 
 export const apiGetFlights = (data) => {
-  return axiosClient.post(
-    `/ticketing-service/booking/schedule-available`,
+  return axiosClientWithNoToken.post(
+    `/ticketing-service/schedule-available`,
     data
   );
 };

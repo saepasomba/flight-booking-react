@@ -7,6 +7,7 @@ import {
   Image,
   Center,
   Spinner,
+  useDisclosure,
 } from "@chakra-ui/react";
 import CardSearchs from "../../components/card/cardSearch";
 import bgpesawat from "../../asset/bgpesawat.jpg";
@@ -17,6 +18,8 @@ import { apiGetFlights } from "../../api";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import LoginModal from "../../components/navbar/LoginModal";
+import RegisterModal from "../../components/navbar/RegisterModal";
 
 const orderSchema = yup.object().shape({
   departureCity: yup.number().required(),
@@ -35,6 +38,18 @@ const orderSchema = yup.object().shape({
 export default function SearchPages() {
   const [flights, setFlights] = useState([]);
 
+  const {
+    isOpen: loginIsOpen,
+    onOpen: loginOnOpen,
+    onClose: loginOnClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: registerIsOpen,
+    onOpen: registerOnOpen,
+    onClose: registerOnClose,
+  } = useDisclosure();
+
   const params = window.location.search.slice(1);
   const data = qs.parse(params);
 
@@ -49,8 +64,6 @@ export default function SearchPages() {
     mode: "all",
     resolver: yupResolver(orderSchema),
   });
-
-  console.log("getValues", getValues());
 
   useEffect(() => {
     const fetchData = async (data) => {

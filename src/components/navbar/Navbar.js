@@ -175,15 +175,15 @@ export default function Navbar() {
                 ) : !user ? (
                   <Flex gap="1rem" justifyContent="flex-end">
                     <Button
-                      colorScheme="whiteHue"
-                      variant="link"
+                      colorScheme="blueHue"
+                      borderRadius="full"
                       onClick={loginOnOpen}
                     >
                       Login
                     </Button>
                     <Button
-                      colorScheme="whiteHue"
-                      variant="link"
+                      colorScheme="blueHue"
+                      borderRadius="full"
                       onClick={registerOnOpen}
                     >
                       Register
