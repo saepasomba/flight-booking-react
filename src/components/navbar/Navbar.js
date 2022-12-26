@@ -1,37 +1,40 @@
 import {
+  Avatar,
+  Badge,
   Box,
   Button,
-  ButtonGroup,
-  Container,
+  Center,
+  Circle,
+  Divider,
   Flex,
-  Text,
+  Heading,
   HStack,
   IconButton,
-  useBreakpointValue,
-  useColorModeValue,
-  useDisclosure,
-  Spinner,
   Image,
-  Badge,
+  Menu,
+  MenuButton,
+  MenuGroup,
+  MenuItem,
+  MenuList,
+  Spinner,
+  Tag,
+  Text,
+  useBreakpointValue,
+  useDisclosure,
 } from "@chakra-ui/react";
+import appLogo from "../../asset/logo-nobg.png";
 import React, { useEffect, useState } from "react";
-import { FiMenu, FiChevronDown, FiLogIn } from "react-icons/fi";
-import { CgLogOut } from "react-icons/cg";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import { BsBookmarkCheckFill } from "react-icons/bs";
-import { MdOutlinePayment } from "react-icons/md";
-import { FcAbout } from "react-icons/fc";
-import { FaHome } from "react-icons/fa";
-import { Menu, MenuButton, MenuList, MenuItem } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import { FiBell } from "react-icons/fi";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import notifLogo from "./notifLogo.png";
 
 export default function Navbar() {
+  const [navActive, setNavActive] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [notif, setNotif] = useState([]);
   const [notifCount, setNotifcount] = useState();
   const [isLoadingNotif, setIsLoadingNotif] = useState(false);
@@ -52,69 +55,21 @@ export default function Navbar() {
     onOpen: registerOnOpen,
     onClose: registerOnClose,
   } = useDisclosure();
-
-  const authTrigger = (token) => {
-    const getProfile = async (token) => {
-      setIsLoading(true);
-      try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        console.log(response);
-        const data = response.data.data;
-        setUser(data);
-      } catch (e) {
-        console.log("FAILED TO GET PROFILE...", e);
-        setUser(null);
-      }
-      setIsLoading(false);
-    };
-    getProfile(token);
-
-    const getListNotification = async (token) => {
-      try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        const data = response.data.data;
-        console.log(data);
-        setNotif(data);
-      } catch (e) {
-        console.log("FAILED TO GET PROFILE...", e);
-        setNotif(null);
-      }
-    };
-    getListNotification(token);
-
-    const getCountNotification = async (token) => {
-      try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
-        const data = response.data.data;
-        setNotifcount(data);
-        console.log(data);
-      } catch (e) {
-        console.log("FAILED TO GET PROFILE...", e);
-        setNotifcount(null);
-      }
-    };
-    getCountNotification(token);
+  const getCountNotification = async (token) => {
+    try {
+      const response = await axios.get(
+        "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const data = response.data.data;
+      setNotifcount(data);
+    } catch (e) {
+      setNotifcount(null);
+    }
   };
 
   const getListNotification = async (token) => {
@@ -128,11 +83,36 @@ export default function Navbar() {
         }
       );
       const data = response.data.data;
-      console.log(data);
+
       setNotif(data);
     } catch (e) {
       setNotif(null);
     }
+  };
+
+  const authTrigger = (token) => {
+    const getProfile = async (token) => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        const data = response.data.data;
+        setUser(data);
+      } catch (e) {
+        setUser(null);
+      }
+      setIsLoading(false);
+    };
+    getProfile(token);
+
+    getCountNotification(token);
   };
 
   const logout = () => {
@@ -140,298 +120,194 @@ export default function Navbar() {
     setUser();
   };
 
+  const changeNavBg = () => {
+    window.scrollY >= 50 ? setNavActive(true) : setNavActive(false);
+  };
+
   useEffect(() => {
+    window.addEventListener("scroll", changeNavBg);
     const token = localStorage.getItem("USER_TOKEN");
     if (token) {
       authTrigger(token);
     }
+
+    return () => {
+      window.removeEventListener("scroll", changeNavBg);
+    };
   }, []);
 
   return (
-    <Box as="section" pb={"0"}>
-      <Box
-        as="nav"
-        bg="#063970"
-        color="white"
-        boxShadow={useColorModeValue("lg", "dark-lg")}
-        ps={{
-          base: "1",
-          lg: "12",
-        }}
-        pe={{
-          base: "0",
-          lg: "9",
-        }}
+    <>
+      <Center
+        w="100vw"
+        position="fixed"
+        zIndex="1"
+        h="5rem"
+        transition="150ms ease"
+        // bg="bluePrimary.500"
+        bg={navActive ? "bluePrimary" : ""}
+        boxShadow={navActive ? "dark-lg" : ""}
       >
-        <Container
-          py={{
-            base: "4",
-            lg: "5",
-          }}
-          maxW={"100%"}
-        >
-          <HStack spacing="10" justify="space-between">
-            <Link to="/">
-              <Text fontSize="1.5rem" fontFamily="cursive">
-                SaFly
-              </Text>
-            </Link>
-
-            {isDesktop ? (
-              <Flex justify="flex-end" gap="2rem" flex="1">
-                <ButtonGroup variant="link" spacing="8">
-                  <Button color="#ffffff">Homepage</Button>
-
-                  <Button color="#ffffff">
-                    <Link to="/history">Booked List</Link>
-                  </Button>
-
-                  <Button color="#ffffff">Payment</Button>
-                  <Button color="#ffffff">About Us</Button>
-
-                  {user ? (
+        <Center width={{ base: "90%", lg: "80%" }} h="100%">
+          <Box width="100%">
+            <Flex justifyContent="space-between" alignItems="center">
+              <Link to="/">
+                <Box
+                  bg="bluePrimary"
+                  borderRadius="0 0 1rem 1rem"
+                  filter="auto"
+                >
+                  <Image
+                    src={appLogo}
+                    maxH="5rem"
+                    objectFit="contain"
+                    filter="auto"
+                    transition="125ms ease"
+                    _hover={{ brightness: "80%" }}
+                  />
+                </Box>
+              </Link>
+              <Box m="0 0 0 auto" w="35%">
+                {isLoading ? (
+                  <Flex justifyContent="flex-end">
+                    <Spinner />
+                  </Flex>
+                ) : !user ? (
+                  <Flex gap="1rem" justifyContent="flex-end">
+                    <Button
+                      colorScheme="blueHue"
+                      borderRadius="full"
+                      onClick={loginOnOpen}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      colorScheme="blueHue"
+                      borderRadius="full"
+                      onClick={registerOnOpen}
+                    >
+                      Register
+                    </Button>
+                  </Flex>
+                ) : (
+                  <Flex gap="1rem" justifyContent="flex-end">
+                    <Center position="relative">
+                      <Menu>
+                        <MenuButton
+                          as={IconButton}
+                          icon={
+                            <Circle
+                              size="2rem"
+                              bg="bluePrimary"
+                              transform="auto"
+                              _hover={{ rotate: "10" }}
+                            >
+                              <FiBell />
+                            </Circle>
+                          }
+                          colorScheme="whiteHue"
+                          h="10rem"
+                          variant="link"
+                          onClick={() => {
+                            const token = localStorage.getItem("USER_TOKEN");
+                            getListNotification(token);
+                            getCountNotification(token);
+                          }}
+                        />
+                        {notifCount?.jumlahNotif ? (
+                          <Text
+                            as="b"
+                            fontSize="sm"
+                            position="absolute"
+                            top="0"
+                            right="0"
+                            color="whitePrimary"
+                            cursor="pointer"
+                          >
+                            {notifCount?.jumlahNotif > 0
+                              ? notifCount?.jumlahNotif
+                              : ""}
+                          </Text>
+                        ) : (
+                          <></>
+                        )}
+                        <MenuList>
+                          {notif.length > 0 ? (
+                            notif.map((nt) => {
+                              return (
+                                <MenuItem maxW="23rem" key={nt.notificationId}>
+                                  <Box>
+                                    <HStack>
+                                      <Text as="b" noOfLines="2" w="80%">
+                                        {nt.title}
+                                      </Text>{" "}
+                                      {nt.status && (
+                                        <Tag colorScheme="green" key="sm">
+                                          New!
+                                        </Tag>
+                                      )}
+                                    </HStack>
+                                    <Text
+                                      color="gray"
+                                      noOfLines="2"
+                                      fontSize="0.8rem"
+                                    >
+                                      {nt.content}
+                                    </Text>
+                                    <Text color="gray" fontSize="0.8rem">
+                                      {nt.cdate}
+                                    </Text>
+                                  </Box>
+                                </MenuItem>
+                              );
+                            })
+                          ) : (
+                            <MenuItem w="23rem">
+                              <Center w="100%">
+                                <Spinner />
+                              </Center>
+                            </MenuItem>
+                          )}
+                        </MenuList>
+                      </Menu>
+                    </Center>
+                    {/* <Link to="/profile"> */}
                     <Menu>
                       <MenuButton
+                        borderRadius="full"
+                        colorScheme="blueHue"
                         as={Button}
-                        colorScheme="white"
-                        variant="outline"
-                        ps="var(--chakra-space-3)"
-                        pe="var(--chakra-space-3)"
                         leftIcon={
-                          <Flex>
-                            <IoIosNotificationsOutline
-                              color="#ffffff"
-                              size="1.5rem"
-                              mx={"0.5rem"}
-                            />
-                            <Badge
-                              borderRadius="full"
-                              textAlign="center"
-                              ml="-2"
-                              boxSize="1.05rem"
-                              fontSize="0.8rem"
-                              variant="solid"
-                              colorScheme="red"
-                              color="#ffffff"
-                            >
-                              {notifCount ? notifCount.jumlahNotif : ""}
-                            </Badge>
-                          </Flex>
+                          <Avatar name={user?.fullName} size="sm" src="" />
                         }
-                        rightIcon={
-                          <FiChevronDown ms="0" mx="0.5rem" color="#ffffff" />
-                        }
-                        onClick={() =>
-                          getListNotification(
-                            localStorage.getItem("USER_TOKEN")
-                          )
-                        }
-                      ></MenuButton>
-                      <MenuList
-                        color="black"
-                        maxW={"var(--chakra-sizes-container-sm)"}
-                        key={notif.notificationId}
-                        maxH="var(--chakra-sizes-container-md)"
-                        overflowY="scroll"
                       >
-                        {notif.length > 0 ? (
-                          notif.map((nt) => {
-                            return (
-                              <MenuItem minH="48px">
-                                <Flex gap="3">
-                                  <Image
-                                    boxSize="2rem"
-                                    borderRadius="full"
-                                    bg="black"
-                                    src={notifLogo}
-                                    alt="SaFly"
-                                    mr="5px"
-                                  />
-
-                                  <Flex flexDirection="column">
-                                    <Text color="red" fontWeight="bold">
-                                      {nt.title}
-                                    </Text>
-                                    <Text fontSize="0.9rem">{nt.content}</Text>
-                                    <Text
-                                      color="grey"
-                                      fontSize="0.7rem"
-                                      mt="3px"
-                                    >
-                                      {`SaFly . ${nt.cdate}`}
-                                    </Text>
-                                  </Flex>
-                                </Flex>
-                              </MenuItem>
-                            );
-                          })
-                        ) : (
-                          <MenuItem minH="48px">
-                            <Spinner />
-                          </MenuItem>
-                        )}
+                        <Text
+                          maxWidth="6rem"
+                          overflow="hidden"
+                          textOverflow="ellipsis"
+                        >
+                          Hi, {user?.fullName.split(" ")[0]}
+                        </Text>
+                      </MenuButton>
+                      <MenuList>
+                        <MenuGroup title={user?.fullName.split(" ")[0]}>
+                          <Link to="/profile">
+                            <MenuItem>Profile</MenuItem>
+                          </Link>
+                          <Link to="/history">
+                            <MenuItem>Booking History</MenuItem>
+                          </Link>
+                        </MenuGroup>
                       </MenuList>
                     </Menu>
-                  ) : (
-                    <></>
-                  )}
-                </ButtonGroup>
-
-                <HStack spacing="3">
-                  {isLoading ? (
-                    <Spinner />
-                  ) : user ? (
-                    <Link to="/profile">
-                      <Button variant="link" color="#ffffff">
-                        <Text as="b">{`Hello, ${user.fullName}`}</Text>
-                      </Button>
-                    </Link>
-                  ) : (
-                    <>
-                      <Button
-                        colorScheme="white"
-                        variant="outline"
-                        onClick={loginOnOpen}
-                      >
-                        Login
-                      </Button>
-                      <Button
-                        colorScheme="blue"
-                        variant="solid"
-                        onClick={registerOnOpen}
-                      >
-                        Register
-                      </Button>
-                    </>
-                  )}
-                </HStack>
-              </Flex>
-            ) : (
-              <Flex gap={"0.5rem"} ml="2rem">
-                {user ? (
-                  <Menu spacing="3">
-                    <MenuButton
-                      as={Button}
-                      colorScheme="white"
-                      variant="outline"
-                      ps={"var(--chakra-space-1)"}
-                      pe={"var(--chakra-space-1)"}
-                      leftIcon={
-                        <Flex>
-                          <IoIosNotificationsOutline
-                            color="#ffffff"
-                            size="1.5rem"
-                            me={"0.05rem"}
-                          />
-                          <Badge
-                            borderRadius="full"
-                            textAlign="center"
-                            ml="-2"
-                            boxSize="1.05rem"
-                            fontSize="0.8rem"
-                            variant="solid"
-                            colorScheme="red"
-                            color="#ffffff"
-                          >
-                            {notifCount ? notifCount.jumlahNotif : ""}
-                          </Badge>
-                        </Flex>
-                      }
-                      rightIcon={
-                        <FiChevronDown
-                          color="#ffffff"
-                          me="0.5rem"
-                          ms={"0rem"}
-                        />
-                      }
-                    ></MenuButton>
-                    <MenuList
-                      color="black"
-                      maxW={"var(--chakra-sizes-60)"}
-                      minW={"var(--chakra-sizes-60)"}
-                      maxH="30rem"
-                      overflowY="scroll"
-                      key={notif.notificationId}
-                    >
-                      {notif.length > 0 &&
-                        notif.map((nt) => {
-                          return (
-                            <MenuItem minH="48px">
-                              <Flex gap="3">
-                                <Image
-                                  boxSize="2rem"
-                                  borderRadius="full"
-                                  bg="black"
-                                  src={notifLogo}
-                                  alt="SaFly"
-                                  mr="5px"
-                                />
-
-                                <Flex flexDirection="column">
-                                  <Text color="red" fontWeight="bold">
-                                    {nt.title}
-                                  </Text>
-                                  <Text fontSize="0.9rem">{nt.content}</Text>
-                                  <Text color="grey" fontSize="0.7rem" mt="3px">
-                                    {`SaFly . ${nt.cdate}`}
-                                  </Text>
-                                </Flex>
-                              </Flex>
-                            </MenuItem>
-                          );
-                        })}
-                    </MenuList>
-                  </Menu>
-                ) : (
-                  <></>
+                    {/* </Link> */}
+                  </Flex>
                 )}
-
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    aria-label="Options"
-                    icon={<FiMenu />}
-                    variant="outline"
-                  />
-                  <MenuList color="black" fontSize="1.5rem">
-                    <MenuItem icon={<FaHome />}>Homepage</MenuItem>
-                    <Link to="/history">
-                      <MenuItem icon={<BsBookmarkCheckFill />}>
-                        Booking History
-                      </MenuItem>
-                    </Link>
-                    <MenuItem icon={<MdOutlinePayment />}>Payment</MenuItem>
-                    {isLoading ? (
-                      <MenuItem as="b">
-                        <Spinner />
-                      </MenuItem>
-                    ) : user ? (
-                      <Link to="/profile">
-                        <MenuItem as="b">{user.fullName}</MenuItem>
-                      </Link>
-                    ) : (
-                      <>
-                        <MenuItem
-                          icon={<FiLogIn color="black" />}
-                          onClick={loginOnOpen}
-                        >
-                          Login
-                        </MenuItem>
-                        <MenuItem
-                          icon={<CgLogOut color="black" />}
-                          onClick={registerOnOpen}
-                        >
-                          Register
-                        </MenuItem>
-                      </>
-                    )}
-                  </MenuList>
-                </Menu>
-              </Flex>
-            )}
-          </HStack>
-        </Container>
-      </Box>
+              </Box>
+            </Flex>
+          </Box>
+        </Center>
+      </Center>
       <LoginModal
         isOpen={loginIsOpen}
         onClose={loginOnClose}
@@ -442,6 +318,6 @@ export default function Navbar() {
         onClose={registerOnClose}
         authTrigger={authTrigger}
       />
-    </Box>
+    </>
   );
 }

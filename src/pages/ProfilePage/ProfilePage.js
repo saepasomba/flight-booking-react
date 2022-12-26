@@ -126,6 +126,7 @@ export default function ProfilePage() {
           _hover={{
             shadow: "2xl",
           }}
+          bg="white"
         >
           <CardHeader
             bg="#063970"

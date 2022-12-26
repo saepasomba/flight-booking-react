@@ -65,7 +65,7 @@ export default function ProfileForm(props) {
       );
       setIsLoading(false);
       onClose();
-      refetchProfile();
+      window.location.reload();
     };
 
     const { email, ...dataToSend } = data;

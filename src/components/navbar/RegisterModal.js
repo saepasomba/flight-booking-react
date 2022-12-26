@@ -129,7 +129,7 @@ export default function RegisterModal(props) {
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button colorScheme="blue" type="submit" isLoading={isLoading}>
-                Edit
+                Register
               </Button>
             </Flex>
           </ModalFooter>
