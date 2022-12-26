@@ -41,8 +41,6 @@ export default function HistoryBookPage() {
       </Flex>
       <Flex flexDirection="column" height="100%" widht="100%" padding="8">
         <CardHistorybook />
-        <CardHistorybook />
-        <CardHistorybook />
       </Flex>
     </Box>
   );
