@@ -127,7 +127,7 @@ export default function CardHistorybook() {
                                 <PopoverContent widht='var(--chakra-sizes-64)'>
                                     <PopoverArrow />
                                     <PopoverCloseButton />
-                                    <PopoverHeader color='black' textAlign='center' _hover={{background: '#063970', color:'white'}}>QR CODE</PopoverHeader>
+                                    <PopoverHeader color='white' bg= '#063970' textAlign='center' _hover={{bg: '#063970', color:'white'}}>QR CODE</PopoverHeader>
                                     <PopoverBody>
                                         <Center>
                                             <Image widht='50%' src={histories.qrCodeUrl}/>
