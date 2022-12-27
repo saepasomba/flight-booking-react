@@ -149,7 +149,7 @@ export default function Navbar() {
           maxW={"100%"}
         >
           <HStack spacing="10" justify="space-between">
-            <Text fontSize="1.5rem" fontFamily="cursive">
+            <Text marginLeft='2' fontSize="1.5rem" fontFamily="cursive">
               SaFly
             </Text>
 

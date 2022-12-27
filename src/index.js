@@ -10,6 +10,7 @@ import Homepage from "./pages/Homepage/Homepage";
 import "./index.css";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import HistoryBookPage from "./pages/HistoryBook/HistoryBookPage.js";
+import DetailPages from "./pages/DetailPage/DetailPages";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +21,7 @@ root.render(
           <Route path="/" element={<Homepage />} />
           <Route path="/history" element={<HistoryBookPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/DetailPages" element={<DetailPages />} />
         </Routes>
       </BrowserRouter>
     </ChakraProvider>

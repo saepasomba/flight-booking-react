@@ -25,7 +25,7 @@ export default function Homepage() {
 
       <Flex flexDirection='column' height={['180vh','180vh','170vh','100vh']} widht='100%'>
         <Center>
-          <Image src={backgroundHome} height={'50vh'} widht='100%'/>
+          <Image src={backgroundHome} height={'45vh'} widht='100%'/>
         </Center>
         <CardHome />
       </Flex>
