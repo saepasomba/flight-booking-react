@@ -16,6 +16,7 @@ export default function HistoryBookPage() {
               color="white"
               bg="#063970"
               variant="solid"
+              mt='1.5rem'
               mb="1rem"
             >
               Back to Home
@@ -39,8 +40,6 @@ export default function HistoryBookPage() {
         </Box>
       </Flex>
       <Flex flexDirection="column" height="100%" widht="100%" padding="8">
-        <CardHistorybook />
-        <CardHistorybook />
         <CardHistorybook />
       </Flex>
     </Box>
