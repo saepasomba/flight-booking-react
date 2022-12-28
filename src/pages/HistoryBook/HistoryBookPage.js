@@ -22,7 +22,7 @@ export default function HistoryBookPage() {
         <Image src={wave3} widht='100%'/>
     </Box>
 
-    <Flex flexDirection='column'>
+    <Flex flexDirection='column' height='100%' widht='100%' padding='8'>
         <Box pl={['0.5rem', '0.5rem', '3rem', '3rem']} alignSelf='flex-start'>
         <Link to="/" >
             <Button  size={['sm', 'sm', 'md', 'md']} leftIcon={<TiArrowBack />} color='white' bg='#063970' variant='solid' mb='1rem'>
@@ -35,13 +35,12 @@ export default function HistoryBookPage() {
         width={['45%','45%','30%','30%']} color='white' height={['2rem', '2rem', '4rem', '4rem']} padding={['1','1','2','2']}>
             <Text fontSize={['1rem', '1rem', '2rem', '2rem']} textAlign='center'>Booking History</Text>
         </Box>
-    </Flex> 
+    </Flex>
       <Flex flexDirection='column' height='100%' widht='100%' padding='8'>
         <CardHistorybook />
         <CardHistorybook />
         <CardHistorybook />
-        
-      </Flex> 
+      </Flex>
 
       <Box >
         <Image src={wave} widht='100%' pos='absolute'/>
