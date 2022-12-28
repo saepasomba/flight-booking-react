@@ -37,10 +37,7 @@ root.render(
             <Route path="/search" element={<SearchPages />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/booking-order" element={<BookingOrderPage />} />
-            <Route
-              path="/qr-validation/:bookingToken"
-              element={<QRValidationPage />}
-            />
+            <Route path="/qr-validation" element={<QRValidationPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

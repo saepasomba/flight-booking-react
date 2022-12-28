@@ -50,7 +50,5 @@ export const apiCreateOrder = (data) => {
 };
 
 export const apiGetQRValidation = (token) => {
-  return axiosClientWithNoToken.get(
-    `/ticketing-service/validate-token/${token}`
-  );
+  return axiosClientWithNoToken.get(`/ticketing-service/qr?token=${token}`);
 };
