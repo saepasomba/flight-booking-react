@@ -222,36 +222,33 @@ export default function CardHistorybook() {
                     <GiAchievement size="1.5rem" color="black" />
                     <Text> {histories.classType} </Text>
                   </Flex>
-                  <Popover>
-                    <PopoverTrigger>
-                      <Button color="white" bg="#3579e6" cursor="pointer">
-                        Show QR Code
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent widht="var(--chakra-sizes-64)">
-                      <PopoverArrow />
-                      <PopoverCloseButton />
-                      <PopoverHeader
-                        color="white"
-                        bg="#063970"
-                        textAlign="center"
-                        _hover={{ bg: "#063970", color: "white" }}
-                      >
-                        QR CODE
-                      </PopoverHeader>
-                      <PopoverBody>
-                        <Center>
-                          <Image widht="50%" src={histories.qrCodeUrl} />
-                        </Center>
-                      </PopoverBody>
-                    </PopoverContent>
-                  </Popover>
-                  <Link to="/DetailPages">
-                    <Button bgColor={"Gray"} color={"Black"}>
-                      {" "}
-                      Detail
-                    </Button>
-                  </Link>
+                  <Flex gap="1rem">
+                    <Popover>
+                      <PopoverTrigger>
+                        <Button colorScheme="blueHue">Show QR Code</Button>
+                      </PopoverTrigger>
+                      <PopoverContent widht="var(--chakra-sizes-64)">
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <PopoverHeader
+                          color="white"
+                          bg="#063970"
+                          textAlign="center"
+                          // _hover={{ bg: "#063970", color: "white" }}
+                        >
+                          QR CODE
+                        </PopoverHeader>
+                        <PopoverBody>
+                          <Center>
+                            <Image widht="50%" src={histories.qrCodeUrl} />
+                          </Center>
+                        </PopoverBody>
+                      </PopoverContent>
+                    </Popover>
+                    <Link to="/history-detail">
+                      <Button colorScheme="blueHue"> Detail</Button>
+                    </Link>
+                  </Flex>
                 </Flex>
               </CardBody>
 
