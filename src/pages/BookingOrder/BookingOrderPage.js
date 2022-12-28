@@ -63,16 +63,16 @@ function PassengerDetailCard({
   const _onChange = (event) => {
     switch (event.target.value) {
       case "Nyonya":
-        setValue(`details.${index}.passengerType`, 1);
+        setValue(`details.${index}.passengerType`, 2);
         break;
       case "Tuan":
-        setValue(`details.${index}.passengerType`, 1);
+        setValue(`details.${index}.passengerType`, 2);
         break;
       case "Anak-Anak":
-        setValue(`details.${index}.passengerType`, 0);
+        setValue(`details.${index}.passengerType`, 1);
         break;
       case "Bayi":
-        setValue(`details.${index}.passengerType`, 2);
+        setValue(`details.${index}.passengerType`, 3);
         break;
 
       default:
@@ -168,6 +168,7 @@ export default function BookingOrderPage() {
 
   const params = window.location.search.slice(1);
   const dataParams = qs.parse(params);
+  console.log("dataParams", dataParams);
 
   const {
     register,
@@ -212,22 +213,24 @@ export default function BookingOrderPage() {
     }
     setTotalPassenger(tempPassenger);
 
-    // console.log(dataParams.price * tempPassenger);
     setValue("amount", dataParams.price * tempPassenger);
     setValue("scheduleId", dataParams.scheduleId);
 
-    // setValue("amount", tempPassenger*data);
-
     const fetchData = async () => {
-      const responseAvailableSeats = await apiGetAvailableSeats(
-        dataParams.scheduleId
-      );
-      const responseCitizenships = await apiGetCitizenship();
-      const responsePaymentTypes = await apiGetPaymentType();
-
-      setAvailableSeats(responseAvailableSeats.data.data);
-      setCitizenships(responseCitizenships.data.data);
-      setPaymentTypes(responsePaymentTypes.data.data);
+      try {
+        const responseAvailableSeats = await apiGetAvailableSeats(
+          dataParams.scheduleId
+        );
+        setAvailableSeats(responseAvailableSeats.data.data);
+      } catch (error) {}
+      try {
+        const responsePaymentTypes = await apiGetPaymentType();
+        setPaymentTypes(responsePaymentTypes.data.data);
+      } catch (error) {}
+      try {
+        const responseCitizenships = await apiGetCitizenship();
+        setCitizenships(responseCitizenships.data.data);
+      } catch (error) {}
     };
     fetchData();
   }, []);
