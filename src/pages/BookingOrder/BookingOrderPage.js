@@ -11,6 +11,8 @@ import {
   Heading,
   Input,
   Select,
+  Text,
+  useDisclosure,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -27,6 +29,7 @@ import {
   apiGetPaymentType,
 } from "../../api";
 import { useNavigate } from "react-router-dom";
+import SeatsModal from "./SeatsModal";
 
 const orderSchema = yup.object().shape({
   title: yup.string().required(),
@@ -57,22 +60,29 @@ function PassengerDetailCard({
   availableSeats,
   citizenships,
   setValue,
+  getValues,
 }) {
   const [seatsToPick, setSeatsToPick] = useState([]);
+  const [seatSelected, setSeatSelected] = useState("Not selected");
+  const {
+    isOpen: isOpenSeatsModal,
+    onOpen: onOpenSeatsModal,
+    onClose: onCloseSeatsModal,
+  } = useDisclosure();
 
   const _onChange = (event) => {
     switch (event.target.value) {
       case "Nyonya":
-        setValue(`details.${index}.passengerType`, 1);
+        setValue(`details.${index}.passengerType`, 2);
         break;
       case "Tuan":
-        setValue(`details.${index}.passengerType`, 1);
+        setValue(`details.${index}.passengerType`, 2);
         break;
       case "Anak-Anak":
-        setValue(`details.${index}.passengerType`, 0);
+        setValue(`details.${index}.passengerType`, 1);
         break;
       case "Bayi":
-        setValue(`details.${index}.passengerType`, 2);
+        setValue(`details.${index}.passengerType`, 3);
         break;
 
       default:
@@ -93,67 +103,87 @@ function PassengerDetailCard({
   }, [availableSeats]);
 
   return (
-    <Card bg="white">
-      <CardHeader>
-        <Heading>Passenger Details #{index + 1}</Heading>
-      </CardHeader>
-      <Divider />
-      <CardBody>
-        <Flex gap="1rem" flexDir="column">
-          <FormControl>
-            <FormLabel>Title</FormLabel>
-            <Select
-              placeholder="Title"
-              {...register(`details.${index}.title`)}
-              onChange={_onChange}
-            >
-              <option value="Tuan">Tuan</option>
-              <option value="Nyonya">Nyonya</option>
-              <option value="Anak-Anak">Anak-Anak</option>
-              <option value="Bayi">Bayi</option>
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Full Name</FormLabel>
-            <Input
-              placeholder="Full Name"
-              {...register(`details.${index}.fullName`)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Seats</FormLabel>
-            <Select
-              placeholder="Seats"
-              {...register(`details.${index}.idSeats`)}
-            >
-              {seatsToPick?.map((seat) => {
-                return (
-                  <option key={seat.seatsId} value={seat.seatsId}>
-                    {seat.seatsNumber}
-                  </option>
-                );
-              })}
-            </Select>
-          </FormControl>
-          <FormControl>
-            <FormLabel>Citizenship</FormLabel>
-            <Select
-              placeholder="Citizenship"
-              {...register(`details.${index}.citizenship`)}
-            >
-              {citizenships.map((citizenship) => {
-                return (
-                  <option key={citizenship.id} value={citizenship.id}>
-                    {citizenship.name} - {citizenship.code}
-                  </option>
-                );
-              })}
-            </Select>
-          </FormControl>
-          {/* Jika international, ada additional fields */}
-        </Flex>
-      </CardBody>
-    </Card>
+    <>
+      <Card bg="white">
+        <CardHeader>
+          <Heading>Passenger Details #{index + 1}</Heading>
+        </CardHeader>
+        <Divider />
+        <CardBody>
+          <Flex gap="1rem" flexDir="column">
+            <FormControl>
+              <FormLabel>Title</FormLabel>
+              <Select
+                placeholder="Title"
+                {...register(`details.${index}.title`)}
+                onChange={_onChange}
+              >
+                <option value="Tuan">Tuan</option>
+                <option value="Nyonya">Nyonya</option>
+                <option value="Anak-Anak">Anak-Anak</option>
+                <option value="Bayi">Bayi</option>
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Full Name</FormLabel>
+              <Input
+                placeholder="Full Name"
+                {...register(`details.${index}.fullName`)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Seats</FormLabel>
+              <Flex alignItems="center" gap="1rem">
+                <Button
+                  colorScheme="blueHue"
+                  onClick={onOpenSeatsModal}
+                  variant="ghost"
+                >
+                  Select seat
+                </Button>
+                <Text>{seatSelected} selected</Text>
+              </Flex>
+              {/* <Select
+                placeholder="Seats"
+                {...register(`details.${index}.idSeats`)}
+              >
+                {seatsToPick?.map((seat) => {
+                  return (
+                    <option key={seat.seatsId} value={seat.seatsId}>
+                      {seat.seatsNumber}
+                    </option>
+                  );
+                })}
+              </Select> */}
+            </FormControl>
+            <FormControl>
+              <FormLabel>Citizenship</FormLabel>
+              <Select
+                placeholder="Citizenship"
+                {...register(`details.${index}.citizenship`)}
+              >
+                {citizenships.map((citizenship) => {
+                  return (
+                    <option key={citizenship.id} value={citizenship.id}>
+                      {citizenship.name} - {citizenship.code}
+                    </option>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            {/* Jika international, ada additional fields */}
+          </Flex>
+        </CardBody>
+      </Card>
+      <SeatsModal
+        isOpen={isOpenSeatsModal}
+        onClose={onCloseSeatsModal}
+        seatsData={availableSeats}
+        setValue={setValue}
+        index={index}
+        setSeatSelected={setSeatSelected}
+      />
+    </>
   );
 }
 
@@ -168,6 +198,7 @@ export default function BookingOrderPage() {
 
   const params = window.location.search.slice(1);
   const dataParams = qs.parse(params);
+  console.log("dataParams", dataParams);
 
   const {
     register,
@@ -212,104 +243,108 @@ export default function BookingOrderPage() {
     }
     setTotalPassenger(tempPassenger);
 
-    // console.log(dataParams.price * tempPassenger);
     setValue("amount", dataParams.price * tempPassenger);
     setValue("scheduleId", dataParams.scheduleId);
 
-    // setValue("amount", tempPassenger*data);
-
     const fetchData = async () => {
-      const responseAvailableSeats = await apiGetAvailableSeats(
-        dataParams.scheduleId
-      );
-      const responseCitizenships = await apiGetCitizenship();
-      const responsePaymentTypes = await apiGetPaymentType();
-
-      setAvailableSeats(responseAvailableSeats.data.data);
-      setCitizenships(responseCitizenships.data.data);
-      setPaymentTypes(responsePaymentTypes.data.data);
+      try {
+        const responseAvailableSeats = await apiGetAvailableSeats(
+          dataParams.scheduleId
+        );
+        setAvailableSeats(responseAvailableSeats.data.data);
+      } catch (error) {}
+      try {
+        const responsePaymentTypes = await apiGetPaymentType();
+        setPaymentTypes(responsePaymentTypes.data.data);
+      } catch (error) {}
+      try {
+        const responseCitizenships = await apiGetCitizenship();
+        setCitizenships(responseCitizenships.data.data);
+      } catch (error) {}
     };
     fetchData();
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(submitOrder)}>
-      <Flex
-        flexDir="column"
-        width={{ base: "90%", lg: "80%" }}
-        m="2rem auto"
-        gap="2rem"
-      >
-        <Card bg="white">
-          <CardHeader>
-            <Heading>Booker Information</Heading>
-          </CardHeader>
-          <Divider />
-          <CardBody>
-            <Flex gap="1rem" flexDir="column">
+    <>
+      <form onSubmit={handleSubmit(submitOrder)}>
+        <Flex
+          flexDir="column"
+          width={{ base: "90%", lg: "80%" }}
+          m="2rem auto"
+          gap="2rem"
+        >
+          <Card bg="white">
+            <CardHeader>
+              <Heading>Booker Information</Heading>
+            </CardHeader>
+            <Divider />
+            <CardBody>
+              <Flex gap="1rem" flexDir="column">
+                <FormControl>
+                  <FormLabel>Title</FormLabel>
+                  <Select placeholder="Booker Title" {...register("title")}>
+                    <option value="Tuan">Tuan</option>
+                    <option value="Nyonya">Nyonya</option>
+                    <option value="Anak-Anak">Anak-Anak</option>
+                    <option value="Bayi">Bayi</option>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Name</FormLabel>
+                  <Input placeholder="Name" {...register("bookingBy")} />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Email</FormLabel>
+                  <Input placeholder="Email" {...register("email")} />
+                </FormControl>
+                <FormControl>
+                  <FormLabel>Phone Number</FormLabel>
+                  <Input placeholder="Phone Number" {...register("phoneNo")} />
+                </FormControl>
+              </Flex>
+            </CardBody>
+          </Card>
+          {[...Array(totalPassenger).keys()].map((index) => {
+            // setValue(`details.${index}.passengerType);
+            return (
+              <PassengerDetailCard
+                key={index}
+                index={index}
+                register={register}
+                availableSeats={availableSeats}
+                citizenships={citizenships}
+                setValue={setValue}
+              />
+            );
+          })}
+          <Card bg="white">
+            <CardHeader>
+              <Heading>Payment</Heading>
+            </CardHeader>
+            <CardBody>
               <FormControl>
-                <FormLabel>Title</FormLabel>
-                <Select placeholder="Booker Title" {...register("title")}>
-                  <option value="Tuan">Tuan</option>
-                  <option value="Nyonya">Nyonya</option>
-                  <option value="Anak-Anak">Anak-Anak</option>
-                  <option value="Bayi">Bayi</option>
+                <FormLabel>Payment Method</FormLabel>
+                <Select
+                  {...register(`paymentId`)}
+                  placeholder="Select payment method"
+                >
+                  {paymentTypes.map((payment) => {
+                    return (
+                      <option key={payment.paymentId} value={payment.paymentId}>
+                        {payment.paymentMethod}
+                      </option>
+                    );
+                  })}
                 </Select>
               </FormControl>
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input placeholder="Name" {...register("bookingBy")} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Email</FormLabel>
-                <Input placeholder="Email" {...register("email")} />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Phone Number</FormLabel>
-                <Input placeholder="Phone Number" {...register("phoneNo")} />
-              </FormControl>
-            </Flex>
-          </CardBody>
-        </Card>
-        {[...Array(totalPassenger).keys()].map((index) => {
-          // setValue(`details.${index}.passengerType);
-          return (
-            <PassengerDetailCard
-              key={index}
-              index={index}
-              register={register}
-              availableSeats={availableSeats}
-              citizenships={citizenships}
-              setValue={setValue}
-            />
-          );
-        })}
-        <Card bg="white">
-          <CardHeader>
-            <Heading>Payment</Heading>
-          </CardHeader>
-          <CardBody>
-            <FormControl>
-              <FormLabel>Payment Method</FormLabel>
-              <Select
-                {...register(`paymentId`)}
-                placeholder="Select payment method"
-              >
-                {paymentTypes.map((payment) => {
-                  return (
-                    <option key={payment.paymentId} value={payment.paymentId}>
-                      {payment.paymentMethod}
-                    </option>
-                  );
-                })}
-              </Select>
-            </FormControl>
-          </CardBody>
-        </Card>
-        <Button type="submit" colorScheme={"blueHue"} isLoading={isLoading}>
-          Order
-        </Button>
-      </Flex>
-    </form>
+            </CardBody>
+          </Card>
+          <Button type="submit" colorScheme={"blueHue"} isLoading={isLoading}>
+            Order
+          </Button>
+        </Flex>
+      </form>
+    </>
   );
 }

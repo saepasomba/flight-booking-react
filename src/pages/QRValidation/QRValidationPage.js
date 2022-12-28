@@ -14,12 +14,15 @@ import { BsFillXCircleFill, BsFillCheckCircleFill } from "react-icons/bs";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { apiGetQRValidation } from "../../api";
+import qs from "qs";
 
 export default function QRValidationPage() {
   const [isValid, setIsValid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const { bookingToken } = useParams();
+  // const { bookingToken } = useParams();
+  const params = window.location.search.slice(1);
+  const { token: bookingToken } = qs.parse(params);
 
   useEffect(() => {
     const fetchData = async (token) => {
