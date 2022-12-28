@@ -22,6 +22,7 @@ import NotFound from "./pages/NotFound/NotFound";
 import ScrollToTop from "./utils/Utils";
 import BookingOrderPage from "./pages/BookingOrder/BookingOrderPage";
 import QRValidationPage from "./pages/QRValidation/QRValidationPage";
+import DetailPages from "./pages/DetailPage/DetailPages";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -38,6 +39,7 @@ root.render(
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/booking-order" element={<BookingOrderPage />} />
             <Route path="/qr-validation" element={<QRValidationPage />} />
+            <Route path="/DetailPages" element={<DetailPages />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
