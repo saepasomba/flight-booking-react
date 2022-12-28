@@ -4,8 +4,7 @@ import {
     Heading,
     Divider,
     HStack,
-    Image,
-    Button,
+    Image,Button,
   } from '@chakra-ui/react'
   import * as React from 'react'
 import { Card, CardHeader, CardBody} from '@chakra-ui/react'
@@ -27,7 +26,6 @@ export default function CardHistorybook() {
                     <Text textAlign='start'>Rp1820000</Text>
             </Flex>
         </CardHeader>
-        <button>  <Link to="/DetailPages">
         <CardBody padding='4' color='white' bg='#3579e6'>
             <Flex flexDirection={['column','column','row', 'row']} justifyContent={['center','center','space-between','space-between']} mb='1rem'>
                 <Text>Booked By:    Tn. Riko</Text>
@@ -41,12 +39,16 @@ export default function CardHistorybook() {
                 <FaCalendarAlt size='1.5rem' color='black'/>
                 <Text>2022-12-09 13:08:24</Text>
             </Flex>
-            <Flex gap='3' mb='0.5rem'>
+            <Flex justifyContent={['space-between']} gap='3' mb='0.5rem'>
+                <Flex>
                 <GiAchievement size='1.5rem' color='black'/>
                 <Text >Business Class</Text>
+                </Flex>
+                <Link to="/DetailPages"> 
+                <Button bgColor={'Gray'} color={'Black'}> Detail</Button></Link>
             </Flex>
             
-        </CardBody></Link></button>
+        </CardBody>
         
         <HStack bg='whitesmoke' >
             <Divider borderColor='#063970' border='3px solid #063970' />

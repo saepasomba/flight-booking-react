@@ -22,7 +22,7 @@ export default function HistoryBookPage() {
         <Image src={wave3} widht='100%'/>
     </Box>
 
-    <Flex flexDirection='column' height='100%' widht='100%' padding='8'>
+    <Flex flexDirection='column' >
         <Box pl={['0.5rem', '0.5rem', '3rem', '3rem']} alignSelf='flex-start'>
         <Link to="/" >
             <Button  size={['sm', 'sm', 'md', 'md']} leftIcon={<TiArrowBack />} color='white' bg='#063970' variant='solid' mb='1rem'>
