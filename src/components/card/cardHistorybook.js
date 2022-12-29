@@ -28,11 +28,12 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdAirplanemodeActive } from "react-icons/md";
 import backgroundHome from "../../asset/backgroundHome.jpg";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function CardHistorybook() {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const render_numeric = (value) => {
     let numbers = Number(value);
@@ -245,9 +246,7 @@ export default function CardHistorybook() {
                         </PopoverBody>
                       </PopoverContent>
                     </Popover>
-                    <Link to="/history-detail">
-                      <Button colorScheme="blueHue"> Detail</Button>
-                    </Link>
+                      <Button colorScheme="blueHue" onClick={()=>navigate(`/history-detail/${histories.invoiceNo}`)}> Detail</Button>
                   </Flex>
                 </Flex>
               </CardBody>

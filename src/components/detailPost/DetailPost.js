@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {useParams} from 'react-router-dom'
 import {
   Card,
   CardHeader,
@@ -10,6 +11,8 @@ import {
   Image,
   Flex,
   Text,
+  Spinner,
+  Center,
   Grid,
   GridItem,
   Spacer,
@@ -25,10 +28,52 @@ import {
 import GarudaIndonesia from "../../asset/garuda-200h.png";
 import conneting from "../../asset/connecting-200w.png";
 import qr from "../../asset/qr-200h.png";
+import axios from "axios";
 
 export default function DetailPost() {
+  const [details, setDetail] = useState();
+  const [isLoading, setIsLoading] = useState(true);
+  let {param} = useParams();
+
+  const render_numeric = (value) => {
+    let numbers = Number(value);
+    return numbers?.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0,
+    });
+  };
+
+  const getDetailhistory = async () => {
+    setIsLoading(true);
+    const response = await axios.get(
+      `https://tix-service-bej5.up.railway.app/ticketing-service/booking/history-detail/${param}`,
+      { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
+    );
+    setDetail(response.data.data);
+    console.log(response);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getDetailhistory();
+  }, []);
+
   return (
-    <Card
+    <>
+    {isLoading ? (
+            <Center>
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
+            </Center>
+    ) : details ? (
+      <Card
       borderColor="black"
       padding="0"
       width={["95%", "80%", "80%", "55%"]}
@@ -55,10 +100,10 @@ export default function DetailPost() {
             size={["sm", "sm", "md", "md"]}
             mb={["1", "1", "0", "0"]}
           >
-            INV-MPW-221209-13824
+            {details.invoiceNo ? details.invoiceNo : " "}
           </Heading>
           <Text textAlign="start" color="white" marginLeft={["10"]}>
-            2022-12-09 13:08:24
+          {details.paymentDate ? details.paymentDate : " "}
           </Text>
         </Flex>
       </CardHeader>
@@ -69,31 +114,31 @@ export default function DetailPost() {
           justifyContent={["center", "center", "center", "Center"]}
           mb="1rem"
         >
-          <Text>Monday, 19 December 2022 </Text>
+          <Text>{details.flightDate ? details.flightDate : " "}</Text>
         </Flex>
         <Flex>
           <Grid>
             <Image
               marginLeft={["2", "2", "2", "5"]}
               src={GarudaIndonesia}
-              height={"10vh"}
+              height={"5vh"}
             />
             <Text
               marginLeft={["5", "5", "5", "9"]}
               fontSize={["10", "10", "5", "12"]}
             >
-              Boeing 777-30GER
+              {details.airplane ? details.airplane : " "}
             </Text>
             <Text
               marginLeft={["5", "5", "10", "12"]}
               fontSize={["10", "10", "5", "12"]}
             >
-              Business Class
+              {details.classType ? details.classType : " "}
             </Text>
           </Grid>
           <Grid marginLeft={["8", "8", "8", "4"]} templateRows="repeat(2, 1fr)">
-            <GridItem>19.00</GridItem>
-            <GridItem>21.00</GridItem>
+            <GridItem>{details.startTime ? details.startTime : " "}</GridItem>
+            <GridItem>{details.endTime ? details.endTime : " "}</GridItem>
           </Grid>
           <Image
             src={conneting}
@@ -103,15 +148,33 @@ export default function DetailPost() {
               xl: "25%", // 80em+
             }}
             marginTop={["1"]}
-            marginLeft={["4", "4", "4", "2"]}
+            marginLeft={["4", "4", "4", "6"]}
           ></Image>
           <Grid marginLeft={["3"]} templateRows="repeat(2, 1fr)">
-            <GridItem>Jakarta</GridItem>
-            <GridItem>Jeddah</GridItem>
+            <GridItem>
+              <Flex flexDirection='column'>
+                <Text>
+                {details.departureCity ? details.departureCity : " "}
+                </Text>
+                <Text>
+                {details.departureAirport ? details.departureAirport : " "}
+                </Text>
+              </Flex>
+            </GridItem>
+            <GridItem>
+              <Flex flexDirection='column'>
+                <Text>
+                {details.destinationsCity ? details.destinationsCity : " "}
+                </Text>
+                <Text>
+                {details.destinationsAirport ? details.destinationsAirport : " "}
+                </Text>
+              </Flex>
+            </GridItem>
           </Grid>
-          <Grid marginLeft={["2", "4", "4", "80"]}>
-            <GridItem>Booking Code</GridItem>
-            <Image src={qr} height={["8vh", "8vh", "8vh", "15vh"]}></Image>
+          <Grid marginLeft={["2", "4", "4", "8"]}>
+            <GridItem textAlign='center' fontWeight='semibold' >QR Code</GridItem>
+            <Image src={details.qrCodeUrl ? details.qrCodeUrl : " "} />
           </Grid>
         </Flex>
         <HStack bg="whitesmoke">
@@ -119,14 +182,14 @@ export default function DetailPost() {
         </HStack>
         <Flex>
           <Box p="4">
-            <Text>Book By : Dodo</Text>
-            <Text> Total Person : 2</Text>
+            <Text>{`booking by:  ${details.bookingBy ? details.bookingBy : " "}`}</Text>
+            <Text> {`Total Person: ${details.totalPerson ? details.totalPerson : " "} Person`}</Text>
           </Box>
           <Spacer />
           <Box p="4">
             <Grid>
-              <Text>Payment Type : Transfer Bank BCA </Text>
-              <Text>Total Amount : Rp. 998.000 </Text>
+              <Text>{`Payment Type :  ${details.paymentName ? details.paymentName : " "}`}</Text>
+              <Text>{" "}{`Total Amount : ${details.amount ? render_numeric(details.amount) : " " }`}{" "} </Text>
             </Grid>
           </Box>
         </Flex>
@@ -144,23 +207,29 @@ export default function DetailPost() {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Tn. Jhon</Td>
-                <Td>Anak - Anak</Td>
-                <Td>A1</Td>
-                <Td>50</Td>
-              </Tr>
-              <Tr>
-                <Td>Tn. Alpin</Td>
-                <Td>Dewasa</Td>
-                <Td>A20</Td>
-                <Td>50</Td>
-              </Tr>
+              {details && details.detail ? details.detail.map((det, index)=>{
+                return(
+                  <Tr key={index}>
+                    <Td>{det.name}</Td>
+                    <Td>{det.type}</Td>
+                    <Td>{det.seatsNumber}</Td>
+                    <Td>{det.luggageCapacity}</Td>
+                  </Tr>
+                )
+              }) : " NO DATA DETAIL PERSON "}
             </Tbody>
-            <Tfoot></Tfoot>
           </Table>
         </TableContainer>
       </CardBody>
     </Card>
+    ) : (
+      <Box alignSelf="center">
+          <Text color="#063970">
+            <h1 color>History Booking Not Found</h1>
+          </Text>
+        </Box>
+    )
+    }
+    </>
   );
 }
