@@ -46,7 +46,6 @@ export default function QRValidationPage() {
       <Center
         width={{ base: "90%", lg: "80%" }}
         textAlign="center"
-        // bg="red"
         m="2rem auto"
       >
         {isLoading ? (
@@ -62,6 +61,7 @@ export default function QRValidationPage() {
             padding="2rem"
             bg={isValid ? "green.100" : "red.100"}
             borderRadius="1rem"
+            maxW="90%"
           >
             {isValid ? (
               <>

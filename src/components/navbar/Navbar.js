@@ -272,22 +272,34 @@ export default function Navbar() {
                     </Center>
                     {/* <Link to="/profile"> */}
                     <Menu>
-                      <MenuButton
-                        borderRadius="full"
-                        colorScheme="blueHue"
-                        as={Button}
-                        leftIcon={
-                          <Avatar name={user?.fullName} size="sm" src="" />
-                        }
-                      >
-                        <Text
-                          maxWidth="6rem"
-                          overflow="hidden"
-                          textOverflow="ellipsis"
+                      {isDesktop ? (
+                        <MenuButton
+                          borderRadius="full"
+                          colorScheme="blueHue"
+                          as={Button}
+                          leftIcon={
+                            <Avatar name={user?.fullName} size="sm" src="" />
+                          }
                         >
-                          Hi, {user?.fullName.split(" ")[0]}
-                        </Text>
-                      </MenuButton>
+                          <Text
+                            maxWidth="6rem"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                          >
+                            Hi, {user?.fullName.split(" ")[0]}
+                          </Text>
+                        </MenuButton>
+                      ) : (
+                        <MenuButton
+                          as={IconButton}
+                          borderRadius="full"
+                          colorScheme="blueHue"
+                          icon={
+                            <Avatar name={user?.fullName} size="sm" src="" />
+                          }
+                        />
+                      )}
+
                       <MenuList>
                         <MenuGroup title={user?.fullName.split(" ")[0]}>
                           <Link to="/profile">
