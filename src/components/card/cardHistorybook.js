@@ -29,6 +29,7 @@ import { MdAirplanemodeActive } from "react-icons/md";
 import backgroundHome from "../../asset/backgroundHome.jpg";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { apiGetHistoryBook } from "../../api";
 
 export default function CardHistorybook() {
   const [history, setHistory] = useState([]);
@@ -46,10 +47,7 @@ export default function CardHistorybook() {
 
   const getHistoryBook = async () => {
     setIsLoading(true);
-    const response = await axios.get(
-      "https://tix-service-bej5.up.railway.app/ticketing-service/booking/history?limit=10&pageNumber=1",
-      { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
-    );
+    const response = await apiGetHistoryBook();
     setHistory(response.data.data);
     console.log(response);
     setIsLoading(false);

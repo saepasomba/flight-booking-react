@@ -29,6 +29,11 @@ import axios from "axios";
 import { FiBell } from "react-icons/fi";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import {
+  apiGetCountNotification,
+  apiGetListNotification,
+  apiGetProfile,
+} from "../../api";
 
 export default function Navbar() {
   const [navActive, setNavActive] = useState(false);
@@ -55,16 +60,10 @@ export default function Navbar() {
     onOpen: registerOnOpen,
     onClose: registerOnClose,
   } = useDisclosure();
+
   const getCountNotification = async (token) => {
     try {
-      const response = await axios.get(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await apiGetCountNotification;
       const data = response.data.data;
       setNotifcount(data);
     } catch (e) {
@@ -74,19 +73,15 @@ export default function Navbar() {
 
   const getListNotification = async (token) => {
     try {
-      const response = await axios.get(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      setIsLoadingNotif(true);
+      const response = await apiGetListNotification();
       const data = response.data.data;
 
       setNotif(data);
     } catch (e) {
       setNotif(null);
+    } finally {
+      setIsLoadingNotif(false);
     }
   };
 
@@ -94,14 +89,7 @@ export default function Navbar() {
     const getProfile = async (token) => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        const response = await apiGetProfile();
 
         const data = response.data.data;
         setUser(data);
@@ -232,35 +220,46 @@ export default function Navbar() {
                           <></>
                         )}
                         <MenuList>
-                          {notif.length > 0 ? (
-                            notif.map((nt) => {
-                              return (
-                                <MenuItem maxW="23rem" key={nt.notificationId}>
-                                  <Box>
-                                    <HStack>
-                                      <Text as="b" noOfLines="2" w="80%">
-                                        {nt.title}
-                                      </Text>{" "}
-                                      {nt.status && (
-                                        <Tag colorScheme="green" key="sm">
-                                          New!
-                                        </Tag>
-                                      )}
-                                    </HStack>
-                                    <Text
-                                      color="gray"
-                                      noOfLines="2"
-                                      fontSize="0.8rem"
-                                    >
-                                      {nt.content}
-                                    </Text>
-                                    <Text color="gray" fontSize="0.8rem">
-                                      {nt.cdate}
-                                    </Text>
-                                  </Box>
-                                </MenuItem>
-                              );
-                            })
+                          {!isLoadingNotif ? (
+                            notif?.length > 0 ? (
+                              notif?.map((nt) => {
+                                return (
+                                  <MenuItem
+                                    maxW="23rem"
+                                    key={nt.notificationId}
+                                  >
+                                    <Box>
+                                      <HStack>
+                                        <Text as="b" noOfLines="2" w="80%">
+                                          {nt.title}
+                                        </Text>{" "}
+                                        {nt.status && (
+                                          <Tag colorScheme="green" key="sm">
+                                            New!
+                                          </Tag>
+                                        )}
+                                      </HStack>
+                                      <Text
+                                        color="gray"
+                                        noOfLines="2"
+                                        fontSize="0.8rem"
+                                      >
+                                        {nt.content}
+                                      </Text>
+                                      <Text color="gray" fontSize="0.8rem">
+                                        {nt.cdate}
+                                      </Text>
+                                    </Box>
+                                  </MenuItem>
+                                );
+                              })
+                            ) : (
+                              <MenuItem w="23rem">
+                                <Center w="100%">
+                                  No notification available
+                                </Center>
+                              </MenuItem>
+                            )
                           ) : (
                             <MenuItem w="23rem">
                               <Center w="100%">

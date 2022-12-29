@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { apiLogIn } from "../../api";
 
 const loginSchema = yup.object({
   email: yup.string().email().required(),
@@ -45,10 +46,7 @@ export default function LoginModal(props) {
     const logginIn = async (data) => {
       setIsLoading(true);
       try {
-        const response = await axios.post(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/ext/login",
-          data
-        );
+        const response = await apiLogIn(data);
         console.log(response.data?.data);
         localStorage.setItem("USER_TOKEN", response.data.data.token);
         authTrigger(response.data.data.token);

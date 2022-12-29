@@ -21,8 +21,7 @@ export default function QRValidationPage() {
   const [isLoading, setIsLoading] = useState(true);
 
   // const { bookingToken } = useParams();
-  const params = window.location.search.slice(1);
-  const { token: bookingToken } = qs.parse(params);
+  const bookingToken = window.location.search.slice(1).split("=")[1];
 
   useEffect(() => {
     const fetchData = async (token) => {
