@@ -33,13 +33,19 @@ export default function SeatsModal({
         <ModalCloseButton />
         <ModalBody>
           <Flex justifyContent="space-around">
-            {seatsData.map((group) => {
+            {seatsData.map((group, index) => {
               return (
-                <Flex flexDir="column" alignItems="center" gap="0.5rem">
+                <Flex
+                  flexDir="column"
+                  alignItems="center"
+                  gap="0.5rem"
+                  key={index}
+                >
                   <Heading>{group.groupSeats}</Heading>
                   {group.seatsList.map((seat) => {
                     return (
                       <Button
+                        key={seat.seatsId}
                         w="100%"
                         colorScheme={
                           seat.statusSeats === "AVAILABLE" && seat.canBook

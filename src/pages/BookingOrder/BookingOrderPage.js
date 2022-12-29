@@ -56,82 +56,74 @@ const orderSchema = yup.object().shape({
 
 function PassengerDetailCard({
   index,
+  indexOverall,
   register,
   availableSeats,
   citizenships,
   setValue,
-  getValues,
+  type,
+  flight,
 }) {
-  const [seatsToPick, setSeatsToPick] = useState([]);
   const [seatSelected, setSeatSelected] = useState("Not selected");
+  const [passengerType, setPassengerType] = useState(null);
   const {
     isOpen: isOpenSeatsModal,
     onOpen: onOpenSeatsModal,
     onClose: onCloseSeatsModal,
   } = useDisclosure();
 
-  const _onChange = (event) => {
-    switch (event.target.value) {
-      case "Nyonya":
-        setValue(`details.${index}.passengerType`, 2);
+  useEffect(() => {
+    console.log("indexOverall", indexOverall);
+    setValue(`details.${indexOverall}.passengerType`, type.passengerType);
+
+    switch (type.passengerType) {
+      case "1":
+        setPassengerType("Anak-Anak");
         break;
-      case "Tuan":
-        setValue(`details.${index}.passengerType`, 2);
+
+      case "2":
+        setPassengerType("Dewasa");
         break;
-      case "Anak-Anak":
-        setValue(`details.${index}.passengerType`, 1);
-        break;
-      case "Bayi":
-        setValue(`details.${index}.passengerType`, 3);
+
+      case "3":
+        setPassengerType("Bayi");
         break;
 
       default:
         break;
     }
-  };
-
-  useEffect(() => {
-    const temp = [];
-    for (const seatGroup of availableSeats) {
-      for (const seat of seatGroup.seatsList) {
-        if (seat.statusSeats === "AVAILABLE") {
-          temp.push(seat);
-        }
-      }
-    }
-    setSeatsToPick(temp);
-  }, [availableSeats]);
+  }, []);
 
   return (
     <>
       <Card bg="white">
         <CardHeader>
-          <Heading>Passenger Details #{index + 1}</Heading>
+          <Heading>
+            {indexOverall + 1} - {passengerType} #{index + 1}
+          </Heading>
         </CardHeader>
         <Divider />
         <CardBody>
           <Flex gap="1rem" flexDir="column">
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Title</FormLabel>
               <Select
                 placeholder="Title"
-                {...register(`details.${index}.title`)}
-                onChange={_onChange}
+                {...register(`details.${indexOverall}.title`)}
               >
                 <option value="Tuan">Tuan</option>
                 <option value="Nyonya">Nyonya</option>
-                <option value="Anak-Anak">Anak-Anak</option>
-                <option value="Bayi">Bayi</option>
+                <option value="Nona">Nona</option>
               </Select>
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Full Name</FormLabel>
               <Input
                 placeholder="Full Name"
-                {...register(`details.${index}.fullName`)}
+                {...register(`details.${indexOverall}.fullName`)}
               />
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Seats</FormLabel>
               <Flex alignItems="center" gap="1rem">
                 <Button
@@ -145,7 +137,7 @@ function PassengerDetailCard({
               </Flex>
               {/* <Select
                 placeholder="Seats"
-                {...register(`details.${index}.idSeats`)}
+                {...register(`details.${indexOverall}.idSeats`)}
               >
                 {seatsToPick?.map((seat) => {
                   return (
@@ -156,11 +148,11 @@ function PassengerDetailCard({
                 })}
               </Select> */}
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Citizenship</FormLabel>
               <Select
                 placeholder="Citizenship"
-                {...register(`details.${index}.citizenship`)}
+                {...register(`details.${indexOverall}.citizenship`)}
               >
                 {citizenships.map((citizenship) => {
                   return (
@@ -172,6 +164,34 @@ function PassengerDetailCard({
               </Select>
             </FormControl>
             {/* Jika international, ada additional fields */}
+            {flight === "international" && (
+              <>
+                <FormControl isRequired>
+                  <FormLabel>Passport Number</FormLabel>
+                  <Input
+                    placeholder="Passport Number"
+                    {...register(`details.${indexOverall}.passportNumber`)}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Issuing Country</FormLabel>
+                  <Input
+                    placeholder="Issuing Country"
+                    {...register(`details.${indexOverall}.issuingCountry`)}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Expiration Date</FormLabel>
+                  <Input
+                    placeholder="Expiration Date"
+                    type="date"
+                    {...register(`details.${indexOverall}.expirationDate`)}
+                  />
+                </FormControl>
+              </>
+            )}
           </Flex>
         </CardBody>
       </Card>
@@ -180,7 +200,7 @@ function PassengerDetailCard({
         onClose={onCloseSeatsModal}
         seatsData={availableSeats}
         setValue={setValue}
-        index={index}
+        index={indexOverall}
         setSeatSelected={setSeatSelected}
       />
     </>
@@ -238,6 +258,7 @@ export default function BookingOrderPage() {
 
   useEffect(() => {
     let tempPassenger = 0;
+    console.log("dataParams.passenger", dataParams.passenger);
     for (const passenger of dataParams.passenger) {
       tempPassenger += Number(passenger.qtyPerson);
     }
@@ -281,41 +302,52 @@ export default function BookingOrderPage() {
             <Divider />
             <CardBody>
               <Flex gap="1rem" flexDir="column">
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select placeholder="Booker Title" {...register("title")}>
                     <option value="Tuan">Tuan</option>
                     <option value="Nyonya">Nyonya</option>
-                    <option value="Anak-Anak">Anak-Anak</option>
-                    <option value="Bayi">Bayi</option>
+                    <option value="Nona">Nona</option>
                   </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Name</FormLabel>
                   <Input placeholder="Name" {...register("bookingBy")} />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Email</FormLabel>
                   <Input placeholder="Email" {...register("email")} />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Phone Number</FormLabel>
                   <Input placeholder="Phone Number" {...register("phoneNo")} />
                 </FormControl>
               </Flex>
             </CardBody>
           </Card>
-          {[...Array(totalPassenger).keys()].map((index) => {
-            // setValue(`details.${index}.passengerType);
+          {dataParams.passenger.map((type, index) => {
+            let passengerBefore = 0;
+            for (let i = 0; i < index; i++) {
+              passengerBefore += Number(dataParams.passenger[i].qtyPerson);
+            }
             return (
-              <PassengerDetailCard
-                key={index}
-                index={index}
-                register={register}
-                availableSeats={availableSeats}
-                citizenships={citizenships}
-                setValue={setValue}
-              />
+              <>
+                {[...Array(Number(type.qtyPerson)).keys()].map((index) => {
+                  return (
+                    <PassengerDetailCard
+                      key={index}
+                      index={index}
+                      indexOverall={passengerBefore + index}
+                      type={type}
+                      register={register}
+                      availableSeats={availableSeats}
+                      citizenships={citizenships}
+                      setValue={setValue}
+                      flight={dataParams.flight}
+                    />
+                  );
+                })}
+              </>
             );
           })}
           <Card bg="white">
@@ -323,7 +355,7 @@ export default function BookingOrderPage() {
               <Heading>Payment</Heading>
             </CardHeader>
             <CardBody>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Payment Method</FormLabel>
                 <Select
                   {...register(`paymentId`)}
