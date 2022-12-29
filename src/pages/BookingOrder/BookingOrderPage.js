@@ -62,6 +62,7 @@ function PassengerDetailCard({
   citizenships,
   setValue,
   type,
+  flight,
 }) {
   const [seatSelected, setSeatSelected] = useState("Not selected");
   const [passengerType, setPassengerType] = useState(null);
@@ -104,7 +105,7 @@ function PassengerDetailCard({
         <Divider />
         <CardBody>
           <Flex gap="1rem" flexDir="column">
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Title</FormLabel>
               <Select
                 placeholder="Title"
@@ -115,14 +116,14 @@ function PassengerDetailCard({
                 <option value="Nona">Nona</option>
               </Select>
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Full Name</FormLabel>
               <Input
                 placeholder="Full Name"
                 {...register(`details.${indexOverall}.fullName`)}
               />
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Seats</FormLabel>
               <Flex alignItems="center" gap="1rem">
                 <Button
@@ -147,7 +148,7 @@ function PassengerDetailCard({
                 })}
               </Select> */}
             </FormControl>
-            <FormControl>
+            <FormControl isRequired>
               <FormLabel>Citizenship</FormLabel>
               <Select
                 placeholder="Citizenship"
@@ -163,6 +164,34 @@ function PassengerDetailCard({
               </Select>
             </FormControl>
             {/* Jika international, ada additional fields */}
+            {flight === "international" && (
+              <>
+                <FormControl isRequired>
+                  <FormLabel>Passport Number</FormLabel>
+                  <Input
+                    placeholder="Passport Number"
+                    {...register(`details.${indexOverall}.passportNumber`)}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Issuing Country</FormLabel>
+                  <Input
+                    placeholder="Issuing Country"
+                    {...register(`details.${indexOverall}.issuingCountry`)}
+                  />
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel>Expiration Date</FormLabel>
+                  <Input
+                    placeholder="Expiration Date"
+                    type="date"
+                    {...register(`details.${indexOverall}.expirationDate`)}
+                  />
+                </FormControl>
+              </>
+            )}
           </Flex>
         </CardBody>
       </Card>
@@ -273,7 +302,7 @@ export default function BookingOrderPage() {
             <Divider />
             <CardBody>
               <Flex gap="1rem" flexDir="column">
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Title</FormLabel>
                   <Select placeholder="Booker Title" {...register("title")}>
                     <option value="Tuan">Tuan</option>
@@ -281,15 +310,15 @@ export default function BookingOrderPage() {
                     <option value="Nona">Nona</option>
                   </Select>
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Name</FormLabel>
                   <Input placeholder="Name" {...register("bookingBy")} />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Email</FormLabel>
                   <Input placeholder="Email" {...register("email")} />
                 </FormControl>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel>Phone Number</FormLabel>
                   <Input placeholder="Phone Number" {...register("phoneNo")} />
                 </FormControl>
@@ -314,31 +343,19 @@ export default function BookingOrderPage() {
                       availableSeats={availableSeats}
                       citizenships={citizenships}
                       setValue={setValue}
+                      flight={dataParams.flight}
                     />
                   );
                 })}
               </>
             );
           })}
-          {/* {[...Array(totalPassenger).keys()].map((index) => {
-            // setValue(`details.${indexOverall}.passengerType);
-            return (
-              <PassengerDetailCard
-                key={index}
-                index={index}
-                register={register}
-                availableSeats={availableSeats}
-                citizenships={citizenships}
-                setValue={setValue}
-              />
-            );
-          })} */}
           <Card bg="white">
             <CardHeader>
               <Heading>Payment</Heading>
             </CardHeader>
             <CardBody>
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Payment Method</FormLabel>
                 <Select
                   {...register(`paymentId`)}
