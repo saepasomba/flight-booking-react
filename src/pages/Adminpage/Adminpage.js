@@ -38,13 +38,18 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdPayment } from "react-icons/md";
 import axios from "axios";
 import AdminForm from "./AdminForm";
+import {
+  apiAddNewPayment,
+  apiDeletePayment,
+  apiGetAdminPayment,
+} from "../../api";
 
 export default function Adminpage() {
   const [payment, setPayment] = useState([]);
   const [newPayment, setNewPayment] = useState("");
-  const [update, setUpdate] = useState('');
+  const [update, setUpdate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentOnUpdate, setPaymentOnUpdate] = useState('');
+  const [paymentOnUpdate, setPaymentOnUpdate] = useState("");
   const navigate = useNavigate();
   const {
     isOpen: editModalIsOpen,
@@ -56,14 +61,7 @@ export default function Adminpage() {
     setIsLoading(true);
     const getPayment = async (token) => {
       try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/admin/list-payment",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        const response = await apiGetAdminPayment();
         const data = response.data.data;
         setPayment(data);
       } catch (e) {
@@ -78,12 +76,7 @@ export default function Adminpage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/admin/create-payment",
-        {
-          paymentMethod: newPayment,
-        }
-      );
+      const response = await apiAddNewPayment({ paymentMethod: newPayment });
       setNewPayment("");
       adminTrigger();
     } catch (e) {
@@ -93,9 +86,7 @@ export default function Adminpage() {
 
   const Delete = async (id) => {
     try {
-      const response = await axios.delete(
-        `https://tix-service-bej5.up.railway.app/ticketing-service/admin/disable-payment/${id}`
-      );
+      const response = await apiDeletePayment(id);
       adminTrigger();
     } catch (e) {
       console.log("FAILED TO DELETE PAYMENT...", e);
@@ -164,7 +155,10 @@ export default function Adminpage() {
           </form>
         </Box>
 
-        <TableContainer alignSelf="center" width={["100%", "100%", "75%", "75%"]}>
+        <TableContainer
+          alignSelf="center"
+          width={["100%", "100%", "75%", "75%"]}
+        >
           <Table
             variant="simple"
             fontSize={["0.6rem", "0.6rem", "1rem", "1rem"]}
@@ -254,12 +248,12 @@ export default function Adminpage() {
         </TableContainer>
       </Flex>
       <AdminForm
-          isOpen={editModalIsOpen}
-          onClose={editModalOnClose}
-          paymentMethods={update}
-          paymentId={paymentOnUpdate}
-          adminTrigger={adminTrigger}
-          />
+        isOpen={editModalIsOpen}
+        onClose={editModalOnClose}
+        paymentMethods={update}
+        paymentId={paymentOnUpdate}
+        adminTrigger={adminTrigger}
+      />
       {/* <Modal isOpen={editModalIsOpen} onClose={editModalOnClose}>
         <form onSubmit={() => updateSubmit(paymentOnUpdate?.paymentId)}>
           <ModalOverlay />

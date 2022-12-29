@@ -53,10 +53,7 @@ export default function RegisterModal(props) {
     const apiRegister = async (userData) => {
       setIsLoading(true);
       try {
-        const response = await axios.post(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/ext/register",
-          userData
-        );
+        const response = await apiRegister(userData);
         console.log(response);
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
