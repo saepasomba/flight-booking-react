@@ -246,7 +246,15 @@ export default function CardHistorybook() {
                         </PopoverBody>
                       </PopoverContent>
                     </Popover>
-                      <Button colorScheme="blueHue" onClick={()=>navigate(`/history-detail/${histories.invoiceNo}`)}> Detail</Button>
+                    <Button
+                      colorScheme="blueHue"
+                      onClick={() =>
+                        navigate(`/history-detail/${histories.invoiceNo}`)
+                      }
+                    >
+                      {" "}
+                      Detail
+                    </Button>
                   </Flex>
                 </Flex>
               </CardBody>
