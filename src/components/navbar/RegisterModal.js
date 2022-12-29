@@ -57,7 +57,8 @@ export default function RegisterModal(props) {
         console.log(response);
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
-        authTrigger(data.data);
+        // authTrigger(data.data);
+        window.location.reload();
         onClose();
       } catch (error) {
         setError("Invalid! Please make sure your email is not used.");

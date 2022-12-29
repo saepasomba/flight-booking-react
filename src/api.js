@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = process.env.REACT_APP_API_URL;
-const TOKEN = localStorage.getItem(`USER_TOKEN`);
+let BASE_URL = process.env.REACT_APP_API_URL;
+export let getToken = () => localStorage.getItem(`USER_TOKEN`);
 
 export const axiosClientWithNoToken = axios.create({
   baseURL: BASE_URL,
@@ -10,7 +10,7 @@ export const axiosClientWithNoToken = axios.create({
 export const axiosClient = axios.create({
   baseURL: BASE_URL,
   headers: {
-    Authorization: TOKEN,
+    Authorization: getToken(),
   },
 });
 
@@ -18,7 +18,7 @@ export const apiGetProfile = () => {
   return axiosClient.get(`/ticketing-service/users/my-profile`);
 };
 
-export const apiEdotProfile = (data) => {
+export const apiEditProfile = (data) => {
   return axiosClient.put(`/ticketing-service/users/update-profile`, data);
 };
 

@@ -49,7 +49,8 @@ export default function LoginModal(props) {
         const response = await apiLogIn(data);
         console.log(response.data?.data);
         localStorage.setItem("USER_TOKEN", response.data.data.token);
-        authTrigger(response.data.data.token);
+        // authTrigger(response.data.data.token);
+        window.location.reload();
         onClose();
       } catch (error) {
         setError("Please make sure your email and password are correct!");
