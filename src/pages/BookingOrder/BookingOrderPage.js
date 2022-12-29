@@ -64,7 +64,7 @@ function PassengerDetailCard({
   type,
   flight,
 }) {
-  const [seatSelected, setSeatSelected] = useState("No Seat");
+  const [seatSelected, setSeatSelected] = useState("No seat");
   const [passengerType, setPassengerType] = useState(null);
   const {
     isOpen: isOpenSeatsModal,
