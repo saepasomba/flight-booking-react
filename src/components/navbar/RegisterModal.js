@@ -19,6 +19,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const registerSchema = yup.object({
   fullName: yup.string().required(),
@@ -57,6 +58,7 @@ export default function RegisterModal(props) {
         console.log(response);
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
+        localStorage.setItem("AUTH_METHOD", "NORMAL");
         authTrigger(data.data);
         onClose();
       } catch (error) {
@@ -122,13 +124,14 @@ export default function RegisterModal(props) {
             </Flex>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter flexDir="column" gap="1rem">
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button colorScheme="blue" type="submit" isLoading={isLoading}>
                 Register
               </Button>
             </Flex>
+            <GoogleAuthButton onClose={onClose} authTrigger={authTrigger} />
           </ModalFooter>
         </form>
       </ModalContent>
