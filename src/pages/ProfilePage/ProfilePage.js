@@ -27,6 +27,7 @@ import { BiLogOut } from "react-icons/bi";
 import axios from "axios";
 import ProfileForm from "./ProfileForm";
 import { useNavigate } from "react-router-dom";
+import { apiGetProfile } from "../../api";
 
 const profileItem = (label, value) => {
   return (
@@ -87,10 +88,11 @@ export default function ProfilePage() {
 
   const getProfile = async () => {
     setIsLoading(true);
-    const response = await axios.get(
-      "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
-      { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
-    );
+    const response = await apiGetProfile();
+    // const response = await axios.get(
+    //   "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
+    //   { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
+    // );
     setProfile(response.data.data);
     console.log(response);
     setIsLoading(false);
