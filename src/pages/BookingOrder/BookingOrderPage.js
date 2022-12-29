@@ -56,57 +56,50 @@ const orderSchema = yup.object().shape({
 
 function PassengerDetailCard({
   index,
+  indexOverall,
   register,
   availableSeats,
   citizenships,
   setValue,
-  getValues,
+  type,
 }) {
-  const [seatsToPick, setSeatsToPick] = useState([]);
   const [seatSelected, setSeatSelected] = useState("Not selected");
+  const [passengerType, setPassengerType] = useState(null);
   const {
     isOpen: isOpenSeatsModal,
     onOpen: onOpenSeatsModal,
     onClose: onCloseSeatsModal,
   } = useDisclosure();
 
-  const _onChange = (event) => {
-    switch (event.target.value) {
-      case "Nyonya":
-        setValue(`details.${index}.passengerType`, 2);
+  useEffect(() => {
+    console.log("indexOverall", indexOverall);
+    setValue(`details.${indexOverall}.passengerType`, type.passengerType);
+
+    switch (type.passengerType) {
+      case "1":
+        setPassengerType("Anak-Anak");
         break;
-      case "Tuan":
-        setValue(`details.${index}.passengerType`, 2);
+
+      case "2":
+        setPassengerType("Dewasa");
         break;
-      case "Anak-Anak":
-        setValue(`details.${index}.passengerType`, 1);
-        break;
-      case "Bayi":
-        setValue(`details.${index}.passengerType`, 3);
+
+      case "3":
+        setPassengerType("Bayi");
         break;
 
       default:
         break;
     }
-  };
-
-  useEffect(() => {
-    const temp = [];
-    for (const seatGroup of availableSeats) {
-      for (const seat of seatGroup.seatsList) {
-        if (seat.statusSeats === "AVAILABLE") {
-          temp.push(seat);
-        }
-      }
-    }
-    setSeatsToPick(temp);
-  }, [availableSeats]);
+  }, []);
 
   return (
     <>
       <Card bg="white">
         <CardHeader>
-          <Heading>Passenger Details #{index + 1}</Heading>
+          <Heading>
+            {indexOverall + 1} - {passengerType} #{index + 1}
+          </Heading>
         </CardHeader>
         <Divider />
         <CardBody>
@@ -115,20 +108,18 @@ function PassengerDetailCard({
               <FormLabel>Title</FormLabel>
               <Select
                 placeholder="Title"
-                {...register(`details.${index}.title`)}
-                onChange={_onChange}
+                {...register(`details.${indexOverall}.title`)}
               >
                 <option value="Tuan">Tuan</option>
                 <option value="Nyonya">Nyonya</option>
-                <option value="Anak-Anak">Anak-Anak</option>
-                <option value="Bayi">Bayi</option>
+                <option value="Nona">Nona</option>
               </Select>
             </FormControl>
             <FormControl>
               <FormLabel>Full Name</FormLabel>
               <Input
                 placeholder="Full Name"
-                {...register(`details.${index}.fullName`)}
+                {...register(`details.${indexOverall}.fullName`)}
               />
             </FormControl>
             <FormControl>
@@ -145,7 +136,7 @@ function PassengerDetailCard({
               </Flex>
               {/* <Select
                 placeholder="Seats"
-                {...register(`details.${index}.idSeats`)}
+                {...register(`details.${indexOverall}.idSeats`)}
               >
                 {seatsToPick?.map((seat) => {
                   return (
@@ -160,7 +151,7 @@ function PassengerDetailCard({
               <FormLabel>Citizenship</FormLabel>
               <Select
                 placeholder="Citizenship"
-                {...register(`details.${index}.citizenship`)}
+                {...register(`details.${indexOverall}.citizenship`)}
               >
                 {citizenships.map((citizenship) => {
                   return (
@@ -180,7 +171,7 @@ function PassengerDetailCard({
         onClose={onCloseSeatsModal}
         seatsData={availableSeats}
         setValue={setValue}
-        index={index}
+        index={indexOverall}
         setSeatSelected={setSeatSelected}
       />
     </>
@@ -238,6 +229,7 @@ export default function BookingOrderPage() {
 
   useEffect(() => {
     let tempPassenger = 0;
+    console.log("dataParams.passenger", dataParams.passenger);
     for (const passenger of dataParams.passenger) {
       tempPassenger += Number(passenger.qtyPerson);
     }
@@ -286,8 +278,7 @@ export default function BookingOrderPage() {
                   <Select placeholder="Booker Title" {...register("title")}>
                     <option value="Tuan">Tuan</option>
                     <option value="Nyonya">Nyonya</option>
-                    <option value="Anak-Anak">Anak-Anak</option>
-                    <option value="Bayi">Bayi</option>
+                    <option value="Nona">Nona</option>
                   </Select>
                 </FormControl>
                 <FormControl>
@@ -305,8 +296,32 @@ export default function BookingOrderPage() {
               </Flex>
             </CardBody>
           </Card>
-          {[...Array(totalPassenger).keys()].map((index) => {
-            // setValue(`details.${index}.passengerType);
+          {dataParams.passenger.map((type, index) => {
+            let passengerBefore = 0;
+            for (let i = 0; i < index; i++) {
+              passengerBefore += Number(dataParams.passenger[i].qtyPerson);
+            }
+            return (
+              <>
+                {[...Array(Number(type.qtyPerson)).keys()].map((index) => {
+                  return (
+                    <PassengerDetailCard
+                      key={index}
+                      index={index}
+                      indexOverall={passengerBefore + index}
+                      type={type}
+                      register={register}
+                      availableSeats={availableSeats}
+                      citizenships={citizenships}
+                      setValue={setValue}
+                    />
+                  );
+                })}
+              </>
+            );
+          })}
+          {/* {[...Array(totalPassenger).keys()].map((index) => {
+            // setValue(`details.${indexOverall}.passengerType);
             return (
               <PassengerDetailCard
                 key={index}
@@ -317,7 +332,7 @@ export default function BookingOrderPage() {
                 setValue={setValue}
               />
             );
-          })}
+          })} */}
           <Card bg="white">
             <CardHeader>
               <Heading>Payment</Heading>
