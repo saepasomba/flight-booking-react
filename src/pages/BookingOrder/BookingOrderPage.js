@@ -176,10 +176,18 @@ function PassengerDetailCard({
 
                 <FormControl isRequired>
                   <FormLabel>Issuing Country</FormLabel>
-                  <Input
+                  <Select
                     placeholder="Issuing Country"
                     {...register(`details.${indexOverall}.issuingCountry`)}
-                  />
+                  >
+                    {citizenships.map((citizenship) => {
+                      return (
+                        <option key={citizenship.id} value={citizenship.name}>
+                          {citizenship.name} - {citizenship.code}
+                        </option>
+                      );
+                    })}
+                  </Select>
                 </FormControl>
 
                 <FormControl isRequired>
@@ -266,6 +274,9 @@ export default function BookingOrderPage() {
 
     setValue("amount", dataParams.price * tempPassenger);
     setValue("scheduleId", dataParams.scheduleId);
+    if (dataParams.returnDate) {
+      setValue("returnDate", dataParams.returnDate);
+    }
 
     const fetchData = async () => {
       try {
