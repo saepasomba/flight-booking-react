@@ -16,6 +16,7 @@ export default function DetailPages() {
               color="white"
               bg="#063970"
               variant="solid"
+              mt="1.5rem"
               mb="1rem"
             >
               Back to Home
