@@ -26,6 +26,14 @@ import {
   TableContainer,
   VStack,
   Circle,
+  Button,
+  PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverBody,
 } from "@chakra-ui/react";
 import conneting from "../../asset/connecting-200w.png";
 import axios from "axios";
@@ -57,6 +65,8 @@ export default function DetailPost() {
   useEffect(() => {
     getDetailhistory();
   }, []);
+
+  console.log(details);
 
   return (
     <>
@@ -182,7 +192,7 @@ export default function DetailPost() {
                 flexDir="column"
                 justifyContent="center"
                 textAlign="center"
-                w="50%"
+                w="10rem"
               >
                 <Text>QR Code</Text>
                 <Image
@@ -232,6 +242,7 @@ export default function DetailPost() {
                     <Th>Type</Th>
                     <Th>Seat Number</Th>
                     <Th>Baggage</Th>
+                    <Th>Travel Docs</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -243,6 +254,68 @@ export default function DetailPost() {
                             <Td>{det.type}</Td>
                             <Td textAlign="center">{det.seatsNumber}</Td>
                             <Td textAlign="center">{det.luggageCapacity}</Td>
+                            <Td textAlign="center">
+                              {det.travelDocument ? (
+                                <>
+                                  <Popover>
+                                    <PopoverTrigger>
+                                      <Button
+                                        variant="ghost"
+                                        colorScheme="blueHue"
+                                      >
+                                        Travel Document
+                                      </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent>
+                                      <PopoverArrow />
+                                      <PopoverCloseButton />
+                                      <PopoverHeader>
+                                        Travel document for {det.name}
+                                      </PopoverHeader>
+                                      <PopoverBody>
+                                        <Flex flexDir="column" gap="1rem">
+                                          <Box>
+                                            <Text color="gray">
+                                              Passport Number
+                                            </Text>
+                                            <Text>
+                                              {
+                                                det.travelDocument
+                                                  .passportNumber
+                                              }
+                                            </Text>
+                                          </Box>
+                                          <Box>
+                                            <Text color="gray">
+                                              Issuing Country
+                                            </Text>
+                                            <Text>
+                                              {
+                                                det.travelDocument
+                                                  .issuingCountry
+                                              }
+                                            </Text>
+                                          </Box>
+                                          <Box>
+                                            <Text color="gray">
+                                              Expiration Date
+                                            </Text>
+                                            <Text>
+                                              {
+                                                det.travelDocument
+                                                  .expirationDate
+                                              }
+                                            </Text>
+                                          </Box>
+                                        </Flex>
+                                      </PopoverBody>
+                                    </PopoverContent>
+                                  </Popover>
+                                </>
+                              ) : (
+                                "N/A"
+                              )}
+                            </Td>
                           </Tr>
                         );
                       })

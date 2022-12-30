@@ -145,6 +145,7 @@ export default function CardHistorybook() {
         history.map((histories) => {
           return (
             <Card
+              key={histories.invoiceNo}
               padding="0"
               width={["95%", "80%", "80%", "75%"]}
               bg="white"
