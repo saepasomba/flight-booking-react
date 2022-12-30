@@ -24,10 +24,12 @@ import {
   Th,
   Td,
   TableContainer,
+  VStack,
+  Circle,
 } from "@chakra-ui/react";
-import GarudaIndonesia from "../../asset/garuda-200h.png";
 import conneting from "../../asset/connecting-200w.png";
 import axios from "axios";
+import { apiGetDetailHistory } from "../../api";
 
 export default function DetailPost() {
   const [details, setDetail] = useState();
@@ -46,10 +48,7 @@ export default function DetailPost() {
 
   const getDetailhistory = async () => {
     setIsLoading(true);
-    const response = await axios.get(
-      `https://tix-service-bej5.up.railway.app/ticketing-service/booking/history-detail/${param}`,
-      { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
-    );
+    const response = await apiGetDetailHistory(param);
     setDetail(response.data.data);
     console.log(response);
     setIsLoading(false);
@@ -107,65 +106,59 @@ export default function DetailPost() {
             </Flex>
           </CardHeader>
 
-          <CardBody padding="4" color="black">
-            <Flex
-              flexDirection={["row", "row", "row", "row"]}
-              justifyContent={["center", "center", "center", "Center"]}
-              mb="1rem"
+          <CardBody color="black">
+            <Text textAlign="center">
+              {details.flightDate ? details.flightDate : " "}
+            </Text>
+            <Grid
+              gridTemplateColumns={{ base: "1fr", lg: "30% 70%" }}
+              mt="2rem"
+              gap="1rem"
             >
-              <Text>{details.flightDate ? details.flightDate : " "}</Text>
-            </Flex>
-            <Flex>
-              <Grid w="60%">
-                <Image
-                  marginLeft={["2", "2", "2", "5"]}
-                  src={GarudaIndonesia}
-                  height={["5vh", "5vh", "5vh", "10vh"]}
-                />
-                <Text
-                  marginLeft={["null", "5", "5", "9"]}
-                  fontSize={["10", "10", "12", "15"]}
-                >
-                  {details.airplane ? details.airplane : " "}
-                </Text>
-                <Text
-                  marginLeft={["null", "5", "10", "12"]}
-                  fontSize={["10", "10", "12", "13"]}
-                >
-                  {details.classType ? details.classType : " "}
-                </Text>
-              </Grid>
-              <Grid
-                marginLeft={["8", "8", "8", "5"]}
-                templateRows="repeat(2, 1fr)"
-              >
-                <GridItem>
+              <Flex flexDir="column" gap="1rem">
+                <Flex flexDir="column">
+                  <Text color="gray">Airplane</Text>
+                  <Text>{details.airplane ? details.airplane : " "}</Text>
+                </Flex>
+                <Flex flexDir="column">
+                  <Text color="gray">Class</Text>
+                  <Text>{details.classType ? details.classType : " "}</Text>
+                </Flex>
+              </Flex>
+
+              <Grid templateColumns="20% 10% 70%" alignItems="center">
+                <GridItem textAlign="end">
                   {details.startTime ? details.startTime : " "}
                 </GridItem>
-                <GridItem marginTop={["3"]}>
-                  {details.endTime ? details.endTime : " "}
+                <GridItem>
+                  <Flex flexDir="column" align="center">
+                    <Circle bg="bluePrimary" size="1.5rem" />
+                    <Box w={"1.5px"} h="2.5rem" bg="black" />
+                  </Flex>
                 </GridItem>
-              </Grid>
-              <Image
-                src={conneting}
-                height={{
-                  base: "100%", // 0-48em
-                  md: "50%", // 48em-80em,
-                  xl: "25%", // 80em+
-                }}
-                marginLeft={["2", "2", "4", "4"]}
-              ></Image>
-              <Grid w="100%" marginLeft={["3"]} templateRows="repeat(2, 1fr)">
                 <GridItem>
                   <Flex flexDirection="column">
                     <Text>
                       {details.departureCity ? details.departureCity : " "}
                     </Text>
-                    <Text fontSize={["10", "10", "12", "12"]}>
+                    <Text fontSize="xs">
                       {details.departureAirport
                         ? details.departureAirport
                         : " "}
                     </Text>
+                  </Flex>
+                </GridItem>
+                <GridItem textAlign="end">
+                  {details.endTime ? details.endTime : " "}
+                </GridItem>
+                <GridItem>
+                  <Flex flexDir="column" align="center">
+                    <Box w={"1.5px"} h="2.5rem" bg="black" />
+                    <Circle
+                      border="1px"
+                      borderColor="bluePrimary"
+                      size="1.5rem"
+                    />
                   </Flex>
                 </GridItem>
                 <GridItem>
@@ -175,7 +168,7 @@ export default function DetailPost() {
                         ? details.destinationsCity
                         : " "}
                     </Text>
-                    <Text fontSize={["10", "10", "12", "12"]}>
+                    <Text fontSize="xs">
                       {details.destinationsAirport
                         ? details.destinationsAirport
                         : " "}
@@ -183,13 +176,21 @@ export default function DetailPost() {
                   </Flex>
                 </GridItem>
               </Grid>
-              <Grid marginLeft={["2", "4", "4", "8"]}>
-                <GridItem textAlign="center" fontWeight="semibold">
-                  QR Code
-                </GridItem>
-                <Image src={details.qrCodeUrl ? details.qrCodeUrl : " "} />
-              </Grid>
-            </Flex>
+            </Grid>
+            <Center mt="2rem">
+              <Flex
+                flexDir="column"
+                justifyContent="center"
+                textAlign="center"
+                w="50%"
+              >
+                <Text>QR Code</Text>
+                <Image
+                  src={details.qrCodeUrl ? details.qrCodeUrl : " "}
+                  objectFit="contain"
+                />
+              </Flex>
+            </Center>
             <HStack bg="whitesmoke">
               <Divider borderColor="#063970" border="3px solid #063970" />
             </HStack>

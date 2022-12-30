@@ -28,6 +28,10 @@ export const apiGetHistoryBook = () => {
   );
 };
 
+export const apiGetDetailHistory = (param) => {
+  return axiosClient.get(`/ticketing-service/booking/history-detail/${param}`);
+};
+
 export const apiLogIn = (data) => {
   return axiosClientWithNoToken.post(`/ticketing-service/ext/login`, data);
 };
