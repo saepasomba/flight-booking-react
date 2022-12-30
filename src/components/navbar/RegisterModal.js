@@ -132,7 +132,11 @@ export default function RegisterModal(props) {
                 Register
               </Button>
             </Flex>
-            <GoogleAuthButton onClose={onClose} authTrigger={authTrigger} />
+            <GoogleAuthButton
+              onClose={onClose}
+              authTrigger={authTrigger}
+              setError={setError}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

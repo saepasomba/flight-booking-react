@@ -9,10 +9,19 @@ export default function GoogleAuthButton({ onClose, authTrigger, setError }) {
   const authWithGoogle = async () => {
     const firebaseResponse = await signInWithGoogle();
     console.log(firebaseResponse);
-    const { accessToken } = firebaseResponse;
+    const { email, displayName, accessToken } = firebaseResponse;
+    console.log({
+      email: email,
+      fullName: displayName,
+      token: accessToken,
+    });
     try {
       setIsLoading(true);
-      const response = await apiAuthWithGoogle({ token: accessToken });
+      const response = await apiAuthWithGoogle({
+        email: email,
+        fullName: displayName,
+        token: accessToken,
+      });
       console.log(response);
       const newToken = response.data?.data.token; //TODO
       localStorage.setItem("USER_TOKEN", newToken);

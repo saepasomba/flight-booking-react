@@ -100,7 +100,11 @@ export default function LoginModal(props) {
                 Login
               </Button>
             </Flex>
-            <GoogleAuthButton onClose={onClose} authTrigger={authTrigger} />
+            <GoogleAuthButton
+              onClose={onClose}
+              authTrigger={authTrigger}
+              setError={setError}
+            />
           </ModalFooter>
         </form>
       </ModalContent>
