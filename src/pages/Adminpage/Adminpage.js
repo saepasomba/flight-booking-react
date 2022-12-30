@@ -146,7 +146,7 @@ export default function Adminpage() {
             fontFamily="sans-serif"
             fontWeight="semibold"
           >
-            Payment CRUD
+            Admin Page
           </Text>
           <Button
             colorScheme="red"

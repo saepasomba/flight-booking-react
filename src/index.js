@@ -45,15 +45,16 @@ root.render(
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/booking-order" element={<BookingOrderPage />} />
                 <Route path="/qr-validation" element={<QRValidationPage />} />
+                <Route
+                  path="/history-detail/:param"
+                  element={<DetailPages />}
+                />
               </>
             )}
-
-            <Route path="/history-detail/:param" element={<DetailPages />} />
-
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
-        <Footer />
+        {localStorage.getItem("USER_ROLE") !== "ADMIN" && <Footer />}
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>
