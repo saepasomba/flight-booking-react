@@ -58,15 +58,12 @@ export default function DetailPost() {
     setIsLoading(true);
     const response = await apiGetDetailHistory(param);
     setDetail(response.data.data);
-    console.log(response);
     setIsLoading(false);
   };
 
   useEffect(() => {
     getDetailhistory();
   }, []);
-
-  console.log(details);
 
   return (
     <>

@@ -40,14 +40,10 @@ export default function LoginModal(props) {
   });
 
   const loginSubmit = (data) => {
-    console.log("Logging in...");
-    console.log(data);
-
     const logginIn = async (data) => {
       setIsLoading(true);
       try {
         const response = await apiLogIn(data);
-        console.log(response.data?.data);
         localStorage.setItem("USER_TOKEN", response.data.data.token);
         // authTrigger(response.data.data.token);
         localStorage.setItem("AUTH_METHOD", "NORMAL");
