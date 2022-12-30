@@ -19,6 +19,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { apiRegister } from "../../api";
 import GoogleAuthButton from "./GoogleAuthButton";
 
 const registerSchema = yup.object({
@@ -51,7 +52,7 @@ export default function RegisterModal(props) {
 
     const { confirmPassword, ...cleanData } = data;
     console.log(cleanData);
-    const apiRegister = async (userData) => {
+    const postRegister = async (userData) => {
       setIsLoading(true);
       try {
         const response = await apiRegister(userData);
@@ -66,10 +67,9 @@ export default function RegisterModal(props) {
         setError("Invalid! Please make sure your email is not used.");
       }
       setIsLoading(false);
-      console.log("FINISHED HITTING API");
     };
 
-    apiRegister(cleanData);
+    postRegister(cleanData);
     console.log("FINISHED SUBMITTING PROTOCOL");
   };
 

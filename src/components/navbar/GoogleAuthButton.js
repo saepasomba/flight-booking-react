@@ -8,6 +8,7 @@ export default function GoogleAuthButton({ onClose, authTrigger, setError }) {
   const [isLoading, setIsLoading] = useState(false);
   const authWithGoogle = async () => {
     const firebaseResponse = await signInWithGoogle();
+    console.log(firebaseResponse);
     const { accessToken } = firebaseResponse;
     try {
       setIsLoading(true);
