@@ -18,7 +18,7 @@ export const apiGetProfile = () => {
   return axiosClient.get(`/ticketing-service/users/my-profile`);
 };
 
-export const apiEdotProfile = (data) => {
+export const apiEditProfile = (data) => {
   return axiosClient.put(`/ticketing-service/users/update-profile`, data);
 };
 
@@ -34,6 +34,13 @@ export const apiLogIn = (data) => {
 
 export const apiRegister = (data) => {
   return axiosClientWithNoToken.post(`/ticketing-service/ext/register`, data);
+};
+
+export const apiAuthWithGoogle = (data) => {
+  return axiosClientWithNoToken.post(
+    `/ticketing-service/ext/googleid-token`,
+    data
+  );
 };
 
 export const apiGetCountNotification = () => {

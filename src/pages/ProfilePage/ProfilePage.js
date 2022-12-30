@@ -100,6 +100,7 @@ export default function ProfilePage() {
 
   const logoutSubmit = () => {
     localStorage.removeItem("USER_TOKEN");
+    localStorage.removeItem("AUTH_METHOD");
     toast({
       title: "Logged out!",
       position: "top",

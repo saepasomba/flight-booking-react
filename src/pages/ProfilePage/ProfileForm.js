@@ -17,7 +17,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { apiEdotProfile } from "../../api";
+import { apiEditProfile } from "../../api";
 
 const profileSchema = yup.object({
   fullName: yup.string().required(),
@@ -55,7 +55,7 @@ export default function ProfileForm(props) {
 
     const updateProfile = async (data) => {
       console.log("Data sent", data);
-      const response = await apiEdotProfile(data);
+      const response = await apiEditProfile(data);
       // const response = await axios.put(
       //   "https://tix-service-bej5.up.railway.app/ticketing-service/users/update-profile",
       //   data,
