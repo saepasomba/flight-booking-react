@@ -60,7 +60,7 @@ export default function Navbar() {
     onClose: registerOnClose,
   } = useDisclosure();
 
-  const getCountNotification = async (token) => {
+  const getCountNotification = async () => {
     try {
       const response = await apiGetCountNotification;
       const data = response.data.data;
@@ -70,7 +70,7 @@ export default function Navbar() {
     }
   };
 
-  const getListNotification = async (token) => {
+  const getListNotification = async () => {
     try {
       setIsLoadingNotif(true);
       const response = await apiGetListNotification();
@@ -84,7 +84,7 @@ export default function Navbar() {
     }
   };
 
-  const authTrigger = (token) => {
+  const authTrigger = () => {
     const getProfile = async () => {
       setIsLoading(true);
       try {
@@ -98,9 +98,9 @@ export default function Navbar() {
       }
       setIsLoading(false);
     };
-    getProfile(token);
+    getProfile();
 
-    getCountNotification(token);
+    getCountNotification();
   };
 
   const logout = () => {

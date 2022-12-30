@@ -27,7 +27,7 @@ export default function GoogleAuthButton({ onClose, authTrigger, setError }) {
       localStorage.setItem("USER_TOKEN", newToken);
       localStorage.setItem("AUTH_METHOD", "GOOGLE");
 
-      authTrigger(newToken);
+      window.location.reload();
       onClose();
     } catch (e) {
       console.log("ERROR", e);

@@ -60,9 +60,9 @@ export default function RegisterModal(props) {
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
         // authTrigger(data.data);
-        window.location.reload();
         localStorage.setItem("AUTH_METHOD", "NORMAL");
         localStorage.setItem("USER_ROLE", response.data.data.role);
+        window.location.reload();
         onClose();
       } catch (error) {
         setError("Invalid! Please make sure your email is not used.");
