@@ -40,6 +40,13 @@ export const apiRegister = (data) => {
   return axiosClientWithNoToken.post(`/ticketing-service/ext/register`, data);
 };
 
+export const apiAuthWithGoogle = (data) => {
+  return axiosClientWithNoToken.post(
+    `/ticketing-service/ext/googleid-token`,
+    data
+  );
+};
+
 export const apiGetCountNotification = () => {
   return axiosClient.get(`/ticketing-service/users/count-notif`);
 };

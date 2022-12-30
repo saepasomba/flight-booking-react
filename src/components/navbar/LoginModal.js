@@ -17,8 +17,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axios from "axios";
 import { apiLogIn } from "../../api";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const loginSchema = yup.object({
   email: yup.string().email().required(),
@@ -51,6 +51,7 @@ export default function LoginModal(props) {
         localStorage.setItem("USER_TOKEN", response.data.data.token);
         // authTrigger(response.data.data.token);
         window.location.reload();
+        localStorage.setItem("AUTH_METHOD", "NORMAL");
         onClose();
       } catch (error) {
         setError("Please make sure your email and password are correct!");
@@ -92,13 +93,14 @@ export default function LoginModal(props) {
             </Flex>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter flexDir="column" gap="1rem">
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button type="submit" colorScheme="blue" isLoading={isLoading}>
                 Login
               </Button>
             </Flex>
+            <GoogleAuthButton onClose={onClose} authTrigger={authTrigger} />
           </ModalFooter>
         </form>
       </ModalContent>

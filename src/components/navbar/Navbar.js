@@ -25,7 +25,6 @@ import {
 import appLogo from "../../asset/logo-nobg.png";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { FiBell } from "react-icons/fi";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
@@ -86,12 +85,11 @@ export default function Navbar() {
   };
 
   const authTrigger = (token) => {
-    const getProfile = async (token) => {
+    const getProfile = async () => {
       setIsLoading(true);
       try {
         console.log("AUTH TRIGGERED");
         const response = await apiGetProfile();
-        console.log("getprofile", response);
 
         const data = response.data.data;
         setUser(data);

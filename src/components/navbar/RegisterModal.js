@@ -19,6 +19,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const registerSchema = yup.object({
   fullName: yup.string().required(),
@@ -59,6 +60,7 @@ export default function RegisterModal(props) {
         localStorage.setItem("USER_TOKEN", data.data);
         // authTrigger(data.data);
         window.location.reload();
+        localStorage.setItem("AUTH_METHOD", "NORMAL");
         onClose();
       } catch (error) {
         setError("Invalid! Please make sure your email is not used.");
@@ -123,13 +125,14 @@ export default function RegisterModal(props) {
             </Flex>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter flexDir="column" gap="1rem">
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button colorScheme="blue" type="submit" isLoading={isLoading}>
                 Register
               </Button>
             </Flex>
+            <GoogleAuthButton onClose={onClose} authTrigger={authTrigger} />
           </ModalFooter>
         </form>
       </ModalContent>
