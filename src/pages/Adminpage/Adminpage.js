@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
 import {
   Table,
   Thead,
@@ -31,6 +32,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  useToast,
 } from "@chakra-ui/react";
 import NavbarAdmin from "../../components/navbar/NavbarAdmin";
 import { FiEdit } from "react-icons/fi";
@@ -56,21 +58,38 @@ export default function Adminpage() {
     onOpen: editModalOnOpen,
     onClose: editModalOnClose,
   } = useDisclosure();
+  const toast = useToast();
+
+  const logoutSubmit = () => {
+    localStorage.removeItem("USER_TOKEN");
+    localStorage.removeItem("AUTH_METHOD");
+    localStorage.removeItem("USER_ROLE");
+    toast({
+      title: "Logged out!",
+      position: "top",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
+    });
+    navigate("/");
+    window.location.reload();
+  };
 
   const adminTrigger = (token) => {
     setIsLoading(true);
-    const getPayment = async (token) => {
+    const getPayment = async () => {
       try {
         const response = await apiGetAdminPayment();
+        console.log("response", response);
         const data = response.data.data;
         setPayment(data);
       } catch (e) {
-        console.log("FAILED TO GET PAYMENT...", e);
+        // console.log("FAILED TO GET PAYMENT...", e);
         setPayment(null);
       }
       setIsLoading(false);
     };
-    getPayment(token);
+    getPayment();
   };
 
   const handleSubmit = async (e) => {
@@ -120,7 +139,7 @@ export default function Adminpage() {
   return (
     <>
       <Flex flexDirection="column">
-        <Box alignSelf="center">
+        <Flex flexDir="column" alignSelf="center" justifyItems="center">
           <Text
             fontSize={["2rem", "2rem", "3.5rem", "3.5rem"]}
             color="grey"
@@ -129,7 +148,15 @@ export default function Adminpage() {
           >
             Payment CRUD
           </Text>
-        </Box>
+          <Button
+            colorScheme="red"
+            variant="ghost"
+            leftIcon={<BiLogOut />}
+            onClick={logoutSubmit}
+          >
+            Logout
+          </Button>
+        </Flex>
 
         <Box alignSelf="center" width="75%">
           <form onSubmit={handleSubmit} width="100%">
@@ -187,8 +214,8 @@ export default function Adminpage() {
                     <Skeleton height="20px" />
                   </Td>
                 </Tr>
-              ) : payment.length > 0 ? (
-                payment.map((pay) => {
+              ) : payment?.length > 0 ? (
+                payment?.map((pay) => {
                   return (
                     <Tr key={pay.paymentId}>
                       {/* <AdminForm

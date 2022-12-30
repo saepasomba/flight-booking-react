@@ -52,6 +52,7 @@ export default function LoginModal(props) {
         // authTrigger(response.data.data.token);
         window.location.reload();
         localStorage.setItem("AUTH_METHOD", "NORMAL");
+        localStorage.setItem("USER_ROLE", response.data.data.role);
         onClose();
       } catch (error) {
         setError("Please make sure your email and password are correct!");

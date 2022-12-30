@@ -97,17 +97,22 @@ export const apiGetQRValidation = (token) => {
 };
 
 export const apiGetAdminPayment = () => {
-  axiosClient.get(`/ticketing-service/admin/list-payment`);
+  return axiosClient.get(`/ticketing-service/admin/list-payment`);
 };
 
 export const apiAddNewPayment = (data) => {
-  axiosClient.post(`/ticketing-service/admin/create-payment`, data);
+  return axiosClient.post(`/ticketing-service/admin/create-payment`, data);
 };
 
 export const apiEditPayment = (paymentId, data) => {
-  axiosClient.put(`/ticketing-service/admin/update-payment/${paymentId}`, data);
+  return axiosClient.put(
+    `/ticketing-service/admin/update-payment/${paymentId}`,
+    data
+  );
 };
 
 export const apiDeletePayment = (paymentId) => {
-  axiosClient.delete(`/ticketing-service/admin/disable-payment/${paymentId}`);
+  return axiosClient.delete(
+    `/ticketing-service/admin/disable-payment/${paymentId}`
+  );
 };
