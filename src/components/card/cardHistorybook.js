@@ -50,7 +50,6 @@ export default function CardHistorybook() {
     setIsLoading(true);
     const response = await apiGetHistoryBook();
     setHistory(response.data.data);
-    console.log(response);
     setIsLoading(false);
   };
 

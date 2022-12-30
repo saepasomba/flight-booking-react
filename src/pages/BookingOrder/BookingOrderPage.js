@@ -73,7 +73,6 @@ function PassengerDetailCard({
   } = useDisclosure();
 
   useEffect(() => {
-    console.log("indexOverall", indexOverall);
     setValue(`details.${indexOverall}.passengerType`, type.passengerType);
 
     switch (type.passengerType) {
@@ -226,7 +225,6 @@ export default function BookingOrderPage() {
 
   const params = window.location.search.slice(1);
   const dataParams = qs.parse(params);
-  console.log("dataParams", dataParams);
 
   const {
     register,
@@ -242,11 +240,9 @@ export default function BookingOrderPage() {
   });
 
   const submitOrder = (data) => {
-    console.log("order data", data);
     const createOrder = async (data) => {
       setIsLoading(true);
       const response = await apiCreateOrder(data);
-      console.log(response);
       setIsLoading(false);
 
       if (response.data.responseCode === 200) {
@@ -261,12 +257,8 @@ export default function BookingOrderPage() {
     createOrder(data);
   };
 
-  console.log(errors);
-  // console.log(getValues());
-
   useEffect(() => {
     let tempPassenger = 0;
-    console.log("dataParams.passenger", dataParams.passenger);
     for (const passenger of dataParams.passenger) {
       tempPassenger += Number(passenger.qtyPerson);
     }

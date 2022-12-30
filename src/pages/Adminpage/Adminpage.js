@@ -80,11 +80,9 @@ export default function Adminpage() {
     const getPayment = async () => {
       try {
         const response = await apiGetAdminPayment();
-        console.log("response", response);
         const data = response.data.data;
         setPayment(data);
       } catch (e) {
-        // console.log("FAILED TO GET PAYMENT...", e);
         setPayment(null);
       }
       setIsLoading(false);
@@ -113,7 +111,6 @@ export default function Adminpage() {
   };
 
   // const updateSubmit = async (id) => {
-  //   console.log(id);
   //   try {
   //     const response = await axios.put(
   //       `https://tix-service-bej5.up.railway.app/ticketing-service/admin/update-payment/${id}`,

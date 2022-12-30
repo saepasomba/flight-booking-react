@@ -60,7 +60,6 @@ export default function SearchPages() {
       try {
         setIsLoading(true);
         const response = await apiGetFlights(data);
-        console.log(response);
         if (response.data.responseCode === 200) {
           setFlights(response.data.data.schedule);
         }
@@ -70,7 +69,6 @@ export default function SearchPages() {
       }
     };
 
-    console.log(data);
     fetchData(data);
   }, []);
 

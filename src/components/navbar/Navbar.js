@@ -62,7 +62,7 @@ export default function Navbar() {
 
   const getCountNotification = async () => {
     try {
-      const response = await apiGetCountNotification;
+      const response = await apiGetCountNotification();
       const data = response.data.data;
       setNotifcount(data);
     } catch (e) {
@@ -88,7 +88,6 @@ export default function Navbar() {
     const getProfile = async () => {
       setIsLoading(true);
       try {
-        console.log("AUTH TRIGGERED");
         const response = await apiGetProfile();
 
         const data = response.data.data;

@@ -94,7 +94,6 @@ export default function ProfilePage() {
     //   { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
     // );
     setProfile(response.data.data);
-    console.log(response);
     setIsLoading(false);
   };
 
