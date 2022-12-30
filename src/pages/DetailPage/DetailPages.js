@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 
 export default function DetailPages() {
   return (
-    <Box>
+    <Box mt="1rem">
       <Flex flexDirection="column">
         <Box pl={["0.5rem", "0.5rem", "3rem", "3rem"]} alignSelf="flex-start">
-          <Link to="/">
+          <Link to="/history">
             <Button
               size={["sm", "sm", "md", "md"]}
               leftIcon={<TiArrowBack />}
@@ -18,7 +18,7 @@ export default function DetailPages() {
               variant="solid"
               mb="1rem"
             >
-              Back to Home
+              Back to History
             </Button>
           </Link>
         </Box>

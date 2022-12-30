@@ -88,8 +88,8 @@ export default function Navbar() {
     const getProfile = async () => {
       setIsLoading(true);
       try {
+        console.log("AUTH TRIGGERED");
         const response = await apiGetProfile();
-        console.log("response api get profile", response);
 
         const data = response.data.data;
         setUser(data);
