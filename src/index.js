@@ -19,6 +19,7 @@ import Navbar from "./components/navbar/Navbar";
 import { Footer } from "./components/footer/Footer";
 import theme from "./theme/Theme";
 import NotFound from "./pages/NotFound/NotFound";
+import Adminpage from "./pages/Adminpage/Adminpage";
 import ScrollToTop from "./utils/Utils";
 import BookingOrderPage from "./pages/BookingOrder/BookingOrderPage";
 import QRValidationPage from "./pages/QRValidation/QRValidationPage";
@@ -29,21 +30,31 @@ root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <BrowserRouter>
-        <Navbar />
+        {localStorage.getItem("USER_ROLE") !== "ADMIN" && <Navbar />}
+
         <Box pt="5rem">
           <ScrollToTop />
           <Routes>
-            <Route path="/" element={<Homepage />} />
-            <Route path="/history" element={<HistoryBookPage />} />
-            <Route path="/search" element={<SearchPages />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/booking-order" element={<BookingOrderPage />} />
-            <Route path="/qr-validation" element={<QRValidationPage />} />
-            <Route path="/history-detail" element={<DetailPages />} />
+            {localStorage.getItem("USER_ROLE") === "ADMIN" ? (
+              <Route path="/" element={<Adminpage />} />
+            ) : (
+              <>
+                <Route path="/" element={<Homepage />} />
+                <Route path="/history" element={<HistoryBookPage />} />
+                <Route path="/search" element={<SearchPages />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/booking-order" element={<BookingOrderPage />} />
+                <Route path="/qr-validation" element={<QRValidationPage />} />
+                <Route
+                  path="/history-detail/:param"
+                  element={<DetailPages />}
+                />
+              </>
+            )}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>
-        <Footer />
+        {localStorage.getItem("USER_ROLE") !== "ADMIN" && <Footer />}
       </BrowserRouter>
     </ChakraProvider>
   </React.StrictMode>

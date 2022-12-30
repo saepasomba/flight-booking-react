@@ -25,10 +25,14 @@ import {
 import appLogo from "../../asset/logo-nobg.png";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { FiBell } from "react-icons/fi";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
+import {
+  apiGetCountNotification,
+  apiGetListNotification,
+  apiGetProfile,
+} from "../../api";
 
 export default function Navbar() {
   const [navActive, setNavActive] = useState(false);
@@ -55,16 +59,10 @@ export default function Navbar() {
     onOpen: registerOnOpen,
     onClose: registerOnClose,
   } = useDisclosure();
-  const getCountNotification = async (token) => {
+
+  const getCountNotification = async () => {
     try {
-      const response = await axios.get(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/users/count-notif",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      const response = await apiGetCountNotification;
       const data = response.data.data;
       setNotifcount(data);
     } catch (e) {
@@ -72,36 +70,26 @@ export default function Navbar() {
     }
   };
 
-  const getListNotification = async (token) => {
+  const getListNotification = async () => {
     try {
-      const response = await axios.get(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/users/get-notif?limit=10&pageNumber=1",
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
+      setIsLoadingNotif(true);
+      const response = await apiGetListNotification();
       const data = response.data.data;
 
       setNotif(data);
     } catch (e) {
       setNotif(null);
+    } finally {
+      setIsLoadingNotif(false);
     }
   };
 
-  const authTrigger = (token) => {
-    const getProfile = async (token) => {
+  const authTrigger = () => {
+    const getProfile = async () => {
       setIsLoading(true);
       try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/users/my-profile",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        console.log("AUTH TRIGGERED");
+        const response = await apiGetProfile();
 
         const data = response.data.data;
         setUser(data);
@@ -110,9 +98,9 @@ export default function Navbar() {
       }
       setIsLoading(false);
     };
-    getProfile(token);
+    getProfile();
 
-    getCountNotification(token);
+    getCountNotification();
   };
 
   const logout = () => {
@@ -232,35 +220,46 @@ export default function Navbar() {
                           <></>
                         )}
                         <MenuList>
-                          {notif.length > 0 ? (
-                            notif.map((nt) => {
-                              return (
-                                <MenuItem maxW="23rem" key={nt.notificationId}>
-                                  <Box>
-                                    <HStack>
-                                      <Text as="b" noOfLines="2" w="80%">
-                                        {nt.title}
-                                      </Text>{" "}
-                                      {nt.status && (
-                                        <Tag colorScheme="green" key="sm">
-                                          New!
-                                        </Tag>
-                                      )}
-                                    </HStack>
-                                    <Text
-                                      color="gray"
-                                      noOfLines="2"
-                                      fontSize="0.8rem"
-                                    >
-                                      {nt.content}
-                                    </Text>
-                                    <Text color="gray" fontSize="0.8rem">
-                                      {nt.cdate}
-                                    </Text>
-                                  </Box>
-                                </MenuItem>
-                              );
-                            })
+                          {!isLoadingNotif ? (
+                            notif?.length > 0 ? (
+                              notif?.map((nt) => {
+                                return (
+                                  <MenuItem
+                                    maxW="23rem"
+                                    key={nt.notificationId}
+                                  >
+                                    <Box>
+                                      <HStack>
+                                        <Text as="b" noOfLines="2" w="80%">
+                                          {nt.title}
+                                        </Text>{" "}
+                                        {nt.status && (
+                                          <Tag colorScheme="green" key="sm">
+                                            New!
+                                          </Tag>
+                                        )}
+                                      </HStack>
+                                      <Text
+                                        color="gray"
+                                        noOfLines="2"
+                                        fontSize="0.8rem"
+                                      >
+                                        {nt.content}
+                                      </Text>
+                                      <Text color="gray" fontSize="0.8rem">
+                                        {nt.cdate}
+                                      </Text>
+                                    </Box>
+                                  </MenuItem>
+                                );
+                              })
+                            ) : (
+                              <MenuItem w="23rem">
+                                <Center w="100%">
+                                  No notification available
+                                </Center>
+                              </MenuItem>
+                            )
                           ) : (
                             <MenuItem w="23rem">
                               <Center w="100%">
@@ -273,22 +272,34 @@ export default function Navbar() {
                     </Center>
                     {/* <Link to="/profile"> */}
                     <Menu>
-                      <MenuButton
-                        borderRadius="full"
-                        colorScheme="blueHue"
-                        as={Button}
-                        leftIcon={
-                          <Avatar name={user?.fullName} size="sm" src="" />
-                        }
-                      >
-                        <Text
-                          maxWidth="6rem"
-                          overflow="hidden"
-                          textOverflow="ellipsis"
+                      {isDesktop ? (
+                        <MenuButton
+                          borderRadius="full"
+                          colorScheme="blueHue"
+                          as={Button}
+                          leftIcon={
+                            <Avatar name={user?.fullName} size="sm" src="" />
+                          }
                         >
-                          Hi, {user?.fullName.split(" ")[0]}
-                        </Text>
-                      </MenuButton>
+                          <Text
+                            maxWidth="6rem"
+                            overflow="hidden"
+                            textOverflow="ellipsis"
+                          >
+                            Hi, {user?.fullName.split(" ")[0]}
+                          </Text>
+                        </MenuButton>
+                      ) : (
+                        <MenuButton
+                          as={IconButton}
+                          borderRadius="full"
+                          colorScheme="blueHue"
+                          icon={
+                            <Avatar name={user?.fullName} size="sm" src="" />
+                          }
+                        />
+                      )}
+
                       <MenuList>
                         <MenuGroup title={user?.fullName.split(" ")[0]}>
                           <Link to="/profile">

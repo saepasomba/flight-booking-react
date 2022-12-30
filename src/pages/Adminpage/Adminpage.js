@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BiLogOut } from "react-icons/bi";
 import {
   Table,
   Thead,
@@ -31,6 +32,7 @@ import {
   Skeleton,
   SkeletonCircle,
   SkeletonText,
+  useToast,
 } from "@chakra-ui/react";
 import NavbarAdmin from "../../components/navbar/NavbarAdmin";
 import { FiEdit } from "react-icons/fi";
@@ -38,52 +40,62 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdPayment } from "react-icons/md";
 import axios from "axios";
 import AdminForm from "./AdminForm";
+import {
+  apiAddNewPayment,
+  apiDeletePayment,
+  apiGetAdminPayment,
+} from "../../api";
 
 export default function Adminpage() {
   const [payment, setPayment] = useState([]);
   const [newPayment, setNewPayment] = useState("");
-  const [update, setUpdate] = useState('');
+  const [update, setUpdate] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentOnUpdate, setPaymentOnUpdate] = useState('');
+  const [paymentOnUpdate, setPaymentOnUpdate] = useState("");
   const navigate = useNavigate();
   const {
     isOpen: editModalIsOpen,
     onOpen: editModalOnOpen,
     onClose: editModalOnClose,
   } = useDisclosure();
+  const toast = useToast();
+
+  const logoutSubmit = () => {
+    localStorage.removeItem("USER_TOKEN");
+    localStorage.removeItem("AUTH_METHOD");
+    localStorage.removeItem("USER_ROLE");
+    toast({
+      title: "Logged out!",
+      position: "top",
+      status: "warning",
+      duration: 3000,
+      isClosable: true,
+    });
+    navigate("/");
+    window.location.reload();
+  };
 
   const adminTrigger = (token) => {
     setIsLoading(true);
-    const getPayment = async (token) => {
+    const getPayment = async () => {
       try {
-        const response = await axios.get(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/admin/list-payment",
-          {
-            headers: {
-              Authorization: token,
-            },
-          }
-        );
+        const response = await apiGetAdminPayment();
+        console.log("response", response);
         const data = response.data.data;
         setPayment(data);
       } catch (e) {
-        console.log("FAILED TO GET PAYMENT...", e);
+        // console.log("FAILED TO GET PAYMENT...", e);
         setPayment(null);
       }
       setIsLoading(false);
     };
-    getPayment(token);
+    getPayment();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://tix-service-bej5.up.railway.app/ticketing-service/admin/create-payment",
-        {
-          paymentMethod: newPayment,
-        }
-      );
+      const response = await apiAddNewPayment({ paymentMethod: newPayment });
       setNewPayment("");
       adminTrigger();
     } catch (e) {
@@ -93,9 +105,7 @@ export default function Adminpage() {
 
   const Delete = async (id) => {
     try {
-      const response = await axios.delete(
-        `https://tix-service-bej5.up.railway.app/ticketing-service/admin/disable-payment/${id}`
-      );
+      const response = await apiDeletePayment(id);
       adminTrigger();
     } catch (e) {
       console.log("FAILED TO DELETE PAYMENT...", e);
@@ -129,16 +139,24 @@ export default function Adminpage() {
   return (
     <>
       <Flex flexDirection="column">
-        <Box alignSelf="center">
+        <Flex flexDir="column" alignSelf="center" justifyItems="center">
           <Text
             fontSize={["2rem", "2rem", "3.5rem", "3.5rem"]}
             color="grey"
             fontFamily="sans-serif"
             fontWeight="semibold"
           >
-            Payment CRUD
+            Admin Page
           </Text>
-        </Box>
+          <Button
+            colorScheme="red"
+            variant="ghost"
+            leftIcon={<BiLogOut />}
+            onClick={logoutSubmit}
+          >
+            Logout
+          </Button>
+        </Flex>
 
         <Box alignSelf="center" width="75%">
           <form onSubmit={handleSubmit} width="100%">
@@ -164,7 +182,10 @@ export default function Adminpage() {
           </form>
         </Box>
 
-        <TableContainer alignSelf="center" width={["100%", "100%", "75%", "75%"]}>
+        <TableContainer
+          alignSelf="center"
+          width={["100%", "100%", "75%", "75%"]}
+        >
           <Table
             variant="simple"
             fontSize={["0.6rem", "0.6rem", "1rem", "1rem"]}
@@ -193,8 +214,8 @@ export default function Adminpage() {
                     <Skeleton height="20px" />
                   </Td>
                 </Tr>
-              ) : payment.length > 0 ? (
-                payment.map((pay) => {
+              ) : payment?.length > 0 ? (
+                payment?.map((pay) => {
                   return (
                     <Tr key={pay.paymentId}>
                       {/* <AdminForm
@@ -254,12 +275,12 @@ export default function Adminpage() {
         </TableContainer>
       </Flex>
       <AdminForm
-          isOpen={editModalIsOpen}
-          onClose={editModalOnClose}
-          paymentMethods={update}
-          paymentId={paymentOnUpdate}
-          adminTrigger={adminTrigger}
-          />
+        isOpen={editModalIsOpen}
+        onClose={editModalOnClose}
+        paymentMethods={update}
+        paymentId={paymentOnUpdate}
+        adminTrigger={adminTrigger}
+      />
       {/* <Modal isOpen={editModalIsOpen} onClose={editModalOnClose}>
         <form onSubmit={() => updateSubmit(paymentOnUpdate?.paymentId)}>
           <ModalOverlay />

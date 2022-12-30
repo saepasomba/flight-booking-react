@@ -28,11 +28,13 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { MdAirplanemodeActive } from "react-icons/md";
 import backgroundHome from "../../asset/backgroundHome.jpg";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { apiGetHistoryBook } from "../../api";
 
 export default function CardHistorybook() {
   const [history, setHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
   const render_numeric = (value) => {
     let numbers = Number(value);
@@ -46,10 +48,7 @@ export default function CardHistorybook() {
 
   const getHistoryBook = async () => {
     setIsLoading(true);
-    const response = await axios.get(
-      "https://tix-service-bej5.up.railway.app/ticketing-service/booking/history?limit=10&pageNumber=1",
-      { headers: { Authorization: localStorage.getItem("USER_TOKEN") } }
-    );
+    const response = await apiGetHistoryBook();
     setHistory(response.data.data);
     console.log(response);
     setIsLoading(false);
@@ -146,6 +145,7 @@ export default function CardHistorybook() {
         history.map((histories) => {
           return (
             <Card
+              key={histories.invoiceNo}
               padding="0"
               width={["95%", "80%", "80%", "75%"]}
               bg="white"
@@ -245,9 +245,15 @@ export default function CardHistorybook() {
                         </PopoverBody>
                       </PopoverContent>
                     </Popover>
-                    <Link to="/history-detail">
-                      <Button colorScheme="blueHue"> Detail</Button>
-                    </Link>
+                    <Button
+                      colorScheme="blueHue"
+                      onClick={() =>
+                        navigate(`/history-detail/${histories.invoiceNo}`)
+                      }
+                    >
+                      {" "}
+                      Detail
+                    </Button>
                   </Flex>
                 </Flex>
               </CardBody>

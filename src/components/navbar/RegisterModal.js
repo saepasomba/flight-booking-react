@@ -19,6 +19,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import { apiRegister } from "../../api";
+import GoogleAuthButton from "./GoogleAuthButton";
 
 const registerSchema = yup.object({
   fullName: yup.string().required(),
@@ -50,26 +52,25 @@ export default function RegisterModal(props) {
 
     const { confirmPassword, ...cleanData } = data;
     console.log(cleanData);
-    const apiRegister = async (userData) => {
+    const postRegister = async (userData) => {
       setIsLoading(true);
       try {
-        const response = await axios.post(
-          "https://tix-service-bej5.up.railway.app/ticketing-service/ext/register",
-          userData
-        );
+        const response = await apiRegister(userData);
         console.log(response);
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
-        authTrigger(data.data);
+        // authTrigger(data.data);
+        localStorage.setItem("AUTH_METHOD", "NORMAL");
+        localStorage.setItem("USER_ROLE", response.data.data.role);
+        window.location.reload();
         onClose();
       } catch (error) {
         setError("Invalid! Please make sure your email is not used.");
       }
       setIsLoading(false);
-      console.log("FINISHED HITTING API");
     };
 
-    apiRegister(cleanData);
+    postRegister(cleanData);
     console.log("FINISHED SUBMITTING PROTOCOL");
   };
 
@@ -125,13 +126,18 @@ export default function RegisterModal(props) {
             </Flex>
           </ModalBody>
 
-          <ModalFooter>
+          <ModalFooter flexDir="column" gap="1rem">
             <Flex gap="1rem">
               <Button onClick={onClose}>Cancel</Button>
               <Button colorScheme="blue" type="submit" isLoading={isLoading}>
                 Register
               </Button>
             </Flex>
+            <GoogleAuthButton
+              onClose={onClose}
+              authTrigger={authTrigger}
+              setError={setError}
+            />
           </ModalFooter>
         </form>
       </ModalContent>

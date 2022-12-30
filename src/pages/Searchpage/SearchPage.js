@@ -107,7 +107,13 @@ export default function SearchPages() {
                 </Center>
               ) : (
                 flights.map((flight) => {
-                  return <CardSearchs flight={flight} searchParams={data} />;
+                  return (
+                    <CardSearchs
+                      key={flight.scheduleId}
+                      flight={flight}
+                      searchParams={data}
+                    />
+                  );
                 })
               )}
             </>
