@@ -22,9 +22,9 @@ export const apiEditProfile = (data) => {
   return axiosClient.put(`/ticketing-service/users/update-profile`, data);
 };
 
-export const apiGetHistoryBook = () => {
+export const apiGetHistoryBook = (pageNumber) => {
   return axiosClient.get(
-    `/ticketing-service/booking/history?limit=10&pageNumber=1`
+    `/ticketing-service/booking/history?limit=10&pageNumber=${pageNumber}`
   );
 };
 
