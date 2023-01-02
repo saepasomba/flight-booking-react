@@ -247,6 +247,7 @@ export default function BookingOrderPage() {
 
       if (response.data.responseCode === 200) {
         navigate("/");
+        window.location.reload();
         toast({
           title: `Order completed!`,
           status: "success",
