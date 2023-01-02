@@ -61,6 +61,7 @@ export default function CardHome() {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm({ mode: "onChange", resolver: yupResolver(orderSchema) });
 

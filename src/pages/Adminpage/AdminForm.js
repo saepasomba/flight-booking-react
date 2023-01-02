@@ -35,7 +35,6 @@ export default function AdminForm(props) {
       });
       onClose();
       adminTrigger();
-      console.log(response);
     } catch (e) {
       console.log("FAILED TO UPDATE PAYMENT...", e);
     }
@@ -45,7 +44,6 @@ export default function AdminForm(props) {
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <form onSubmit={updateSubmit}>
-          {console.log(paymentMethods)}
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Update Method Payment {paymentMethods}</ModalHeader>

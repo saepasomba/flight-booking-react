@@ -22,9 +22,9 @@ export const apiEditProfile = (data) => {
   return axiosClient.put(`/ticketing-service/users/update-profile`, data);
 };
 
-export const apiGetHistoryBook = () => {
+export const apiGetHistoryBook = (pageNumber) => {
   return axiosClient.get(
-    `/ticketing-service/booking/history?limit=10&pageNumber=1`
+    `/ticketing-service/booking/history?limit=10&pageNumber=${pageNumber}`
   );
 };
 
@@ -51,9 +51,9 @@ export const apiGetCountNotification = () => {
   return axiosClient.get(`/ticketing-service/users/count-notif`);
 };
 
-export const apiGetListNotification = () => {
+export const apiGetListNotification = (pageNumber) => {
   return axiosClient.get(
-    `/ticketing-service/users/get-notif?limit=10&pageNumber=1`
+    `/ticketing-service/users/get-notif?limit=5&pageNumber=${pageNumber}`
   );
 };
 

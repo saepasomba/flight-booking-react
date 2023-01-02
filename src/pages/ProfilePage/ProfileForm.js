@@ -35,8 +35,6 @@ export default function ProfileForm(props) {
     ...profile,
   };
 
-  console.log(defaultValueProfile);
-
   const {
     register,
     handleSubmit,
@@ -50,11 +48,9 @@ export default function ProfileForm(props) {
   });
 
   const editProfileSubmit = (data) => {
-    console.log("UPDATING...");
     setIsLoading(true);
 
     const updateProfile = async (data) => {
-      console.log("Data sent", data);
       const response = await apiEditProfile(data);
       // const response = await axios.put(
       //   "https://tix-service-bej5.up.railway.app/ticketing-service/users/update-profile",

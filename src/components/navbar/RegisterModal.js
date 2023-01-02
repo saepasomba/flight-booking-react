@@ -47,16 +47,11 @@ export default function RegisterModal(props) {
   });
 
   const registerSubmit = (data) => {
-    console.log("Registering...");
-    console.log(data);
-
     const { confirmPassword, ...cleanData } = data;
-    console.log(cleanData);
     const postRegister = async (userData) => {
       setIsLoading(true);
       try {
         const response = await apiRegister(userData);
-        console.log(response);
         const data = response.data;
         localStorage.setItem("USER_TOKEN", data.data);
         // authTrigger(data.data);
@@ -71,7 +66,6 @@ export default function RegisterModal(props) {
     };
 
     postRegister(cleanData);
-    console.log("FINISHED SUBMITTING PROTOCOL");
   };
 
   return (

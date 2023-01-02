@@ -26,6 +26,7 @@ import appLogo from "../../asset/logo-nobg.png";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiBell } from "react-icons/fi";
+import { AiFillCaretRight, AiFillCaretLeft } from "react-icons/ai";
 import LoginModal from "./LoginModal";
 import RegisterModal from "./RegisterModal";
 import {
@@ -39,9 +40,12 @@ export default function Navbar() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
+
   const [notif, setNotif] = useState([]);
   const [notifCount, setNotifcount] = useState();
   const [isLoadingNotif, setIsLoadingNotif] = useState(false);
+  const [notifPage, setNotifPage] = useState(1);
+  const [totalNotifPage, setTotalNotifPage] = useState(0);
 
   const isDesktop = useBreakpointValue({
     base: false,
@@ -62,7 +66,7 @@ export default function Navbar() {
 
   const getCountNotification = async () => {
     try {
-      const response = await apiGetCountNotification;
+      const response = await apiGetCountNotification();
       const data = response.data.data;
       setNotifcount(data);
     } catch (e) {
@@ -70,12 +74,14 @@ export default function Navbar() {
     }
   };
 
-  const getListNotification = async () => {
+  const getListNotification = async (pageNumber) => {
     try {
       setIsLoadingNotif(true);
-      const response = await apiGetListNotification();
+      const response = await apiGetListNotification(pageNumber);
       const data = response.data.data;
+      const totalPaging = response.data.paging.totalPaging;
 
+      setTotalNotifPage(totalPaging);
       setNotif(data);
     } catch (e) {
       setNotif(null);
@@ -88,7 +94,6 @@ export default function Navbar() {
     const getProfile = async () => {
       setIsLoading(true);
       try {
-        console.log("AUTH TRIGGERED");
         const response = await apiGetProfile();
 
         const data = response.data.data;
@@ -197,9 +202,8 @@ export default function Navbar() {
                           h="10rem"
                           variant="link"
                           onClick={() => {
-                            const token = localStorage.getItem("USER_TOKEN");
-                            getListNotification(token);
-                            getCountNotification(token);
+                            getListNotification(notifPage);
+                            getCountNotification();
                           }}
                         />
                         {notifCount?.jumlahNotif ? (
@@ -219,40 +223,72 @@ export default function Navbar() {
                         ) : (
                           <></>
                         )}
+
                         <MenuList>
                           {!isLoadingNotif ? (
                             notif?.length > 0 ? (
-                              notif?.map((nt) => {
-                                return (
-                                  <MenuItem
-                                    maxW="23rem"
-                                    key={nt.notificationId}
-                                  >
-                                    <Box>
-                                      <HStack>
-                                        <Text as="b" noOfLines="2" w="80%">
-                                          {nt.title}
-                                        </Text>{" "}
-                                        {nt.status && (
-                                          <Tag colorScheme="green" key="sm">
-                                            New!
-                                          </Tag>
-                                        )}
-                                      </HStack>
-                                      <Text
-                                        color="gray"
-                                        noOfLines="2"
-                                        fontSize="0.8rem"
-                                      >
-                                        {nt.content}
-                                      </Text>
-                                      <Text color="gray" fontSize="0.8rem">
-                                        {nt.cdate}
-                                      </Text>
-                                    </Box>
-                                  </MenuItem>
-                                );
-                              })
+                              <>
+                                <Flex
+                                  justify="center"
+                                  gap="1rem"
+                                  align="center"
+                                >
+                                  <IconButton
+                                    borderRadius="full"
+                                    colorScheme="blueHue"
+                                    icon={<AiFillCaretLeft />}
+                                    disabled={notifPage === 1}
+                                    onClick={() => {
+                                      setNotifPage((old) => old - 1);
+                                      getListNotification(notifPage - 1);
+                                    }}
+                                  />
+                                  <Text>
+                                    {notifPage}/{totalNotifPage}
+                                  </Text>
+                                  <IconButton
+                                    borderRadius="full"
+                                    colorScheme="blueHue"
+                                    icon={<AiFillCaretRight />}
+                                    disabled={notifPage === totalNotifPage}
+                                    onClick={() => {
+                                      setNotifPage((old) => old + 1);
+                                      getListNotification(notifPage + 1);
+                                    }}
+                                  />
+                                </Flex>
+                                {notif?.map((nt) => {
+                                  return (
+                                    <MenuItem
+                                      maxW="23rem"
+                                      key={nt.notificationId}
+                                    >
+                                      <Box>
+                                        <HStack>
+                                          <Text as="b" noOfLines="2" w="80%">
+                                            {nt.title}
+                                          </Text>{" "}
+                                          {nt.status && (
+                                            <Tag colorScheme="green" key="sm">
+                                              New!
+                                            </Tag>
+                                          )}
+                                        </HStack>
+                                        <Text
+                                          color="gray"
+                                          noOfLines="2"
+                                          fontSize="0.8rem"
+                                        >
+                                          {nt.content}
+                                        </Text>
+                                        <Text color="gray" fontSize="0.8rem">
+                                          {nt.cdate}
+                                        </Text>
+                                      </Box>
+                                    </MenuItem>
+                                  );
+                                })}
+                              </>
                             ) : (
                               <MenuItem w="23rem">
                                 <Center w="100%">
