@@ -125,28 +125,6 @@ export const Footer = () => (
                 081-233-343-808
               </Text>
             </Stack>
-            <Stack spacing="4" minW="36" flex="1">
-              <Stack
-                spacing="3"
-                shouldWrapChildren
-                fontSize="md"
-                fontWeight="semibold"
-                color="subtle"
-              >
-                <Button variant="link" color="white">
-                  Our Service
-                </Button>
-                <Button variant="link" color="white">
-                  Why Us
-                </Button>
-                <Button variant="link" color="white">
-                  Testimonial
-                </Button>
-                <Button variant="link" color="white">
-                  FAQ
-                </Button>
-              </Stack>
-            </Stack>
           </Stack>
         </Stack>
       </Stack>
@@ -161,26 +139,6 @@ export const Footer = () => (
         align="center"
         flexDirection="column"
       >
-        <ButtonGroup variant="ghost">
-          <IconButton
-            as="a"
-            href="#"
-            aria-label="LinkedIn"
-            icon={<FaLinkedin fontSize="1.25rem" />}
-          />
-          <IconButton
-            as="a"
-            href="#"
-            aria-label="GitHub"
-            icon={<FaGithub fontSize="1.25rem" />}
-          />
-          <IconButton
-            as="a"
-            href="#"
-            aria-label="Twitter"
-            icon={<FaTwitter fontSize="1.25rem" />}
-          />
-        </ButtonGroup>
         <Text fontSize="sm" color="subtle">
           &copy; {new Date().getFullYear()} SafelyFLy, Inc. All rights reserved.
         </Text>
